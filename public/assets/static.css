@@ -1830,9 +1830,17 @@ body.show-project-info-modal > .become-a-client {
     min-height: 0;
   }
 
+  /* Credits and the button share that column's foot: the table takes the whole
+     leftover height above it, and the button trails it by a fixed gap. Only one
+     of the two may claim the free space — two auto margins would split it and
+     strand the table mid-card. */
+  .project-media-carousel__back .project-info-modal .url-button-wrap .credits {
+    margin-top: auto;
+  }
+
   .project-media-carousel__back .project-info-modal .url-button {
     align-self: flex-start;
-    margin-top: auto;
+    margin-top: 20px;
   }
 }
 

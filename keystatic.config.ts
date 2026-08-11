@@ -106,7 +106,9 @@ export default config({
           defaultValue: "",
         }),
         description: fields.text({
-          label: "Description (HTML)",
+          label: "Description",
+          description:
+            "Plain text. Leave a blank line between paragraphs; a single line break stays a line break.",
           multiline: true,
           defaultValue: "",
         }),
@@ -198,12 +200,16 @@ export default config({
         mobileLogo: imageField("Mobile logo"),
         footer: fields.object(
           {
-            headline: fields.text({ label: "Headline (HTML)", multiline: true, defaultValue: "" }),
-            body: fields.text({ label: "Body (HTML)", multiline: true, defaultValue: "" }),
-            emailPrompt: fields.text({ label: "Email prompt (HTML)", multiline: true, defaultValue: "" }),
-            legal: fields.text({ label: "Legal (HTML)", multiline: true, defaultValue: "" }),
+            headline: fields.text({ label: "Headline", multiline: true, defaultValue: "" }),
+            body: fields.text({ label: "Body", multiline: true, defaultValue: "" }),
+            emailPrompt: fields.text({ label: "Email prompt", multiline: true, defaultValue: "" }),
+            legal: fields.text({ label: "Legal", multiline: true, defaultValue: "" }),
           },
-          { label: "Footer" },
+          {
+            label: "Footer",
+            description:
+              "Plain text. Leave a blank line between paragraphs; a single line break stays a line break.",
+          },
         ),
         contact: fields.object(
           {

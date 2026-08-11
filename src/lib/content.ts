@@ -104,9 +104,13 @@ export const siteContent: SiteContent = {
     .map(imageAsset)
     .filter((asset): asset is Asset => Boolean(asset)),
   mobileLogo: imageAsset(siteEntry.mobileLogo),
-  // Rich-text fields arrive as document trees; everything downstream renders
-  // them as HTML strings.
-  footer: { ...siteEntry.footer },
+  // Footer fields are plain text in Keystatic; downstream renders them as HTML.
+  footer: {
+    headline: paragraphsToHtml(siteEntry.footer.headline),
+    body: paragraphsToHtml(siteEntry.footer.body),
+    emailPrompt: paragraphsToHtml(siteEntry.footer.emailPrompt),
+    legal: paragraphsToHtml(siteEntry.footer.legal),
+  },
   contact: { ...siteEntry.contact },
 };
 
@@ -166,6 +170,22 @@ function escapeHtml(value: string): string {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+/**
+ * The description and footer fields are authored as plain text in Keystatic —
+ * one blank line between paragraphs, a single newline for a line break — so the
+ * editor shows no markup. This turns that text into the `<p>`/`<br>` HTML the
+ * footer (`set:html`) and the project read-more (which walks `<p>` children)
+ * expect. Empty input stays an empty string.
+ */
+function paragraphsToHtml(text: string | null | undefined): string {
+  if (!text) return "";
+  return text
+    .trim()
+    .split(/\n\s*\n/)
+    .map((block) => `<p>${escapeHtml(block.trim()).replaceAll("\n", "<br />")}</p>`)
+    .join("");
 }
 
 function renderAsset(asset: Asset, type: "image" | "video", projectTitle: string): string {
@@ -252,7 +272,7 @@ export const passedData = {
       grid: renderProjectGrid(project),
       url: project.externalUrl,
       image_big: project.featuredImage?.src ?? "",
-      description: project.description,
+      description: paragraphsToHtml(project.description),
       acf_title: project.displayTitle,
       credits: project.credits.map((credit) => ({ left: credit.label, right: credit.value })),
       short_description: project.shortDescription,

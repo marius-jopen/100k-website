@@ -2,9 +2,9 @@
   "title": "Planungsbüro Sander Hofrichter",
   "displayTitle": "Planungsbüro Sander Hofrichter",
   "shortDescription": "Architecture Studio",
-  "description": "<p>We developed Planungsbüro Sander Hofrichter’s WordPress website from a design by Haw-Lin, creating a responsive and easily maintainable architecture portfolio.</p>\n",
+  "description": "We developed Planungsbüro Sander Hofrichter’s WordPress website from a design by Haw-Lin, creating a responsive and easily maintainable architecture portfolio.",
   "externalUrl": "http://p-sh.de/",
-  "featuredImage": "/images/psh.jpg",
+  "featuredImage": "/images/planungsburo-sander-hofrichter/psh.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "ae288d79-b3ae-4e26-8729-58aef84dfbf9"
@@ -43,7 +43,7 @@
         "caption": "<p>The Frontpage</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/psh_frontpage.jpg"
+          "value": "/images/planungsburo-sander-hofrichter/psh_frontpage.jpg"
         }
       },
       {
@@ -57,14 +57,14 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/the_news.jpg"
+          "value": "/images/planungsburo-sander-hofrichter/the_news.jpg"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/psh_project_view.jpg"
+          "value": "/images/planungsburo-sander-hofrichter/psh_project_view.jpg"
         }
       }
     ]

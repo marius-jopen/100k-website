@@ -2,9 +2,9 @@
   "title": "Convene",
   "displayTitle": "Convene",
   "shortDescription": "Landing Page",
-  "description": "<p>We developed Convene Virtual Meetings’ WordPress website from a design by Vans General Store, delivering a responsive product platform with demo booking, a blog, and extensive service pages.</p>\n",
+  "description": "We developed Convene Virtual Meetings’ WordPress website from a design by Vans General Store, delivering a responsive product platform with demo booking, a blog, and extensive service pages.",
   "externalUrl": "https://virtual.convene.com/",
-  "featuredImage": "/images/virtualconvene1.jpg",
+  "featuredImage": "/images/convene/virtualconvene1.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "8bf85ff5-87c2-4a4a-b6c4-bd771f79b962"
@@ -43,7 +43,7 @@
         "caption": "<p>A pricing table</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/virtualconvene2.jpg"
+          "value": "/images/convene/virtualconvene2.jpg"
         }
       },
       {
@@ -57,7 +57,7 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/virtualconvene3.jpg"
+          "value": "/images/convene/virtualconvene3.jpg"
         }
       }
     ]

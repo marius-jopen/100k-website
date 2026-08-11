@@ -2,16 +2,16 @@
   "title": "Skepta with Never Sleep On Tour",
   "displayTitle": "Skepta with Never Sleep On Tour",
   "shortDescription": "Rapper",
-  "description": "<p>We developed a dynamic tour website for Skepta’s Never Sleep On Tour, giving fans a fast, responsive source for current dates and updates.</p>\n",
+  "description": "We developed a dynamic tour website for Skepta’s Never Sleep On Tour, giving fans a fast, responsive source for current dates and updates.",
   "externalUrl": "",
-  "featuredImage": "/images/Screenshot-2023-10-15-at-20.51.24-scaled.jpeg",
+  "featuredImage": "/images/skepta-with-never-sleep-on-tour/Screenshot-2023-10-15-at-20.51.24-scaled.jpeg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "fe8723ab-f8b8-4863-8526-64074108f066"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/Screenshot-2023-10-15-at-20.52.49.jpeg"
+    "value": "/images/skepta-with-never-sleep-on-tour/Screenshot-2023-10-15-at-20.52.49.jpeg"
   },
   "credits": [
     {

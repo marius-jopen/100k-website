@@ -2,16 +2,16 @@
   "title": "Advance Gender",
   "displayTitle": "Advance Gender",
   "shortDescription": "Public Health Research",
-  "description": "<p>We developed a multilingual research website for AdvanceGender with Prismic and SvelteKit, translating complex public-health content into an accessible, responsive platform.</p>\n",
+  "description": "We developed a multilingual research website for AdvanceGender with Prismic and SvelteKit, translating complex public-health content into an accessible, responsive platform.",
   "externalUrl": "https://advancegender.info",
-  "featuredImage": "/images/Screenshot-2023-10-15-at-18.02.59.jpeg",
+  "featuredImage": "/images/advance-gender/Screenshot-2023-10-15-at-18.02.59.jpeg",
   "desktopBackground": {
     "discriminant": "image",
-    "value": "/images/Screenshot-2023-10-15-at-18.02.59.jpeg"
+    "value": "/images/advance-gender/Screenshot-2023-10-15-at-18.02.59.jpeg"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/Screenshot-2023-10-15-at-18.02.02.jpeg"
+    "value": "/images/advance-gender/Screenshot-2023-10-15-at-18.02.02.jpeg"
   },
   "credits": [
     {

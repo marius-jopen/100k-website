@@ -2,16 +2,16 @@
   "title": "Lay Gridder",
   "displayTitle": "Lay Gridder",
   "shortDescription": "WordPress Plugin",
-  "description": "<p>We developed LayGridder, a flexible visual layout plugin that brings a custom grid-based website builder to any WordPress theme.</p>\n",
+  "description": "We developed LayGridder, a flexible visual layout plugin that brings a custom grid-based website builder to any WordPress theme.",
   "externalUrl": "http://laygridder.com/",
-  "featuredImage": "/images/laygridder-2.jpg",
+  "featuredImage": "/images/laygridder/laygridder-2.jpg",
   "desktopBackground": {
     "discriminant": "image",
-    "value": "/images/laygridder-2.jpg"
+    "value": "/images/laygridder/laygridder-2.jpg"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/laygridder-2.jpg"
+    "value": "/images/laygridder/laygridder-2.jpg"
   },
   "credits": [
     {
@@ -29,7 +29,7 @@
         "caption": "<p>The Frontpage</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/laygridder_frontpage.jpg"
+          "value": "/images/laygridder/laygridder_frontpage.jpg"
         }
       },
       {
@@ -43,28 +43,28 @@
         "caption": "<p>COS uses LayGridder on their Websites</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/laygridder_cos_1.jpg"
+          "value": "/images/laygridder/laygridder_cos_1.jpg"
         }
       },
       {
         "caption": "<p>COS uses LayGridder to showcase their Projects</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/laygridder_cos2.jpg"
+          "value": "/images/laygridder/laygridder_cos2.jpg"
         }
       },
       {
         "caption": "<p>\"New Distribution House\" using LayGridder</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/laygridder_ndh_website.jpg"
+          "value": "/images/laygridder/laygridder_ndh_website.jpg"
         }
       },
       {
         "caption": "<p>The \"Textformats\" Feature</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/laygridder_textformats.jpg"
+          "value": "/images/laygridder/laygridder_textformats.jpg"
         }
       }
     ]

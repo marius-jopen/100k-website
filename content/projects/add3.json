@@ -2,16 +2,16 @@
   "title": "Add3",
   "displayTitle": "Add3",
   "shortDescription": "Smart Contract Management ",
-  "description": "<p>We developed Add3’s responsive website and digital product experience for its Web3 smart-contract platform, creating a clear interface for customizable token products and complex blockchain workflows.</p>\n",
+  "description": "We developed Add3’s responsive website and digital product experience for its Web3 smart-contract platform, creating a clear interface for customizable token products and complex blockchain workflows.",
   "externalUrl": "https://www.add3.io/",
-  "featuredImage": "/images/5.jpeg",
+  "featuredImage": "/images/add3/5.jpeg",
   "desktopBackground": {
     "discriminant": "image",
-    "value": "/images/STAKING-DETAIL.jpg"
+    "value": "/images/add3/STAKING-DETAIL.jpg"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/Frame-26080498.jpg"
+    "value": "/images/add3/Frame-26080498.jpg"
   },
   "credits": [
     {
@@ -32,14 +32,14 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/Logo-1.jpg"
+          "value": "/images/add3/Logo-1.jpg"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/Logo-3.jpg"
+          "value": "/images/add3/Logo-3.jpg"
         }
       },
       {
@@ -53,14 +53,14 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/DASHBOARD.jpg"
+          "value": "/images/add3/DASHBOARD.jpg"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/CUSTOMERS-DASHBOARD.jpg"
+          "value": "/images/add3/CUSTOMERS-DASHBOARD.jpg"
         }
       },
       {
@@ -74,7 +74,7 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/Intro.jpg"
+          "value": "/images/add3/Intro.jpg"
         }
       }
     ]

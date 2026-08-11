@@ -2,16 +2,16 @@
   "title": "Red Square",
   "displayTitle": "Red Square",
   "shortDescription": "Architecture Studio",
-  "description": "<p>We developed Red Square’s website with a searchable and filterable project archive that makes the architecture studio’s extensive portfolio easy to explore.</p>\n",
+  "description": "We developed Red Square’s website with a searchable and filterable project archive that makes the architecture studio’s extensive portfolio easy to explore.",
   "externalUrl": "https://redsquare.de/",
-  "featuredImage": "/images/Screenshot-2023-10-15-at-21.25.03-scaled.jpeg",
+  "featuredImage": "/images/red-square/Screenshot-2023-10-15-at-21.25.03-scaled.jpeg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "c523fb69-24b6-4a3a-a14f-514841a5ea4c"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/Screenshot-2023-10-15-at-21.24.11.jpeg"
+    "value": "/images/red-square/Screenshot-2023-10-15-at-21.24.11.jpeg"
   },
   "credits": [
     {

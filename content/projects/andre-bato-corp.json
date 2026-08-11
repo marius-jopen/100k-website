@@ -2,9 +2,9 @@
   "title": "Andre Bato Corp",
   "displayTitle": "Andre Bato Corp",
   "shortDescription": "Production Studio",
-  "description": "<p>We designed and developed a responsive website for NYC production studio Andre Bato Corp and continue to maintain and extend it with new features.</p>\n",
+  "description": "We designed and developed a responsive website for NYC production studio Andre Bato Corp and continue to maintain and extend it with new features.",
   "externalUrl": "https://andrebato.com/",
-  "featuredImage": "/images/andre-bato-edit.jpg",
+  "featuredImage": "/images/andre-bato-corp/andre-bato-edit.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "3a147c77-ed47-471c-a65a-31355b3f85ce"

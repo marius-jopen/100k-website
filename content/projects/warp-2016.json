@@ -2,9 +2,9 @@
   "title": "Warp 2016",
   "displayTitle": "Warp 2016 ",
   "shortDescription": "3D Website",
-  "description": "<p>We developed an interactive website for Warp Records’ 2016 releases, turning the catalogue into a navigable 3D cube.</p>\n",
+  "description": "We developed an interactive website for Warp Records’ 2016 releases, turning the catalogue into a navigable 3D cube.",
   "externalUrl": "https://warp2016.100k.studio/",
-  "featuredImage": "/images/warp2016.jpg",
+  "featuredImage": "/images/warp-2016/warp2016.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "3dc74a85-2f47-4bc9-a267-17fd1957292e"
@@ -47,7 +47,7 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/warp2016_releases_overview.jpg"
+          "value": "/images/warp-2016/warp2016_releases_overview.jpg"
         }
       },
       {
@@ -68,7 +68,7 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/warp2016_a_release.jpg"
+          "value": "/images/warp-2016/warp2016_a_release.jpg"
         }
       }
     ]

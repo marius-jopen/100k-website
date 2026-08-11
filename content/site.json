@@ -96,10 +96,10 @@
     "/images/hellome-edit_3-1.jpg"
   ],
   "footer": {
-    "headline": "<p>We would love to hear<br />\nfrom you.</p>\n",
-    "body": "<p>Feel free to reach out if you want to collaborate with us, or simply have a chat.</p>\n",
-    "emailPrompt": "<p>Or drop us a line via email.<br />\ncontact@100k.studio</p>\n",
-    "legal": "<p>100k Studio GmbH<br />\nMühlenstr. 8a<br />\n14167 Berlin<br />\nGermany</p>\n<p>DE342632737</p>\n<p>Executives:<br />\nArmin Unruh<br />\nMarius Jopen</p>\n"
+    "headline": "We would love to hear\nfrom you.",
+    "body": "Feel free to reach out if you want to collaborate with us, or simply have a chat.",
+    "emailPrompt": "Or drop us a line via email.\ncontact@100k.studio",
+    "legal": "100k Studio GmbH\nMühlenstr. 8a\n14167 Berlin\nGermany\n\nDE342632737\n\nExecutives:\nArmin Unruh\nMarius Jopen"
   },
   "contact": {
     "endpoint": "/contact.php"

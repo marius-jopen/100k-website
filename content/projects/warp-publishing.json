@@ -2,9 +2,9 @@
   "title": "Warp Publishing",
   "displayTitle": "Warp Publishing",
   "shortDescription": "Music Publishing",
-  "description": "<p>We developed Warp Publishing’s responsive website from a design by HelloMe, creating a flexible platform for its international roster of artists, composers, and songwriters.</p>\n",
+  "description": "We developed Warp Publishing’s responsive website from a design by HelloMe, creating a flexible platform for its international roster of artists, composers, and songwriters.",
   "externalUrl": "https://warppublishing.net",
-  "featuredImage": "/images/warppublishing.jpg",
+  "featuredImage": "/images/warp-publishing/warppublishing.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "d77cdf66-c334-4c8f-b874-59233bdfc47d"
@@ -36,7 +36,7 @@
         "caption": "<p>The \"Bespoke\" Section</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/warppublishing_bespoke.jpg"
+          "value": "/images/warp-publishing/warppublishing_bespoke.jpg"
         }
       },
       {
@@ -50,7 +50,7 @@
         "caption": "<p>\"Recent Projects\"</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/warppublishing_recent_projects.jpg"
+          "value": "/images/warp-publishing/warppublishing_recent_projects.jpg"
         }
       },
       {

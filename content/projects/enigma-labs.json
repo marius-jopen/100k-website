@@ -2,9 +2,9 @@
   "title": "Enigma Labs",
   "displayTitle": "Enigma Labs",
   "shortDescription": "Report UFOs",
-  "description": "<p>We developed the Enigma Labs website from a design by Hyphen.Works, combining custom WebGL shaders with a searchable and filterable blog and a submission flow for UAP sightings.</p>\n",
+  "description": "We developed the Enigma Labs website from a design by Hyphen.Works, combining custom WebGL shaders with a searchable and filterable blog and a submission flow for UAP sightings.",
   "externalUrl": "https://enigmalabs.io/",
-  "featuredImage": "/images/enigma-labs-edit.jpg",
+  "featuredImage": "/images/enigma-labs/enigma-labs-edit.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "2f323825-cfed-4f45-acbb-64b1e9c673c5"

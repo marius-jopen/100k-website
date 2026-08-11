@@ -2,16 +2,16 @@
   "title": "Living Data Studies",
   "displayTitle": "Living Data Studies",
   "shortDescription": "Conference",
-  "description": "<p>We developed a clear, research-focused website for Living Data Studies, making its artistic and scientific work with data accessible across screen sizes.</p>\n",
+  "description": "We developed a clear, research-focused website for Living Data Studies, making its artistic and scientific work with data accessible across screen sizes.",
   "externalUrl": "https://www.livingdatastudies.com/",
-  "featuredImage": "/images/livingdatastudies-0.webp",
+  "featuredImage": "/images/living-data-studies/livingdatastudies-0.webp",
   "desktopBackground": {
     "discriminant": "image",
-    "value": "/images/livingdatastudies-0.webp"
+    "value": "/images/living-data-studies/livingdatastudies-0.webp"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/livingdatastudies-0.webp"
+    "value": "/images/living-data-studies/livingdatastudies-0.webp"
   },
   "credits": [
     {
@@ -25,56 +25,56 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/livingdatastudies-0.webp"
+          "value": "/images/living-data-studies/livingdatastudies-0.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/livingdatastudies-7.webp"
+          "value": "/images/living-data-studies/livingdatastudies-7.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/livingdatastudies-6.webp"
+          "value": "/images/living-data-studies/livingdatastudies-6.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/livingdatastudies-5.webp"
+          "value": "/images/living-data-studies/livingdatastudies-5.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/livingdatastudies-4.webp"
+          "value": "/images/living-data-studies/livingdatastudies-4.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/livingdatastudies-3.webp"
+          "value": "/images/living-data-studies/livingdatastudies-3.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/livingdatastudies-2.webp"
+          "value": "/images/living-data-studies/livingdatastudies-2.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/livingdatastudies-1.webp"
+          "value": "/images/living-data-studies/livingdatastudies-1.webp"
         }
       }
     ]

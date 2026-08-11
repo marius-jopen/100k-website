@@ -2,9 +2,9 @@
   "title": "SPRIN-D",
   "displayTitle": "SPRIN-D",
   "shortDescription": "Federal Agency for Innovation",
-  "description": "<p>We developed the bilingual, server-rendered SPRIND website with Strapi CMS from a design by Meiré und Meiré.</p>\n",
+  "description": "We developed the bilingual, server-rendered SPRIND website with Strapi CMS from a design by Meiré und Meiré.",
   "externalUrl": "https://www.sprind.org/",
-  "featuredImage": "/images/sprind-rectangle.jpg",
+  "featuredImage": "/images/sprin-d/sprind-rectangle.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "09e60f17-511f-4cbb-ae49-77625b312d8f"

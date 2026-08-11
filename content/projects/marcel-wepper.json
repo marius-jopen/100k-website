@@ -1,0 +1,61 @@
+{
+  "title": "Marcel Wepper",
+  "displayTitle": "Marcel Wepper",
+  "shortDescription": "Photographer Director",
+  "description": "<p>We developed a Prismic and SvelteKit portfolio for filmmaker Marcel Wepper, centered on a full-screen video slideshow with custom captions.</p>\n",
+  "externalUrl": "https://www.marcelwepper.com/",
+  "featuredImage": "/images/Screenshot-2023-10-15-at-18.23.02-scaled.jpeg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "e1fa8bbf-b880-434e-aac5-180c37b8967c"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/Screenshot-2023-10-15-at-18.23.58.jpeg"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "6b2ed2b9-15d2-429a-b7ec-9f27290172b4"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "e661aaa7-5775-4263-970f-64631b3193dd"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "e661aaa7-5775-4263-970f-64631b3193dd"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "fe65759d-b1eb-41b5-b0af-fcd8619320eb"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "f337ec99-c0b6-4ff9-b322-fb3823c25963"
+        }
+      }
+    ]
+  }
+}

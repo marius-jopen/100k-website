@@ -1,0 +1,58 @@
+{
+  "title": "Hyphen Works",
+  "displayTitle": "Hyphen Works",
+  "shortDescription": "Design Agency",
+  "description": "<p>We developed Hyphen Works’ bilingual English–Chinese website with a responsive project accordion and a custom mouse-driven image effect.</p>\n",
+  "externalUrl": "",
+  "featuredImage": "/images/hyphen.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "9f292311-074e-420b-8070-6cc3d6e36c5a"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "557b0120-c03f-4985-93c8-79ec26116829"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "Hyphen Works"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "377935ab-27ac-4d38-a25b-3a6391b6469e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "e01a22af-68e9-4e3c-98d6-3d25d06eb44b"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "9c2c9179-0e37-4bb0-81f2-a88c592e7af0"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "423ec797-ef3e-4b4d-8caf-3db126b43165"
+        }
+      }
+    ]
+  }
+}

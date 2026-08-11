@@ -1,0 +1,65 @@
+{
+  "title": "Lay Theme",
+  "displayTitle": "Lay Theme",
+  "shortDescription": "Website Builder",
+  "description": "<p>We develop and maintain Lay Theme, a WordPress portfolio website builder used by more than 10,000 customers, with over 250 customization options and a flexible row-and-column layout system.</p>\n",
+  "externalUrl": "https://laytheme.com/",
+  "featuredImage": "/images/laytheme-1.jpg",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/laytheme.jpg"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/laytheme.jpg"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "100k"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>The Frontpage</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "6427eb40-b3ce-4f1b-9915-3492521c26a6"
+        }
+      },
+      {
+        "caption": "<p>A Website made with Lay Theme</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/laytheme_establishment_casting.jpg"
+        }
+      },
+      {
+        "caption": "<p>The Layout Tool \"Gridder\"</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "f17ba3c8-e263-41f2-8e93-32e16101f4c9"
+        }
+      },
+      {
+        "caption": "<p>The \"Buy Now\" Page</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/laytheme_buy.jpg"
+        }
+      },
+      {
+        "caption": "<p>A Website using the Lightbox Addon</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/laytheme_lightbox.jpg"
+        }
+      }
+    ]
+  }
+}

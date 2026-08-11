@@ -1,0 +1,72 @@
+{
+  "title": "WalletConnect",
+  "displayTitle": "WalletConnect",
+  "shortDescription": "Crypto Tools for Developers",
+  "description": "<p>We developed WalletConnect’s website in one month using Next.js and Prismic, delivering a fast and flexible platform for the Web3 company.</p>\n",
+  "externalUrl": "https://walletconnect.com",
+  "featuredImage": "/images/wc200.jpg",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/wcmdesk.jpg"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/wcm_mob2.jpg"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "WalletConnect"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>Homepage</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/walletconnect1-1.jpg"
+        }
+      },
+      {
+        "caption": "<p>Blog Overview</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/wc3.jpg"
+        }
+      },
+      {
+        "caption": "<p>Blog Page</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/wc4.jpg"
+        }
+      },
+      {
+        "caption": "<p>About Page</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/wc5.jpg"
+        }
+      },
+      {
+        "caption": "<p>Product Page</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/wc6.jpg"
+        }
+      },
+      {
+        "caption": "<p>Homepage</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/wc2.jpg"
+        }
+      }
+    ]
+  }
+}

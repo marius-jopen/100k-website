@@ -1,0 +1,58 @@
+{
+  "title": "Elynxir",
+  "displayTitle": "Elynxir",
+  "shortDescription": "NFT Platform",
+  "description": "<p>We designed and developed the responsive Elynxir website, translating the music-gaming platform into a strong digital identity with custom screen layouts and a dedicated login area.</p>\n",
+  "externalUrl": "",
+  "featuredImage": "/images/elynxir-edit_1.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "1e6efc84-954d-487d-9a2c-9d25742e924d"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "c0da29d4-0727-4378-a8d0-061504912d9d"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "100k"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "1855dda0-b787-4656-9387-073eee0e59b6"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "0669f854-2e5b-43d6-8954-713f2f57709b"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "71a83a0e-901e-4d57-9918-c9d9994321a6"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "72c0f711-e828-4aba-b125-3f44f6a14d29"
+        }
+      }
+    ]
+  }
+}

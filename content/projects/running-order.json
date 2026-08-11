@@ -1,0 +1,72 @@
+{
+  "title": "Running Order",
+  "displayTitle": "Running Order",
+  "shortDescription": "Online Shop",
+  "description": "<p>We designed, developed, and continue to maintain RUNNING ORDER’s responsive ecommerce website, extending the platform with new features as the fashion brand grows.</p>\n",
+  "externalUrl": "https://runningorder.net/",
+  "featuredImage": "/images/Screenshot-2023-10-15-at-21.28.53.jpeg",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/Screenshot-2023-10-15-at-21.28.53.jpeg"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/Screenshot-2023-10-15-at-21.28.35.jpeg"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "100k"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "fa0f1f72-7249-41ab-aff7-07fcb41a320e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "626cf1ca-9ecc-49db-98ab-2ada8bc5cb81"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "d11893b7-9f0e-4bba-9a1b-3007e4178e35"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "1d55a094-e6e0-48e6-acf9-36f40d147c2c"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "be4abde8-1d63-4352-8bf4-93a9eb83018e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "66ca2177-321f-4666-a6e6-1e243f955c41"
+        }
+      }
+    ]
+  }
+}

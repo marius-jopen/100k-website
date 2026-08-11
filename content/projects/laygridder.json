@@ -1,0 +1,72 @@
+{
+  "title": "Lay Gridder",
+  "displayTitle": "Lay Gridder",
+  "shortDescription": "WordPress Plugin",
+  "description": "<p>We developed LayGridder, a flexible visual layout plugin that brings a custom grid-based website builder to any WordPress theme.</p>\n",
+  "externalUrl": "http://laygridder.com/",
+  "featuredImage": "/images/laygridder-2.jpg",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/laygridder-2.jpg"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/laygridder-2.jpg"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "100k"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>The Frontpage</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/laygridder_frontpage.jpg"
+        }
+      },
+      {
+        "caption": "<p>The \"Gridder\"</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "770a314f-8019-4ae8-bbe8-6cf705da9fb0"
+        }
+      },
+      {
+        "caption": "<p>COS uses LayGridder on their Websites</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/laygridder_cos_1.jpg"
+        }
+      },
+      {
+        "caption": "<p>COS uses LayGridder to showcase their Projects</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/laygridder_cos2.jpg"
+        }
+      },
+      {
+        "caption": "<p>\"New Distribution House\" using LayGridder</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/laygridder_ndh_website.jpg"
+        }
+      },
+      {
+        "caption": "<p>The \"Textformats\" Feature</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/laygridder_textformats.jpg"
+        }
+      }
+    ]
+  }
+}

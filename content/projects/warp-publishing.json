@@ -1,0 +1,65 @@
+{
+  "title": "Warp Publishing",
+  "displayTitle": "Warp Publishing",
+  "shortDescription": "Music Publishing",
+  "description": "<p>We developed Warp Publishing’s responsive website from a design by HelloMe, creating a flexible platform for its international roster of artists, composers, and songwriters.</p>\n",
+  "externalUrl": "https://warppublishing.net",
+  "featuredImage": "/images/warppublishing.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "d77cdf66-c334-4c8f-b874-59233bdfc47d"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "ae6a06d8-946a-42a0-86f3-aced4ed74abe"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "HelloMe"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>Scrolling through the Website</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "65185581-2438-498f-a2be-5a2905946105"
+        }
+      },
+      {
+        "caption": "<p>The \"Bespoke\" Section</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/warppublishing_bespoke.jpg"
+        }
+      },
+      {
+        "caption": "<p>A Video Slide-In</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "1f57a7b6-46bd-439d-9081-f0bd713944a3"
+        }
+      },
+      {
+        "caption": "<p>\"Recent Projects\"</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/warppublishing_recent_projects.jpg"
+        }
+      },
+      {
+        "caption": "<p>The Anchor-point Menu</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "0976c4a6-2c98-43d8-bdc5-5886395e030d"
+        }
+      }
+    ]
+  }
+}

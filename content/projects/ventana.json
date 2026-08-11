@@ -1,0 +1,114 @@
+{
+  "title": "Ventana",
+  "displayTitle": "Ventana",
+  "shortDescription": "Wall Display System",
+  "description": "<p>We developed a clean, responsive product website for Ventana that presents its advanced wall display system through a focused and visually precise interface.</p>\n",
+  "externalUrl": "https://ventanadesign.com/",
+  "featuredImage": "/images/ventana-4.webp",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/ventana-4.webp"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/ventana-4.webp"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "100k"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-0-1.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-11.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-10.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-9.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-8.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-7.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-6.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-5.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-4.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-3.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-2-1.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/ventana-1-1.webp"
+        }
+      }
+    ]
+  }
+}

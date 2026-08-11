@@ -1,0 +1,89 @@
+{
+  "title": "Far Near",
+  "displayTitle": "Far Near",
+  "shortDescription": "Online Magazine",
+  "description": "<p>We developed FAR–NEAR’s editorial commerce platform with a shop, searchable and filterable articles, and an interactive 3D map that turns the magazine archive into an immersive web experience.</p>\n",
+  "externalUrl": "https://far-near.media/",
+  "featuredImage": "/images/Screenshot-2023-10-05-at-16.22.07.jpeg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "aa6966b0-f608-4dbb-b2fb-21a8874e4e1d"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "248385b0-3749-4db4-a486-46ad51127d20"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "3a6591db-7586-4d96-8c45-6fcaf907a3b1"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "8eeacd99-5a33-46ce-8ae1-f83db9730c83"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "b31044e0-d6a5-40a1-a3c0-287c113e3923"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "da4c35ab-8f32-41ce-883f-221010977369"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "f888cc31-0cd5-4942-b41d-e9a887e6c650"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "ca281cc2-ad42-4fb4-b824-07d268d1c0f9"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "1316ceb6-a406-40a7-be6c-a3af669314c1"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "8b27e4aa-f20e-4107-85da-1224239e909d"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "b04915be-f7e9-4c1e-8d8b-e2b2e1843680"
+        }
+      }
+    ]
+  }
+}

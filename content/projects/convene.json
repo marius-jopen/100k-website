@@ -1,0 +1,65 @@
+{
+  "title": "Convene",
+  "displayTitle": "Convene",
+  "shortDescription": "Landing Page",
+  "description": "<p>We developed Convene Virtual Meetings’ WordPress website from a design by Vans General Store, delivering a responsive product platform with demo booking, a blog, and extensive service pages.</p>\n",
+  "externalUrl": "https://virtual.convene.com/",
+  "featuredImage": "/images/virtualconvene1.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "8bf85ff5-87c2-4a4a-b6c4-bd771f79b962"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "ebfb5f33-3e42-41eb-a4f6-b52c40de7081"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "Vans General Store"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>Convene Frontpage</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "2bd3be0f-27fc-4570-98d3-01b0fc03b415"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "3b93fd28-2045-4df6-99b1-4bca01561053"
+        }
+      },
+      {
+        "caption": "<p>A pricing table</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/virtualconvene2.jpg"
+        }
+      },
+      {
+        "caption": "<p>Custom scroll animations</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "43c3329c-93b6-433b-970d-6d40f4db591b"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/virtualconvene3.jpg"
+        }
+      }
+    ]
+  }
+}

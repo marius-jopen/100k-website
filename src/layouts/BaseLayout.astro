@@ -1,0 +1,79 @@
+---
+import { passedData } from "../lib/content";
+import { IMAGE_CDN_URL, STREAM_HOST } from "../lib/media";
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyType: "frontpage" | "post";
+  bodyId?: string;
+}
+
+const { title, description = "100k Studio – Web Development and Design", bodyType, bodyId = "" } = Astro.props;
+const serializedData = JSON.stringify(passedData).replaceAll("<", "\\u003c");
+const ENABLE_INTRO = true;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content="100k Studio Static CMS" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="/assets/legacy/theme.css" />
+    <link rel="stylesheet" href="/assets/legacy/laygrid.css" />
+    <link rel="stylesheet" href="/assets/static.css" />
+    {ENABLE_INTRO && <link rel="stylesheet" href="/assets/intro.css" />}
+    <link rel="preconnect" href={`https://${STREAM_HOST}`} crossorigin />
+    {IMAGE_CDN_URL && <link rel="preconnect" href={IMAGE_CDN_URL} crossorigin />}
+    <script>
+      import "../scripts/bunny-hls";
+    </script>
+  </head>
+  <body class={bodyType === "post" ? "show-post" : "show-frontpage"} data-id={bodyId} data-type={bodyType}>
+    {ENABLE_INTRO && (
+      <>
+        <!-- Intro copied from https://concept.100k.studio/ -->
+        <div class="intro">
+          <div class="intro-text-phase intro-text-1">
+            <div class="phase-text">Web Development</div>
+          </div>
+
+          <div class="intro-text-phase intro-text-2">
+            <div class="phase-text">Web Design</div>
+          </div>
+
+          <div class="intro-top">
+            <div class="text-container">
+              <span class="brand-text">100k Studio</span>
+            </div>
+          </div>
+          <div class="intro-bottom">
+            <div class="text-container">
+              <span class="brand-text">100k Studio</span>
+            </div>
+          </div>
+        </div>
+
+        <script is:inline src="/assets/anime.min.js"></script>
+        <script is:inline src="/assets/intro.js"></script>
+      </>
+    )}
+    <slot />
+    <script is:inline set:html={`window.passedData=${serializedData};var passedData=window.passedData;`}></script>
+    <script is:inline src="/assets/legacy/jquery.min.js"></script>
+    <script is:inline src="/assets/legacy/polyfill_flexbox.js"></script>
+    <script is:inline>
+      if (window.innerWidth >= 700) {
+        Object.defineProperty(window, "useWebGlBackgroundsOnDesktop", {
+          configurable: true,
+          get: () => true,
+          set: () => {},
+        });
+      }
+    </script>
+    <script is:inline src="/assets/legacy/app.js"></script>
+  </body>
+</html>

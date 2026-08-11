@@ -1,0 +1,54 @@
+{
+  "title": "Fred Lahache",
+  "displayTitle": "Fred Lahache",
+  "shortDescription": "Photographer Portfolio",
+  "description": "<p>We developed a WordPress portfolio for photographer Fred Lahache, using multiple custom slideshow formats to present his work while keeping content management simple.</p>\n",
+  "externalUrl": "https://fredlahache.com/",
+  "featuredImage": "/images/Screenshot-2023-10-05-at-16.29.11.jpeg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "d9a5de82-a983-4bdd-a59c-6161e4486860"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/Screenshot-2023-10-05-at-16.30.40.png"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "3d89ae6f-7796-4839-9881-d7301d9e854b"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "5716d015-4688-4472-98d3-2ca15729028e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "07777e64-a9f0-4b7e-aef7-3c6f90689b63"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "215ffdf4-56f3-4e70-8f4f-29d35a1576b8"
+        }
+      }
+    ]
+  }
+}

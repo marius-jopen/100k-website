@@ -1,0 +1,65 @@
+{
+  "title": "Elynxir Marketplace",
+  "displayTitle": "Elynxir Marketplace",
+  "shortDescription": "NFT Marketplace",
+  "description": "<p>We designed and developed Elynxir’s responsive NFT marketplace, creating a clear product experience and cohesive interface across desktop and mobile.</p>\n",
+  "externalUrl": "",
+  "featuredImage": "/images/Screenshot-2023-10-05-at-16.07.19.jpeg",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/Live-1.jpg"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/Live-1.jpg"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "100k"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "64e3c733-d7d5-4a9a-ad23-692d7dd68774"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "11966d4e-ed30-441c-bf6a-501023d9f30e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "27d8f79d-f1c7-445e-bc5b-fb926cb61227"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "ba61b2f4-1cbc-4f77-ab4b-3dc8db701418"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "efe84012-f373-45ab-b8fb-ed63f448d9f8"
+        }
+      }
+    ]
+  }
+}

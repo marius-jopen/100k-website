@@ -1,0 +1,10 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteShell from "../components/SiteShell.astro";
+import { siteContent } from "../lib/content";
+---
+
+<BaseLayout title={siteContent.name} bodyType="frontpage">
+  <SiteShell />
+</BaseLayout>
+

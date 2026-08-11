@@ -1,0 +1,33 @@
+{
+  "title": "Burberry for Hypebeast",
+  "displayTitle": "Burberry for Hypebeast",
+  "shortDescription": "Website Takeover",
+  "description": "<p>We developed an immersive Hypebeast takeover for Burberry, using a custom 3D glass effect to bring the brand’s monogram campaign to life across the website.</p>\n",
+  "externalUrl": "",
+  "featuredImage": "/images/Screenshot-2023-10-05-at-16.34.58.jpeg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "950b2ad4-d16e-427f-b91e-e4543109099d"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/Screenshot-2023-10-05-at-16.34.58.jpeg"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "b3d3359b-b1e5-449b-a655-3100834ef647"
+        }
+      }
+    ]
+  }
+}

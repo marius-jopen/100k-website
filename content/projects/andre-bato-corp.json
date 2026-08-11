@@ -1,0 +1,79 @@
+{
+  "title": "Andre Bato Corp",
+  "displayTitle": "Andre Bato Corp",
+  "shortDescription": "Production Studio",
+  "description": "<p>We designed and developed a responsive website for NYC production studio Andre Bato Corp and continue to maintain and extend it with new features.</p>\n",
+  "externalUrl": "https://andrebato.com/",
+  "featuredImage": "/images/andre-bato-edit.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "3a147c77-ed47-471c-a65a-31355b3f85ce"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "0f8a647a-8caa-4291-9bd8-c7200f4f2772"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "100k"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "1b7a741f-eba0-40f8-8dc8-10ad682d6b59"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "04354d15-b605-4ccd-b802-3186257be4c5"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "21c3c5ce-8264-49b0-8be2-feedaa096ec9"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "a346c033-4909-4928-8c62-a4da0261b703"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "680b22d2-7c09-49e9-95d7-00b36207a956"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "8b4f345d-fe21-4313-9549-d692edd9328e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "bb259a24-03a9-418e-a706-d317e5d31de2"
+        }
+      }
+    ]
+  }
+}

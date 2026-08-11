@@ -1,0 +1,128 @@
+{
+  "title": "TEDE",
+  "displayTitle": "TEDE",
+  "shortDescription": "Shop and Magazine Website",
+  "description": "<p>We developed TEDE’s magazine and online shop with Lay Theme, creating 18 custom content elements and extending its ecommerce functionality for the project.</p>\n",
+  "externalUrl": "https://tede.world/",
+  "featuredImage": "/images/tede-9.webp",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/tede-0.webp"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/tede-0.webp"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "Stefano Cometta"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-0.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede2-0.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-12.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-11.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-10.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-9.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-8.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-7.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-6.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-5.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-4.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-3.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-2.webp"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/tede-1.webp"
+        }
+      }
+    ]
+  }
+}

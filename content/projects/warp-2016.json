@@ -1,0 +1,76 @@
+{
+  "title": "Warp 2016",
+  "displayTitle": "Warp 2016 ",
+  "shortDescription": "3D Website",
+  "description": "<p>We developed an interactive website for Warp Records’ 2016 releases, turning the catalogue into a navigable 3D cube.</p>\n",
+  "externalUrl": "https://warp2016.100k.studio/",
+  "featuredImage": "/images/warp2016.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "3dc74a85-2f47-4bc9-a267-17fd1957292e"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "734c2f32-0e3e-437e-af28-5080e4c7d5a3"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "HelloMe"
+    },
+    {
+      "label": "Concept",
+      "value": "HelloMe & 100k Studio"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>The Intro</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "56344f51-e579-4950-98bf-d9c524d27b9c"
+        }
+      },
+      {
+        "caption": "<p>An \"Infinite\" Cube</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "bcb2a5ea-5d9b-4f75-9383-1d443e4b96ba"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/warp2016_releases_overview.jpg"
+        }
+      },
+      {
+        "caption": "<p>Releases Navigation</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "4c0862c5-4dc0-46f6-aca3-97d7419816da"
+        }
+      },
+      {
+        "caption": "<p>Opening a Release</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "c9e95ec6-c0ae-4b20-bbf7-c2c63af4e386"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/warp2016_a_release.jpg"
+        }
+      }
+    ]
+  }
+}

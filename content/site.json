@@ -1,0 +1,108 @@
+{
+  "name": "100k Studio – Web Development and Design",
+  "projectOrder": [
+    "e-flux",
+    "ventana",
+    "tede",
+    "living-data-studies",
+    "walletconnect",
+    "add3",
+    "running-order",
+    "elynxir-marketplace",
+    "advance-gender",
+    "raaago",
+    "burberry-for-hypebeast",
+    "fred-lahache",
+    "warp-net",
+    "far-near",
+    "inkly",
+    "art-reoriented",
+    "hyphen-works",
+    "audemars-piguet-x-marvel-x-lebron-james-for-hypebeast",
+    "marcel-wepper",
+    "red-square",
+    "hellome",
+    "andre-bato-corp",
+    "elynxir",
+    "enigma-labs",
+    "convene",
+    "meire-und-meire",
+    "sprin-d",
+    "level-blog",
+    "skepta-with-never-sleep-on-tour",
+    "burberry-monogram",
+    "planungsburo-sander-hofrichter",
+    "adidas-loops",
+    "warp-publishing",
+    "warp-2016",
+    "sucuk-und-bratwurst",
+    "laygridder",
+    "lay-theme"
+  ],
+  "clients": [
+    "/images/Group-1-1.jpg",
+    "/images/Group-2-1.jpg",
+    "/images/Group-3-1.jpg",
+    "/images/Group-4-1.jpg",
+    "/images/Group-5-1.jpg",
+    "/images/Group-6-1.jpg",
+    "/images/Group-7-1.jpg",
+    "/images/bmbf.06f90a4.svg",
+    "/images/warner.jpg",
+    "/images/vice.jpg",
+    "/images/sohohouse-scaled.jpg"
+  ],
+  "servicesIntro": "Web Development and \nWeb Design is our expertise.",
+  "services": [
+    {
+      "title": "→Web Development",
+      "services": [
+        "Prismic",
+        "Directus",
+        "NextJS",
+        "React",
+        "Shopify",
+        "Headless CMS",
+        "Custom CMS",
+        "Payload",
+        "Stripe Integration",
+        "Subscription Integration",
+        "Salesforce Integration",
+        "CRM Integration",
+        "Frontend Development",
+        "Backend Development"
+      ],
+      "image": "/images/Screenshot-2023-09-03-at-13.52.20.jpeg"
+    },
+    {
+      "title": "→Web Design",
+      "services": [
+        "Website Graphics",
+        "Corporate Design",
+        "Interaction Design",
+        "UX Design",
+        "UI Design",
+        "Scrollytelling",
+        "Web Animation"
+      ],
+      "image": "/images/Screenshot-2023-09-03-at-13.49.52.jpeg"
+    }
+  ],
+  "webglBackgrounds": [
+    "/images/Intro.jpg",
+    "/images/Screenshot-2023-10-05-at-16.34.58.jpeg",
+    "/images/Live-1.jpg",
+    "/images/sucut-bratwurst-edit-1.jpg",
+    "/images/hellome-edit_3-1.jpg"
+  ],
+  "footer": {
+    "headline": "<p>We would love to hear<br />\nfrom you.</p>\n",
+    "body": "<p>Feel free to reach out if you want to collaborate with us, or simply have a chat.</p>\n",
+    "emailPrompt": "<p>Or drop us a line via email.<br />\ncontact@100k.studio</p>\n",
+    "legal": "<p>100k Studio GmbH<br />\nMühlenstr. 8a<br />\n14167 Berlin<br />\nGermany</p>\n<p>DE342632737</p>\n<p>Executives:<br />\nArmin Unruh<br />\nMarius Jopen</p>\n"
+  },
+  "contact": {
+    "endpoint": "/contact.php"
+  },
+  "mobileLogo": null
+}

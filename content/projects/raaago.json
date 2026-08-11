@@ -1,0 +1,47 @@
+{
+  "title": "Raaago App",
+  "displayTitle": "Raaago App",
+  "shortDescription": "iOS Travelling App",
+  "description": "<p>We developed the Raaago iOS app in Swift with Random Access Studios and created its companion website, forming one coherent digital platform for discovering places around Berlin.</p>\n",
+  "externalUrl": "https://www.raaago.com/",
+  "featuredImage": "/images/raaago1.png",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/raaago2.jpg"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/raaago2.jpg"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "2a3c7b96-f431-4607-8545-8bd10c5f7ca7"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/raaago1.png"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/raaago2.jpg"
+        }
+      }
+    ]
+  }
+}

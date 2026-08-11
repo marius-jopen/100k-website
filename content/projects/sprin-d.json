@@ -1,0 +1,65 @@
+{
+  "title": "SPRIN-D",
+  "displayTitle": "SPRIN-D",
+  "shortDescription": "Federal Agency for Innovation",
+  "description": "<p>We developed the bilingual, server-rendered SPRIND website with Strapi CMS from a design by Meiré und Meiré.</p>\n",
+  "externalUrl": "https://www.sprind.org/",
+  "featuredImage": "/images/sprind-rectangle.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "09e60f17-511f-4cbb-ae49-77625b312d8f"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "49c47e6f-9733-4f84-90d9-007edc74537b"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "Meiré und Meiré"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "350de697-c418-48a3-9a69-55c3de4590bb"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "6636d0e8-629f-4527-bb4d-24f8619dd031"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "d20a445b-e403-49ba-8c26-70d84e611e00"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "6581ee96-2d44-43e8-acbe-f2726d22b4de"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "acfd0f96-0740-49fc-b5ba-db0b4870ea0a"
+        }
+      }
+    ]
+  }
+}

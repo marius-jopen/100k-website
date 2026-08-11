@@ -1,0 +1,100 @@
+{
+  "title": "Meiré und Meiré",
+  "displayTitle": "Meiré und Meiré",
+  "shortDescription": "Design Agency",
+  "description": "<p>We developed Meiré und Meiré’s responsive website with filterable overviews, search, extensive archives, and seamless project-to-project navigation.</p>\n",
+  "externalUrl": "https://meireundmeire.com/",
+  "featuredImage": "/images/mum-square.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "e09ac186-eb23-4078-b479-62f53196f8aa"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "fe7df8f0-2583-40b4-a60a-2f6904eb0d17"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "Emanuele Cecini"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>The Intro</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "9114ef02-130c-4073-9dc2-543855aad4d0"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/meire-und-meire-2020.jpg"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/mum_dornbracht.jpg"
+        }
+      },
+      {
+        "caption": "<p>Entering the 032c project, a Carousel and Lightbox</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "e21ce2a2-2766-4141-8591-f28696defe85"
+        }
+      },
+      {
+        "caption": "<p>The Carousel</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/mum_carousel.jpg"
+        }
+      },
+      {
+        "caption": "<p>The Archive shows related Projects that are unlisted otherwise</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "d6611913-721d-4369-8b18-6ef44692b161"
+        }
+      },
+      {
+        "caption": "<p>Switching Categories</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "ff901427-57a6-4dfd-a7dd-bb8c2f566942"
+        }
+      },
+      {
+        "caption": "<p>Going to the next Project</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "e143d61d-2db1-44cb-83cd-0565b8149a1e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/mum_bmw.jpg"
+        }
+      },
+      {
+        "caption": "<p>Search</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "c894e8e0-b21f-4ba4-86e9-8622f9207108"
+        }
+      }
+    ]
+  }
+}

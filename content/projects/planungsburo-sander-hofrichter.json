@@ -1,0 +1,72 @@
+{
+  "title": "Planungsbüro Sander Hofrichter",
+  "displayTitle": "Planungsbüro Sander Hofrichter",
+  "shortDescription": "Architecture Studio",
+  "description": "<p>We developed Planungsbüro Sander Hofrichter’s WordPress website from a design by Haw-Lin, creating a responsive and easily maintainable architecture portfolio.</p>\n",
+  "externalUrl": "http://p-sh.de/",
+  "featuredImage": "/images/psh.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "ae288d79-b3ae-4e26-8729-58aef84dfbf9"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "accfcb04-720d-4b1c-b4c8-9f1af993ac25"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "Haw-Lin"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>The Intro</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "5a33cb75-77bf-41b8-8c74-c61a86132763"
+        }
+      },
+      {
+        "caption": "<p>A Project</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "11119e8b-b221-49e4-a924-12a3a13a6a25"
+        }
+      },
+      {
+        "caption": "<p>The Frontpage</p>",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/psh_frontpage.jpg"
+        }
+      },
+      {
+        "caption": "<p>Scrolling through the News</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "6c2f94f8-417c-423d-a6ff-03c7da7d9569"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/the_news.jpg"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/psh_project_view.jpg"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "title": "Enigma Labs",
+  "displayTitle": "Enigma Labs",
+  "shortDescription": "Report UFOs",
+  "description": "<p>We developed the Enigma Labs website from a design by Hyphen.Works, combining custom WebGL shaders with a searchable and filterable blog and a submission flow for UAP sightings.</p>\n",
+  "externalUrl": "https://enigmalabs.io/",
+  "featuredImage": "/images/enigma-labs-edit.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "2f323825-cfed-4f45-acbb-64b1e9c673c5"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "a5401c43-9b4e-4f7a-96f0-f3679604f5d3"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "Hyphen.Works"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "28109e56-e5e1-4b73-8a16-352c0da6786e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "a0cff134-ec0f-41c7-a62e-a04c8a0c20c4"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "55b7d58c-a671-42ff-b976-95bfb11288d5"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "5fb14f7e-49c9-45f0-86d1-f6712db5656a"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "780e6b7f-8131-46b3-83cd-b4cd0328e1f5"
+        }
+      }
+    ]
+  }
+}

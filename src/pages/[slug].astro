@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteShell from "../components/SiteShell.astro";
+import { projects, siteContent } from "../lib/content";
+import type { Project } from "../lib/schema";
+
+export function getStaticPaths() {
+  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props as { project: Project };
+---
+
+<BaseLayout
+  title={`${project.displayTitle} — ${siteContent.name}`}
+  description={project.description || project.shortDescription}
+  bodyType="post"
+  bodyId={project.id}
+>
+  <SiteShell />
+</BaseLayout>
+

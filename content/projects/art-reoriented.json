@@ -1,0 +1,65 @@
+{
+  "title": "Art Reoriented",
+  "displayTitle": "Art Reoriented",
+  "shortDescription": "Art Curator",
+  "description": "<p>We developed the artReoriented website from a design by EPS51, combining WordPress with a custom step-based sticky-scroll experience for an editorial platform that remains easy to update.</p>\n",
+  "externalUrl": "http://new.artreoriented.com",
+  "featuredImage": "/images/Screenshot-2023-10-05-at-15.54.07-scaled.jpeg",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/Screenshot-2023-10-05-at-15.54.07-scaled.jpeg"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/Screenshot-2023-10-05-at-15.54.07-scaled.jpeg"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "EPS51"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "5937737e-0954-4c2a-a626-ca31791168f4"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "7f02293f-b6b9-4477-8f33-a4d6abef9099"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "dac2ab2a-bf4a-4d05-8af4-efb66d423a3a"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "0a765036-6052-4bad-8350-2ead19e9e28c"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "a4d0a0c2-fa3a-4bcb-bc57-5a11bdc402cb"
+        }
+      }
+    ]
+  }
+}

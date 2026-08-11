@@ -1,0 +1,54 @@
+{
+  "title": "Inkly",
+  "displayTitle": "Inkly",
+  "shortDescription": "AI Workspace",
+  "description": "<p>We developed Inkly’s responsive marketing website with Prismic and SvelteKit, implementing detailed custom animations that communicate the AI proposal product clearly.</p>\n",
+  "externalUrl": "",
+  "featuredImage": "/images/Screenshot-2023-10-05-at-16.54.37-scaled.jpeg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "30294bc0-9349-4f5d-b607-7ff48741c8d8"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/Screenshot-2023-10-05-at-16.54.37-scaled.jpeg"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "a0441065-d846-4f28-bad8-bfb6d2a28368"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "6c619f92-cd6a-44bd-9a69-3e0f1326e033"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "a994b85e-a808-459e-8895-cfd18e2db084"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "ec61ef06-829e-4163-bf5c-863cdc041466"
+        }
+      }
+    ]
+  }
+}

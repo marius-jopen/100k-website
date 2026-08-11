@@ -1,0 +1,54 @@
+{
+  "title": "Sucuk & Bratwurst",
+  "displayTitle": "Sucuk & Bratwurst",
+  "shortDescription": "Design Agency",
+  "description": "<p>We developed a responsive portfolio for Sucuk & Bratwurst with stone-shaped project thumbnails and story-inspired project navigation optimized for desktop and mobile.</p>\n",
+  "externalUrl": "http://sucukundbratwurst.de/",
+  "featuredImage": "/images/sucukundbratwurst.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "d47c8aac-a558-473f-b009-7061bad45fd0"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "fdb30b0a-d7e6-491b-a5b5-9ce1162afb86"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "2db8f718-9c11-47df-a193-bf75f37d163d"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "0b6efcde-706e-4a62-a897-db7facfbe9f8"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "fac073cd-696f-4d8d-8f25-c443948dbc79"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "25103458-4a12-4383-89ac-08cee472d8de"
+        }
+      }
+    ]
+  }
+}

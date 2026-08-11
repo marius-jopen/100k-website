@@ -1,0 +1,935 @@
+---
+import { projects, siteContent } from "../lib/content";
+import type { Asset } from "../lib/schema";
+import ArrowRight from "./ArrowRight.astro";
+import XMark from "./XMark.astro";
+
+const orientationClass = (asset: Asset) => {
+  if (!asset.width || !asset.height) return undefined;
+  const aspectRatio = asset.width / asset.height;
+  if (aspectRatio < 0.8) return "portrait";
+  if (aspectRatio < 1.5) return "near-square";
+  return "landscape";
+};
+const clients = siteContent.clients;
+const projectSpotlightSources = new Set([
+  ...siteContent.webglBackgrounds.map((asset) => asset.path),
+  ...projects.flatMap((project) => [
+    project.desktopBackground?.path,
+    project.mobileBackground?.path,
+  ]).filter((source): source is string => Boolean(source)),
+]);
+const serviceScreenshotMap = new Map<string, Asset>();
+projects.forEach((project) => {
+  const screenshot = project.layout.blocks.find((block) => (
+    block.type === "image"
+    && !projectSpotlightSources.has(block.asset.path)
+    && (!block.asset.width || !block.asset.height || block.asset.width > block.asset.height)
+  ))?.asset;
+
+  if (screenshot) serviceScreenshotMap.set(screenshot.path, screenshot);
+});
+const serviceScreenshotPool = Array.from(serviceScreenshotMap.values());
+const shuffleScreenshots = (assets: Asset[], initialSeed: number) => {
+  const shuffled = [...assets];
+  let seed = initialSeed >>> 0;
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    const swapIndex = seed % (index + 1);
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+
+  return shuffled;
+};
+const shuffledServiceScreenshots = shuffleScreenshots(serviceScreenshotPool, 100000);
+const serviceWebglScreenshots = [
+  shuffledServiceScreenshots.filter((_, index) => index % 2 === 0).slice(0, 5),
+  shuffledServiceScreenshots.filter((_, index) => index % 2 === 1).slice(0, 5),
+];
+// One screenshot per service pill, so hovering it can swap that card's morph.
+// Deterministic (index-based, not random) so the pairing is stable across
+// builds — these are placeholders until the CMS carries a real image per item.
+const serviceItemImage = (cardIndex: number, itemIndex: number) => {
+  if (!shuffledServiceScreenshots.length) return null;
+  const offset = cardIndex * 7 + itemIndex * 3;
+  return shuffledServiceScreenshots[offset % shuffledServiceScreenshots.length];
+};
+
+const serviceWebglTimings = [
+  { autoplayDelay: 500, autoplaySpeed: 1800 },
+  { autoplayDelay: 2600, autoplaySpeed: 2700 },
+];
+---
+
+<div id="app">
+  <div class="project-toolbar">
+    <div class="back-button _bigtext" data-lay-button-effect-text-slide="1">
+      <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+        <span class="lay-button-effect__text-sizer" aria-hidden="true">Back</span>
+        <span class="lay-button-effect__text-clip">
+          <span class="lay-button-effect__text lay-button-effect__text--current">Back</span>
+          <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">Back</span>
+        </span>
+      </span>
+    </div>
+    <button class="info-button _bigtext" type="button" data-lay-button-effect-text-slide="1" aria-haspopup="dialog" aria-expanded="false" disabled>
+      <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+        <span class="lay-button-effect__text-sizer" aria-hidden="true">Info</span>
+        <span class="lay-button-effect__text-clip">
+          <span class="lay-button-effect__text lay-button-effect__text--current">Info</span>
+          <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">Info</span>
+        </span>
+      </span>
+    </button>
+  </div>
+  <div id="frontpage">
+    <div class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Development</div>
+    {siteContent.mobileLogo && <img class="mobile-logo" src={siteContent.mobileLogo.src} sizes="80px" alt={siteContent.mobileLogo.alt} />}
+    <canvas id="canvas3" class="logo" style="z-index:5;"></canvas>
+
+    <div class="main">
+      <div class="plist-wrap">
+        <div class="sticky">
+          {/* Lives inside `.sticky` so it stays pinned to the viewport while the
+              hero scrolls, and stops with it at the end of `.plist-wrap`. As a
+              child of `.plist-wrap` it painted over every later section — the
+              white bands and the footer — because it is only 20% opaque. */}
+          <div class="lay-webgl-slideshow" data-transition="ColourDistance" data-autoplayspeed="0" data-transitionspeed="3000" data-autoplaydelay="0">
+            <canvas id="background"></canvas>
+            <div class="lay-webgl-slides">
+              {siteContent.webglBackgrounds.slice(0, 5).map((asset) => (
+                <div class="lay-webgl-slide"><img src={asset.src} alt={asset.alt} /></div>
+              ))}
+            </div>
+          </div>
+          {/* The page is prerendered, so shuffle the slides here — before legacy
+              app.js reads them — to get a fresh order on every visit. */}
+          <script is:inline>
+            (() => {
+              const slides = document.querySelector(
+                ".sticky > .lay-webgl-slideshow > .lay-webgl-slides",
+              );
+              if (!slides) return;
+              const items = Array.from(slides.children);
+              for (let i = items.length - 1; i > 0; i -= 1) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [items[i], items[j]] = [items[j], items[i]];
+              }
+              items.forEach((item) => slides.appendChild(item));
+            })();
+          </script>
+          <canvas id="canvas" class="balls"></canvas>
+          {/* The slides themselves are never visible on desktop — the spotlight
+              frame renders the media — so their videos carry `data-hls-manual`
+              and project-spotlight.js streams only the few it actually needs. */}
+          <div class="background-images project-spotlight">
+            {projects.map((project, index) => (
+              <a href={`/${project.slug}/`} data-ix={index}>
+                <span class="project-spotlight-media">
+                  {project.desktopBackground?.isVideo
+                    ? <video playsinline loop muted data-hls={project.desktopBackground.hls} data-mp4={project.desktopBackground.mp4} data-hls-defer="desktop" data-hls-manual></video>
+                    : project.desktopBackground && <img class={orientationClass(project.desktopBackground)} data-src={project.desktopBackground.src} data-sizes="900px" alt="" />}
+                </span>
+              </a>
+            ))}
+            <div class="project-spotlight-frame" aria-hidden="true"></div>
+            <div class="_bigtext project-spotlight-caption short-description" aria-hidden="true"></div>
+          </div>
+          <div class="background-images-phone">
+            {projects.map((project, index) => (
+              <a href={`/${project.slug}/`} data-ix={index}>
+                {project.mobileBackground?.isVideo
+                  ? <video playsinline loop muted data-hls={project.mobileBackground.hls} data-mp4={project.mobileBackground.mp4} data-hls-defer="phone"></video>
+                  : project.mobileBackground && <img class={orientationClass(project.mobileBackground)} data-src={project.mobileBackground.src} data-sizes="200px" alt="" />}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="plist-wrap-2">
+          <h2 class="_bigtext left-padding selected-projects-headline">Selected Projects</h2>
+          <div class="_bigtext projects-list-region">
+            <div class="projects-list">
+              {projects.map((project, index) => (
+                <div>
+                  <a class={`project-list-item ${index === 0 ? "hover" : ""}`} href={`/${project.slug}/`} data-ix={index}><ArrowRight />{project.title}</a>
+                  {project.shortDescription && <div class="short-description">{project.shortDescription}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="_bigtext2 our-clients">
+        <h2 class="_bigtext2 left-padding">Worked for or worked as subcontractor for</h2>
+        <div class="clients-region clients-grid">
+          {clients.map((client) => (
+            <span><img src={client.src} sizes="(max-width: 700px) 50vw, 25vw" alt={client.alt} /></span>
+          ))}
+        </div>
+      </div>
+
+      <div class="_bigtext2 our-services">
+        <h2 class="_bigtext2 left-padding">Our Services</h2>
+        <div class="our-services-region"><div><div class="left-padding _bigtext4 our-services-text">{siteContent.servicesIntro}</div></div></div>
+        <div class="our-services-gallery-region">
+          <div class="gallery-view left-padding">
+            {siteContent.services.map((service, serviceIndex) => (
+              <div class="gallery-item-view">
+                <div
+                  class="lay-webgl-slideshow service-webgl-slideshow"
+                  data-transition="ColourDistance"
+                  data-autoplayspeed={serviceWebglTimings[serviceIndex]?.autoplaySpeed ?? 2200}
+                  data-transitionspeed="3000"
+                  data-autoplaydelay={serviceWebglTimings[serviceIndex]?.autoplayDelay ?? 500}
+                  aria-hidden="true"
+                >
+                  <canvas class="service-webgl-canvas"></canvas>
+                  <div class="lay-webgl-slides service-webgl-slides">
+                    {(serviceWebglScreenshots[serviceIndex] || []).map((asset) => (
+                      <div class="lay-webgl-slide"><img src={asset.src} alt="" /></div>
+                    ))}
+                    {/* One extra slide per service pill. They never autoplay —
+                        hovering the pill jumps the morph straight to its index. */}
+                    {service.services.map((_, itemIndex) => {
+                      const asset = serviceItemImage(serviceIndex, itemIndex);
+                      return asset
+                        ? <div class="lay-webgl-slide" data-service-item-slide={itemIndex}><img src={asset.src} alt="" /></div>
+                        : null;
+                    })}
+                  </div>
+                </div>
+                <div class="descr">
+                  <span class="service-big">{service.title.replace(/^→\s*/, "")}</span>
+                  {service.services.map((item, itemIndex) => (
+                    <span
+                      class="service"
+                      data-lay-button-effect-text-slide="1"
+                      data-service-slide={(serviceWebglScreenshots[serviceIndex] || []).length + itemIndex}
+                    >
+                      <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+                        <span class="lay-button-effect__text-sizer" aria-hidden="true">{item}</span>
+                        <span class="lay-button-effect__text-clip">
+                          <span class="lay-button-effect__text lay-button-effect__text--current">{item}</span>
+                          <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">{item}</span>
+                        </span>
+                      </span>
+                    </span>
+                  ))}
+                </div>
+                <div class="glow"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="left-padding padding-right">
+      <div class="footer-left">
+        <div class="_bigtext4" set:html={siteContent.footer.headline}></div>
+        <div class="_Default" set:html={siteContent.footer.body}></div>
+        <div class="become-a-client _bigtext" data-lay-button-effect-text-slide="1">
+          <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+            <span class="lay-button-effect__text-sizer" aria-hidden="true">Contact Us</span>
+            <span class="lay-button-effect__text-clip">
+              <span class="lay-button-effect__text lay-button-effect__text--current">Contact Us</span>
+              <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">Contact Us</span>
+            </span>
+          </span>
+        </div>
+        <div class="_Default" set:html={siteContent.footer.emailPrompt}></div>
+      </div>
+      <div class="_legal contact-us" set:html={siteContent.footer.legal}></div>
+    </footer>
+  </div>
+
+  <div id="post"></div>
+  <div id="post-shadow"></div>
+</div>
+
+<div class="site-scroll-indicator" aria-hidden="true">
+  <div class="site-scroll-indicator__thumb"></div>
+</div>
+
+<div class="project-page-transition" aria-hidden="true">
+  <div class="project-page-transition__project" aria-hidden="true"></div>
+</div>
+
+<template id="next-project-arrow-template"><ArrowRight /></template>
+<template id="project-info-close-template"><XMark /></template>
+
+<script is:inline src="/assets/project-media-carousel.js"></script>
+<script is:inline>
+  const postContainer = document.querySelector("#post");
+  const nextProjectArrowTemplate = document.querySelector("#next-project-arrow-template");
+  const projectInfoCloseTemplate = document.querySelector("#project-info-close-template");
+  const projectInfoButton = document.querySelector(".info-button");
+  const scrollIndicator = document.querySelector(".site-scroll-indicator");
+  const scrollIndicatorThumb = scrollIndicator?.querySelector(".site-scroll-indicator__thumb");
+
+  if (scrollIndicator instanceof HTMLElement && scrollIndicatorThumb instanceof HTMLElement) {
+    let scrollIndicatorFrame = 0;
+    let scrollIndicatorIdleTimer = 0;
+
+    const updateScrollIndicator = () => {
+      scrollIndicatorFrame = 0;
+      const isProjectOpen = document.body.classList.contains("show-post");
+      const scroller = isProjectOpen ? postContainer : document.scrollingElement;
+
+      if (!(scroller instanceof Element)) return;
+
+      const viewportHeight = isProjectOpen ? scroller.clientHeight : window.innerHeight;
+      const scrollHeight = scroller.scrollHeight;
+      const scrollTop = isProjectOpen ? scroller.scrollTop : window.scrollY;
+      const maxScroll = Math.max(scrollHeight - viewportHeight, 0);
+      const trackHeight = Math.max(window.innerHeight - 16, 0);
+      const minimumThumbHeight = Math.min(Math.max(window.innerHeight * 0.12, 72), trackHeight);
+      const proportionalHeight = scrollHeight > 0
+        ? trackHeight * viewportHeight / scrollHeight
+        : trackHeight;
+      const thumbHeight = Math.min(trackHeight, Math.max(proportionalHeight, minimumThumbHeight));
+      const thumbTravel = Math.max(trackHeight - thumbHeight, 0);
+      const thumbOffset = maxScroll > 0
+        ? Math.min(Math.max(scrollTop / maxScroll, 0), 1) * thumbTravel
+        : 0;
+
+      scrollIndicator.style.setProperty("--site-scroll-thumb-height", `${thumbHeight}px`);
+      scrollIndicator.style.setProperty("--site-scroll-thumb-offset", `${thumbOffset}px`);
+      scrollIndicator.classList.toggle("is-scrollable", maxScroll > 1);
+    };
+
+    const requestScrollIndicatorUpdate = () => {
+      if (!scrollIndicatorFrame) {
+        scrollIndicatorFrame = window.requestAnimationFrame(updateScrollIndicator);
+      }
+    };
+
+    const handleScrollIndicatorMovement = () => {
+      scrollIndicator.classList.add("is-active");
+      window.clearTimeout(scrollIndicatorIdleTimer);
+      scrollIndicatorIdleTimer = window.setTimeout(() => {
+        scrollIndicator.classList.remove("is-active");
+      }, 500);
+      requestScrollIndicatorUpdate();
+    };
+
+    window.addEventListener("scroll", handleScrollIndicatorMovement, { passive: true });
+    postContainer?.addEventListener("scroll", handleScrollIndicatorMovement, { passive: true });
+    window.addEventListener("resize", requestScrollIndicatorUpdate);
+    document.addEventListener("load", requestScrollIndicatorUpdate, true);
+
+    new MutationObserver(requestScrollIndicatorUpdate).observe(document.body, {
+      attributeFilter: ["class"],
+      attributes: true,
+    });
+    if (postContainer) {
+      new MutationObserver(requestScrollIndicatorUpdate).observe(postContainer, {
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    document.fonts?.ready.then(requestScrollIndicatorUpdate);
+    updateScrollIndicator();
+  }
+
+  // The Info button stays pinned to the bottom left while you read the project,
+  // then gets pushed off the top by the next-project section as it arrives.
+  // It cannot just sit in the flow — `#post` is the scroll container and the
+  // button lives outside it in the fixed toolbar — so it is lifted by however
+  // far the next-project block has risen past the bottom of the viewport.
+  //
+  // Back reads the same measurement: while the card is flipped it takes the
+  // Info button's place, and travelling with the scroll the same way keeps it
+  // behaving like the button it replaced.
+  const projectBackButton = document.querySelector(".project-toolbar .back-button");
+
+  if (projectInfoButton instanceof HTMLElement && postContainer) {
+    let infoOffsetFrame = 0;
+
+    const getInfoButtonLift = () => {
+      if (!document.body.classList.contains("show-post")) return 0;
+
+      const nextProject = postContainer.querySelector(".next-project");
+      if (!(nextProject instanceof HTMLElement)) return 0;
+
+      const scrollerBottom = postContainer.getBoundingClientRect().bottom;
+      const nextProjectTop = nextProject.getBoundingClientRect().top;
+
+      // 0 until the section reaches the bottom edge; from then on the button
+      // rides up with it rather than sitting on top of it.
+      return Math.max(scrollerBottom - nextProjectTop, 0);
+    };
+
+    const applyInfoButtonLift = () => {
+      infoOffsetFrame = 0;
+      const lift = `${getInfoButtonLift()}px`;
+
+      projectInfoButton.style.setProperty("--project-info-lift", lift);
+      projectBackButton?.style.setProperty("--project-info-lift", lift);
+    };
+
+    const requestInfoButtonLift = () => {
+      if (!infoOffsetFrame) {
+        infoOffsetFrame = window.requestAnimationFrame(applyInfoButtonLift);
+      }
+    };
+
+    postContainer.addEventListener("scroll", requestInfoButtonLift, { passive: true });
+    window.addEventListener("resize", requestInfoButtonLift);
+
+    // Opening a project injects its content, so re-measure once it lands.
+    new MutationObserver(requestInfoButtonLift).observe(document.body, {
+      attributeFilter: ["class"],
+      attributes: true,
+    });
+    new MutationObserver(requestInfoButtonLift).observe(postContainer, {
+      childList: true,
+      subtree: true,
+    });
+
+    applyInfoButtonLift();
+  }
+
+  const updateNextProjectArrow = (root = postContainer) => {
+    const label = root?.querySelector(".next-project .next-project-text > span:first-child");
+    if (!label || label.dataset.arrowUpdated === "true" || !nextProjectArrowTemplate) return;
+
+    label.replaceChildren(
+      nextProjectArrowTemplate.content.cloneNode(true),
+      document.createTextNode("Next Project"),
+    );
+    label.dataset.arrowUpdated = "true";
+  };
+
+  const getProjectInfoModal = () => postContainer?.querySelector(".project-info-modal");
+
+  // Desktop shows the info on the back of the media box: the modal is moved
+  // onto the carousel's back face and the whole thing rotates. Below the
+  // breakpoint there is no carousel, so the overlay modal is used as before.
+  const getProjectFlipBack = () =>
+    postContainer?.querySelector(".project-media-carousel__back");
+
+  const setProjectInfoFlipped = (modal, isOpen) => {
+    const backFace = getProjectFlipBack();
+    if (!(backFace instanceof HTMLElement)) return false;
+
+    if (isOpen && modal.parentElement !== backFace) backFace.appendChild(modal);
+
+    const carousel = backFace.closest(".project-media-carousel");
+    // On open the class is added after the scroll settles (below); on close it
+    // comes off immediately.
+    if (!isOpen) carousel?.classList.remove("is-info-flipped");
+    // Distinguishes the flip from the overlay modal, which still hides the
+    // toolbar entirely.
+    document.body.classList.toggle("show-project-info-flip", isOpen);
+
+    // The card is only full-screen when the sticky stage is at the top of the
+    // viewport, so get there first and only then turn it over.
+    if (isOpen) {
+      window.setProjectFlipMorphActive?.(true);
+      scrollProjectToCarousel().then(() => {
+        if (document.body.classList.contains("show-project-info-modal")) {
+          carousel?.classList.add("is-info-flipped");
+        }
+      });
+      return true;
+    }
+
+    window.setProjectFlipMorphActive?.(false);
+    return true;
+  };
+
+  /**
+   * Brings the carousel stage back to the top of the scroller so the flipped
+   * card is seen against a full-screen backdrop, and resolves once it is there
+   * — the flip is sequenced after it rather than racing it.
+   */
+  const scrollProjectToCarousel = () => new Promise((resolve) => {
+    if (!postContainer) return resolve();
+
+    const carousel = postContainer.querySelector(".project-media-carousel");
+    if (!(carousel instanceof HTMLElement)) return resolve();
+
+    const top = Math.max(
+      carousel.getBoundingClientRect().top
+        - postContainer.getBoundingClientRect().top
+        + postContainer.scrollTop,
+      0,
+    );
+
+    if (Math.abs(postContainer.scrollTop - top) < 2) return resolve();
+
+    postContainer.scrollTo({ top, behavior: "smooth" });
+
+    // No scrollend in every browser yet: settle when the position stops moving,
+    // with a ceiling so a blocked scroll can never strand the flip.
+    let last = postContainer.scrollTop;
+    let still = 0;
+    const started = Date.now();
+    const tick = () => {
+      const now = postContainer.scrollTop;
+      still = Math.abs(now - last) < 1 ? still + 1 : 0;
+      last = now;
+      if (still > 2 || Date.now() - started > 1200) return resolve();
+      window.requestAnimationFrame(tick);
+    };
+    window.requestAnimationFrame(tick);
+  });
+
+  const setProjectInfoOpen = (modal, isOpen, restoreFocus = false) => {
+    if (!(modal instanceof HTMLElement)) return;
+
+    const isFlip = setProjectInfoFlipped(modal, isOpen);
+
+    // No carousel (mobile, or the project has no media grid): the overlay modal
+    // is used, so make sure no flip state is left behind.
+    if (!isFlip) {
+      document.body.classList.remove("show-project-info-flip");
+    }
+
+    const projectScrollTop = postContainer?.scrollTop;
+
+    // The overlay modal is fixed to the viewport and has to be nudged by the
+    // scroll offset; the flip face already travels with the sticky stage.
+    if (!isFlip && isOpen && typeof projectScrollTop === "number") {
+      modal.style.setProperty("--project-info-scroll-offset", `${projectScrollTop}px`);
+    } else {
+      modal.style.removeProperty("--project-info-scroll-offset");
+    }
+
+    modal.classList.toggle("is-open", isOpen);
+    modal.setAttribute("aria-hidden", String(!isOpen));
+    document.body.classList.toggle("show-project-info-modal", isOpen);
+    projectInfoButton?.setAttribute("aria-expanded", String(isOpen));
+
+    if (isOpen) {
+      modal.querySelector(".project-info-modal__close")?.focus({ preventScroll: true });
+      if (typeof projectScrollTop === "number" && postContainer) {
+        postContainer.scrollTop = projectScrollTop;
+      }
+    } else if (restoreFocus && projectInfoButton instanceof HTMLElement) {
+      projectInfoButton.focus({ preventScroll: true });
+    }
+  };
+
+  const enhanceProjectInfoModal = (root = postContainer) => {
+    if (!(root instanceof Element) || !projectInfoCloseTemplate) return;
+
+    const existingModal = root.querySelector(".project-info-modal");
+    if (existingModal instanceof HTMLElement) {
+      if (root === postContainer && projectInfoButton instanceof HTMLButtonElement) {
+        projectInfoButton.disabled = false;
+      }
+      return;
+    }
+
+    const projectInfo = root.querySelector(":scope > .url-button-wrap, .url-button-wrap");
+    if (!(projectInfo instanceof HTMLElement)) return;
+
+    const modal = document.createElement("div");
+    const panel = document.createElement("div");
+    const closeButton = document.createElement("button");
+
+    modal.className = "project-info-modal";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-label", "Project information");
+    modal.setAttribute("aria-hidden", "true");
+    panel.className = "project-info-modal__panel";
+    closeButton.className = "project-info-modal__close close";
+    closeButton.type = "button";
+    closeButton.setAttribute("aria-label", "Close project information");
+    closeButton.appendChild(projectInfoCloseTemplate.content.cloneNode(true));
+
+    projectInfo.before(modal);
+    panel.append(projectInfo, closeButton);
+    modal.appendChild(panel);
+    closeButton.addEventListener("click", () => setProjectInfoOpen(modal, false, true));
+
+    if (root === postContainer && projectInfoButton instanceof HTMLButtonElement) {
+      document.body.classList.remove("show-project-info-modal");
+      projectInfoButton.disabled = false;
+      projectInfoButton.setAttribute("aria-expanded", "false");
+    }
+  };
+
+  projectInfoButton?.addEventListener("click", () => {
+    setProjectInfoOpen(getProjectInfoModal(), true);
+  });
+
+  // Two ways out of the info card, both handled here in the capture phase so
+  // they run before the page-transition handler that would otherwise start the
+  // exit animation:
+  //   - the top-left Back button (a second click then leaves the project)
+  //   - a click on the empty space around the card
+  document.addEventListener("click", (event) => {
+    if (!document.body.classList.contains("show-project-info-modal")) return;
+
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const isBackButton = Boolean(target.closest(".back-button"));
+    // Anything inside the card itself — text, the Visit Website link — must
+    // still work, so only count clicks that land outside the panel.
+    const isBackdrop = Boolean(
+      target.closest(
+        ".project-media-carousel__back, .project-media-carousel__morph, .project-info-modal",
+      )
+      && !target.closest(".project-info-modal__panel"),
+    );
+
+    if (!isBackButton && !isBackdrop) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setProjectInfoOpen(getProjectInfoModal(), false, isBackButton);
+  }, true);
+
+  /* ---------------------------------------------- contact on the flip face */
+
+  // Inside a project the Contact Us form uses the same card as the info: it is
+  // moved onto the flip's back face and the gallery turns over. Everywhere else
+  // (home page, mobile) the legacy body-level overlay is left alone.
+  const contactModal = document.querySelector(".become-a-client-modal");
+
+  const setContactFlipped = (isOpen) => {
+    const backFace = getProjectFlipBack();
+    if (!(backFace instanceof HTMLElement) || !(contactModal instanceof HTMLElement)) {
+      return false;
+    }
+
+    if (isOpen && contactModal.parentElement !== backFace) {
+      // Remember where it came from so it can go back when the project closes.
+      if (!contactModal.dataset.homeParent) contactModal.dataset.homeParent = "body";
+      backFace.appendChild(contactModal);
+    }
+
+    const carousel = backFace.closest(".project-media-carousel");
+    if (!isOpen) carousel?.classList.remove("is-info-flipped");
+    document.body.classList.toggle("show-project-info-flip", isOpen);
+    document.body.classList.toggle("show-project-contact-flip", isOpen);
+    document.body.classList.toggle("show-client-modal", isOpen);
+
+    if (isOpen) {
+      window.setProjectFlipMorphActive?.(true);
+      scrollProjectToCarousel().then(() => {
+        if (document.body.classList.contains("show-project-contact-flip")) {
+          carousel?.classList.add("is-info-flipped");
+        }
+      });
+      return true;
+    }
+
+    window.setProjectFlipMorphActive?.(false);
+    return true;
+  };
+
+  const restoreContactModal = () => {
+    if (!(contactModal instanceof HTMLElement)) return;
+    if (contactModal.dataset.homeParent !== "body") return;
+    if (contactModal.parentElement === document.body) return;
+
+    document.body.appendChild(contactModal);
+  };
+
+  // The carousel is torn down when a project closes or the viewport drops below
+  // the desktop breakpoint; the contact form has to survive that.
+  window.restoreContactModal = restoreContactModal;
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    // Opening: only intercept while a project is open and a flip card exists.
+    if (
+      target.closest(".become-a-client")
+      && document.body.classList.contains("show-post")
+      && getProjectFlipBack()
+    ) {
+      if (!setContactFlipped(true)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+
+    // Closing: the ✕, the top-left Back, or the empty space around the card.
+    if (!document.body.classList.contains("show-project-contact-flip")) return;
+
+    const isClose = Boolean(target.closest(".become-a-client-modal .close"));
+    const isBackButton = Boolean(target.closest(".back-button"));
+    const isBackdrop = Boolean(
+      target.closest(".project-media-carousel__back, .project-media-carousel__morph")
+      && !target.closest(".become-a-client-modal"),
+    );
+
+    if (!isClose && !isBackButton && !isBackdrop) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setContactFlipped(false);
+  }, true);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || event.repeat || event.defaultPrevented) return;
+    if (!document.body.classList.contains("show-project-contact-flip")) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setContactFlipped(false);
+  }, true);
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || event.repeat || event.defaultPrevented) return;
+
+    const modal = getProjectInfoModal();
+    if (!(modal instanceof HTMLElement) || !modal.classList.contains("is-open")) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    setProjectInfoOpen(modal, false, true);
+  });
+
+  const enhanceVisitWebsiteButton = (root = postContainer) => {
+    // All matches, not just the first: the info modal gets moved between the
+    // project flow and the carousel's flip face, so more than one copy of the
+    // wrapper can be in the tree at once.
+    root?.querySelectorAll(".url-button-wrap .url-button").forEach(enhanceUrlButton);
+  };
+
+  const enhanceUrlButton = (button) => {
+    if (!(button instanceof HTMLElement) || button.dataset.layButtonEffectTextSlide === "1") return;
+
+    const text = button.textContent?.trim();
+    if (!text) return;
+
+    const content = document.createElement("span");
+    const sizer = document.createElement("span");
+    const clip = document.createElement("span");
+    const currentText = document.createElement("span");
+    const nextText = document.createElement("span");
+
+    content.className = "lay-button-effect__content lay-button-effect__content--text-slide";
+    sizer.className = "lay-button-effect__text-sizer";
+    sizer.setAttribute("aria-hidden", "true");
+    sizer.textContent = text;
+    clip.className = "lay-button-effect__text-clip";
+    currentText.className = "lay-button-effect__text lay-button-effect__text--current";
+    currentText.textContent = text;
+    nextText.className = "lay-button-effect__text lay-button-effect__text--next";
+    nextText.setAttribute("aria-hidden", "true");
+    nextText.textContent = text;
+
+    clip.append(currentText, nextText);
+    content.append(sizer, clip);
+    button.replaceChildren(content);
+    button.dataset.layButtonEffectTextSlide = "1";
+  };
+
+  const enhanceProjectDescription = (root = postContainer) => {
+    const description = root?.querySelector(".url-button-wrap .description");
+    if (!(description instanceof HTMLElement) || description.dataset.readMoreReady === "true") return;
+
+    description.dataset.readMoreReady = "true";
+    const paragraphs = Array.from(description.children).filter((child) => child.matches("p"));
+    if (paragraphs.length < 2) return;
+
+    const credits = description.parentElement?.querySelector(":scope > .credits");
+
+    paragraphs.slice(1).forEach((paragraph) => {
+      paragraph.hidden = true;
+    });
+    if (credits instanceof HTMLElement) credits.hidden = true;
+
+    const readMoreButton = document.createElement("button");
+    readMoreButton.className = "project-read-more _bigtext";
+    readMoreButton.type = "button";
+    readMoreButton.textContent = "Read More";
+    readMoreButton.setAttribute("aria-expanded", "false");
+    description.insertAdjacentElement("afterend", readMoreButton);
+
+    readMoreButton.addEventListener("click", () => {
+      paragraphs.slice(1).forEach((paragraph) => {
+        paragraph.hidden = false;
+      });
+      if (credits instanceof HTMLElement) credits.hidden = false;
+      readMoreButton.setAttribute("aria-expanded", "true");
+      readMoreButton.remove();
+    });
+  };
+
+  const projectVideoObserver = "IntersectionObserver" in window
+    ? new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (!(video instanceof HTMLVideoElement)) return;
+          if (video.dataset.carouselPlaybackReady === "true") return;
+
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      }, {
+        threshold: [0, 0.15],
+      })
+    : null;
+
+  const enhanceProjectVideos = (root = postContainer) => {
+    root?.querySelectorAll(".static-grid-block video").forEach((video) => {
+      if (!(video instanceof HTMLVideoElement) || video.dataset.scrollPlaybackReady === "true") return;
+      if (video.dataset.carouselPlaybackReady === "true") return;
+
+      video.dataset.scrollPlaybackReady = "true";
+      video.autoplay = false;
+      video.pause();
+
+      if (projectVideoObserver) {
+        projectVideoObserver.observe(video);
+      } else {
+        video.play().catch(() => {});
+      }
+    });
+  };
+
+  const updateProjectEnhancements = (event) => {
+    const root = event instanceof CustomEvent && event.detail?.root instanceof Element
+      ? event.detail.root
+      : postContainer;
+
+    updateNextProjectArrow(root);
+    enhanceProjectInfoModal(root);
+    enhanceVisitWebsiteButton(root);
+    enhanceProjectDescription(root);
+    window.enhanceProjectMediaCarousels?.(root);
+    enhanceProjectVideos(root);
+  };
+
+  document.addEventListener("prepare-project-enhancements", updateProjectEnhancements);
+
+  if (postContainer) {
+    new MutationObserver(updateProjectEnhancements).observe(postContainer, {
+      childList: true,
+      subtree: true,
+    });
+    updateProjectEnhancements();
+  }
+
+  // Background videos carry data-hls instead of data-src and are attached by
+  // bunny-hls.js, which does its own breakpoint check.
+  const responsiveBackgroundSelector = window.innerWidth > 700 ? ".background-images" : ".background-images-phone";
+  document.querySelectorAll(`${responsiveBackgroundSelector} img[data-src]`).forEach((image) => {
+    image.setAttribute("src", image.dataset.src);
+    if (image.dataset.sizes) image.setAttribute("sizes", image.dataset.sizes);
+  });
+
+  const footer = document.querySelector("#frontpage > footer");
+
+  if (footer) {
+    const frontpage = footer.closest("#frontpage");
+    let footerFrame = 0;
+
+    const updateFooterOpacity = () => {
+      footerFrame = 0;
+      if (window.innerWidth >= 700) {
+        frontpage?.style.setProperty("--footer-height", `${footer.offsetHeight}px`);
+      } else {
+        frontpage?.style.removeProperty("--footer-height");
+      }
+
+      const maxScrollY = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+      const revealDistance = Math.min(footer.offsetHeight, maxScrollY);
+      const revealStart = maxScrollY - revealDistance;
+      const revealProgress = revealDistance > 0
+        ? Math.min(Math.max((window.scrollY - revealStart) / revealDistance, 0), 1)
+        : 1;
+      const footerOpacity = 0.1 + revealProgress * 0.9;
+
+      footer.style.setProperty("--footer-content-opacity", footerOpacity.toFixed(3));
+    };
+
+    const requestFooterUpdate = () => {
+      if (!footerFrame) {
+        footerFrame = window.requestAnimationFrame(updateFooterOpacity);
+      }
+    };
+
+    window.addEventListener("scroll", requestFooterUpdate, { passive: true });
+    window.addEventListener("resize", requestFooterUpdate);
+    document.fonts?.ready.then(requestFooterUpdate);
+    updateFooterOpacity();
+  }
+
+  const serviceGallery = document.querySelector(".our-services-gallery-region .gallery-view");
+  const serviceCards = serviceGallery
+    ? Array.from(serviceGallery.querySelectorAll(".gallery-item-view"))
+    : [];
+
+  if (serviceGallery && serviceCards.length && !prefersReducedMotion) {
+    serviceGallery.classList.add("is-service-reveal-ready");
+
+    const revealServiceCards = () => {
+      serviceGallery.classList.add("is-service-reveal-triggered");
+    };
+
+    if ("IntersectionObserver" in window) {
+      const serviceRevealObserver = new IntersectionObserver((entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        revealServiceCards();
+        serviceRevealObserver.disconnect();
+      }, {
+        rootMargin: "0px 0px -10% 0px",
+        threshold: 0.15,
+      });
+
+      serviceRevealObserver.observe(serviceGallery);
+    } else {
+      revealServiceCards();
+    }
+  }
+</script>
+
+<script is:inline src="/assets/service-webgl-slideshow.js"></script>
+<script is:inline src="/assets/project-spotlight.js"></script>
+<script is:inline src="/assets/project-page-transition.js"></script>
+
+<div class="become-a-client _bigtext" data-lay-button-effect-text-slide="1">
+  <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+    <span class="lay-button-effect__text-sizer" aria-hidden="true">Contact Us</span>
+    <span class="lay-button-effect__text-clip">
+      <span class="lay-button-effect__text lay-button-effect__text--current">Contact Us</span>
+      <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">Contact Us</span>
+    </span>
+  </span>
+</div>
+<div class="become-a-client-bg"></div>
+<div class="become-a-client-modal fields-not-filled">
+  <div class="_bigtext">Become a Client</div>
+  <button class="close" type="button" aria-label="Close contact form">
+    <XMark />
+  </button>
+  <form action={siteContent.contact.endpoint} method="post">
+    <label>My Email:</label>
+    <input name="email" type="email" spellcheck="false" required />
+    <label>Name / Company Name:</label>
+    <input name="name" type="text" spellcheck="false" required />
+    <label>Budget:</label>
+    <select name="budget" required>
+      <option value="none">Please select</option>
+      <option value="100k-plus">100.000€+</option>
+      <option value="50k-100k">50.000€-100.000€</option>
+      <option value="20k-50k">20.000€-50.000€</option>
+      <option value="15k-20k">15-20.000€</option>
+      <option value="10k-15k">10-15.000€</option>
+      <option value="5k">5.000€</option>
+    </select>
+    <label>Message:</label>
+    <textarea name="message" spellcheck="false" required></textarea>
+    <button class="send-button" type="button"><ArrowRight />Send Message</button>
+  </form>
+  <div class="thankyou _bigtext">Thank you for your message.<br />We will get back to you soon!</div>
+</div>

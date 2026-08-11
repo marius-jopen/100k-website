@@ -1,0 +1,82 @@
+{
+  "title": "Add3",
+  "displayTitle": "Add3",
+  "shortDescription": "Smart Contract Management ",
+  "description": "<p>We developed Add3’s responsive website and digital product experience for its Web3 smart-contract platform, creating a clear interface for customizable token products and complex blockchain workflows.</p>\n",
+  "externalUrl": "https://www.add3.io/",
+  "featuredImage": "/images/5.jpeg",
+  "desktopBackground": {
+    "discriminant": "image",
+    "value": "/images/STAKING-DETAIL.jpg"
+  },
+  "mobileBackground": {
+    "discriminant": "image",
+    "value": "/images/Frame-26080498.jpg"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "e922c141-7231-4f20-a225-74bbfe776184"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/Logo-1.jpg"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/Logo-3.jpg"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "b8b7006b-1a53-48f7-9fee-d260ee8c5c0e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/DASHBOARD.jpg"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/CUSTOMERS-DASHBOARD.jpg"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "bd28f443-b2fb-4142-b876-3d5a3b030d7a"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "image",
+          "value": "/images/Intro.jpg"
+        }
+      }
+    ]
+  }
+}

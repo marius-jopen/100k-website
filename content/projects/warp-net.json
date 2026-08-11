@@ -1,0 +1,107 @@
+{
+  "title": "Warp.net",
+  "displayTitle": "Warp.net",
+  "shortDescription": "Music Label Platform",
+  "description": "<p>We developed Warp.net with HelloMe, building a responsive music platform with news, a filterable catalogue, an integrated player, ecommerce, events, videos, and an archive of more than 500 releases.</p>\n",
+  "externalUrl": "https://warp.net",
+  "featuredImage": "/images/hellome4.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "2cbb544a-1784-434b-961e-2479d9f6571f"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "4e431640-0b92-4243-aebd-77ee0e174d8f"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "HelloMe"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "<p>Video by HelloMe</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "b06d702b-22e9-4362-8ba0-d71448c85084"
+        }
+      },
+      {
+        "caption": "<p>Products, Video by HelloMe</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "716a68fa-23f7-4378-a914-4c46d8fd5fcd"
+        }
+      },
+      {
+        "caption": "<p>News</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "f3bb4894-af16-4302-8ce4-0b08f7db6a97"
+        }
+      },
+      {
+        "caption": "<p>Releases</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "13f16450-74f4-438d-b7b4-815570deacc7"
+        }
+      },
+      {
+        "caption": "<p>Navigation Transition</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "f2973a11-a7c6-44aa-9f6c-e72e04296886"
+        }
+      },
+      {
+        "caption": "<p>Home</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "9e514b91-8b02-4fda-a2a2-dc57004b3648"
+        }
+      },
+      {
+        "caption": "<p>Releases – Music Player, Buy Music, Grid and List Views, Filter</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "a23809f5-b2d3-466c-9330-ea9530ff9fde"
+        }
+      },
+      {
+        "caption": "<p>Editorial</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "022a4024-aeb5-46c7-b4bd-bfd1b572c146"
+        }
+      },
+      {
+        "caption": "<p>Videos</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "a5e4ad18-c748-4fc2-9ebd-590777f61aa3"
+        }
+      },
+      {
+        "caption": "<p>Shop Detail</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "a839dae0-24c9-4596-b00e-c16be06ee6c3"
+        }
+      },
+      {
+        "caption": "<p>Releases Player</p>",
+        "asset": {
+          "discriminant": "video",
+          "value": "0a436b7f-4489-43ea-9ba4-2a0c8e81cf1c"
+        }
+      }
+    ]
+  }
+}

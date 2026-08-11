@@ -1,0 +1,65 @@
+{
+  "title": "Level Blog",
+  "displayTitle": "Level",
+  "shortDescription": "Musicians Blog",
+  "description": "<p>We developed the Level blog in WordPress from a design by Hyphen.Works, adding live search and filtering for a fast and intuitive editorial experience.</p>\n",
+  "externalUrl": "https://blog.levelmusic.com/",
+  "featuredImage": "/images/blog3.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "d4eb2f0c-5862-4d65-adae-972ab36bbcd9"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "62bfd35a-c6f8-403c-90a7-78ad04722a6f"
+  },
+  "credits": [
+    {
+      "label": "Design",
+      "value": "Hyphen.Works"
+    },
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "a2ee572c-830c-4ae4-a6d0-4f301a65539b"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "69e1517f-cee4-422e-97ac-cf3698d91caa"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "28920bcc-cfc6-4d78-802b-17ddc2cafa8e"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "017067a8-2c78-4102-b8ff-00e0b6ad89ba"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "ccd56254-9c2e-4990-b692-874b43fc7ce2"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "title": "Burberry Monogram for Hypebeast",
+  "displayTitle": "Burberry Monogram for Hypebeast",
+  "shortDescription": "3D Website",
+  "description": "<p>We developed an interactive 3D tunnel for Hypebeast that presents Burberry’s Monogram collection as an immersive web experience.</p>\n",
+  "externalUrl": "https://hypebeast.com/2019/5/burberry-monogram-3d-collection",
+  "featuredImage": "/images/burberry1.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "24340f88-e53d-4502-84c9-4846d3a4af83"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "77c59dd1-9a48-4810-ac62-4c3680b5bd55"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "6c856fc0-e479-437f-9a8f-06c2f22284bb"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "02da7b3a-644d-4874-9af8-cca3eb08ad71"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "7f5a5a4e-ed22-4e55-9146-9c2b6dc2ecd0"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+# 
+# Wavefront material file
+# Converted by the DEEP Exploration  Deep Exploration 6.5 x64 6.5.0.9182
+# Right Hemisphere, LTD
+# http://www.righthemisphere.com/
+# 
+
+newmtl zen_stones_Colored_001
+Ka 0.5 0.5 0.5
+Kd 1 1 1
+Ks 1 1 1
+illum 2
+Ns 11.3137
+map_Kd Diffuse_zen_stones_Colored_001.png
+map_bump Normal_zen_stones.png
+bump Normal_zen_stones.png
+map_opacity 
+map_d 
+refl 
+map_kS Reflect_zen_stones.png
+map_kA 
+map_Ns 

@@ -1,0 +1,54 @@
+{
+  "title": "Adidas Loops for Hypebae",
+  "displayTitle": "Adidas for Hypebae",
+  "shortDescription": "3D Website",
+  "description": "<p>We developed an interactive editorial website for Adidas Loops for Hypebae, using mouse-controlled zoom transitions to turn the campaign content into an immersive web experience.</p>\n",
+  "externalUrl": "https://hypebae.com/2019/1/adidas-loops-female-creatives-unique-style-campaign-episode-kicki-yangz-this-is-venice",
+  "featuredImage": "/images/adidas_loops_mousemove-medium.jpg",
+  "desktopBackground": {
+    "discriminant": "video",
+    "value": "aef3fd08-e4cb-42b3-a152-bf410a02791b"
+  },
+  "mobileBackground": {
+    "discriminant": "video",
+    "value": "f53189d7-b04d-437b-b4e1-563cad42857d"
+  },
+  "credits": [
+    {
+      "label": "Development",
+      "value": "100k"
+    }
+  ],
+  "layout": {
+    "blocks": [
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "280e5a77-afaf-4ea7-8c3c-e70a11a0a4e0"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "c1edf46b-4a6b-4282-a133-ba98a39baba7"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "58e4c54e-afb2-4eea-a40a-dd6e2f92bc1a"
+        }
+      },
+      {
+        "caption": "",
+        "asset": {
+          "discriminant": "video",
+          "value": "1885200a-4a7b-4a05-a166-33f9ea912c1f"
+        }
+      }
+    ]
+  }
+}

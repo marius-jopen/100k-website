@@ -420,6 +420,20 @@ const serviceWebglTimings = [
         "--footer-content-opacity",
         (0.1 + revealProgress * 0.9).toFixed(3),
       );
+
+      // The flipped card's bottom corners (see static.css, `.is-flip-morph`).
+      // Cut to a fixed radius they notch black into the wash before anything
+      // has been scrolled, because the collapsed section leaves the page
+      // bottom just 20px — the grid's tail — below the viewport, with 30px of
+      // a 50px arc above it. Grown from zero instead: `revealStart` is where
+      // the page bottom crosses the viewport edge, and the tail travels the
+      // 20px before it, so the corners start forming exactly as the tail
+      // starts to slide and are full by 30px into the reveal proper.
+      const cornerRadius = Math.min(
+        Math.max(postContainer.scrollTop - revealStart + 20, 0),
+        50,
+      );
+      postContainer.style.setProperty("--project-footer-corner-radius", `${cornerRadius}px`);
     };
 
     const requestProjectFooterUpdate = () => {

@@ -2,9 +2,9 @@
   "title": "HelloMe",
   "displayTitle": "HelloMe",
   "shortDescription": "Design Agency",
-  "description": "<p>We developed HelloMe’s responsive website and integrated shop, translating the studio’s visual language into a distinctive and flexible digital platform.</p>\n",
+  "description": "We developed HelloMe’s responsive website and integrated shop, translating the studio’s visual language into a distinctive and flexible digital platform.",
   "externalUrl": "https://hellome.studio",
-  "featuredImage": "/images/hellome3.jpg",
+  "featuredImage": "/images/hellome/hellome3.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "68e93e4c-3339-44ef-a2d8-f57272db6191"

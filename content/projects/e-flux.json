@@ -2,16 +2,16 @@
   "title": "e-flux",
   "displayTitle": "e-flux",
   "shortDescription": "Art News Website",
-  "description": "<p>We rebuilt e-flux’s frontend and interconnected digital platform, migrating hundreds of thousands of files and database records to a new custom CMS while modernizing search, Salesforce, newsletters, reminders, client tools, and the iOS app.</p>\n",
+  "description": "We rebuilt e-flux’s frontend and interconnected digital platform, migrating hundreds of thousands of files and database records to a new custom CMS while modernizing search, Salesforce, newsletters, reminders, client tools, and the iOS app.",
   "externalUrl": "https://e-flux.com",
-  "featuredImage": "/images/e-flux-11.webp",
+  "featuredImage": "/images/e-flux/e-flux-11.webp",
   "desktopBackground": {
     "discriminant": "image",
-    "value": "/images/e-flux-11.webp"
+    "value": "/images/e-flux/e-flux-11.webp"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/e-flux-11.webp"
+    "value": "/images/e-flux/e-flux-11.webp"
   },
   "credits": [
     {
@@ -25,126 +25,126 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-0.webp"
+          "value": "/images/e-flux/e-flux-0.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-17.webp"
+          "value": "/images/e-flux/e-flux-17.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-16.webp"
+          "value": "/images/e-flux/e-flux-16.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-15.webp"
+          "value": "/images/e-flux/e-flux-15.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-14.webp"
+          "value": "/images/e-flux/e-flux-14.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-13.webp"
+          "value": "/images/e-flux/e-flux-13.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-12.webp"
+          "value": "/images/e-flux/e-flux-12.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-11.webp"
+          "value": "/images/e-flux/e-flux-11.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-10.webp"
+          "value": "/images/e-flux/e-flux-10.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-9.webp"
+          "value": "/images/e-flux/e-flux-9.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-8.webp"
+          "value": "/images/e-flux/e-flux-8.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-7.webp"
+          "value": "/images/e-flux/e-flux-7.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-6.webp"
+          "value": "/images/e-flux/e-flux-6.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-5.webp"
+          "value": "/images/e-flux/e-flux-5.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-4.webp"
+          "value": "/images/e-flux/e-flux-4.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-3.webp"
+          "value": "/images/e-flux/e-flux-3.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-2.webp"
+          "value": "/images/e-flux/e-flux-2.webp"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/e-flux-1.webp"
+          "value": "/images/e-flux/e-flux-1.webp"
         }
       }
     ]

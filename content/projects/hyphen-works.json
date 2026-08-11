@@ -2,9 +2,9 @@
   "title": "Hyphen Works",
   "displayTitle": "Hyphen Works",
   "shortDescription": "Design Agency",
-  "description": "<p>We developed Hyphen Works’ bilingual English–Chinese website with a responsive project accordion and a custom mouse-driven image effect.</p>\n",
+  "description": "We developed Hyphen Works’ bilingual English–Chinese website with a responsive project accordion and a custom mouse-driven image effect.",
   "externalUrl": "",
-  "featuredImage": "/images/hyphen.jpg",
+  "featuredImage": "/images/hyphen-works/hyphen.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "9f292311-074e-420b-8070-6cc3d6e36c5a"

@@ -2,9 +2,9 @@
   "title": "Meiré und Meiré",
   "displayTitle": "Meiré und Meiré",
   "shortDescription": "Design Agency",
-  "description": "<p>We developed Meiré und Meiré’s responsive website with filterable overviews, search, extensive archives, and seamless project-to-project navigation.</p>\n",
+  "description": "We developed Meiré und Meiré’s responsive website with filterable overviews, search, extensive archives, and seamless project-to-project navigation.",
   "externalUrl": "https://meireundmeire.com/",
-  "featuredImage": "/images/mum-square.jpg",
+  "featuredImage": "/images/meire-und-meire/mum-square.jpg",
   "desktopBackground": {
     "discriminant": "video",
     "value": "e09ac186-eb23-4078-b479-62f53196f8aa"
@@ -36,14 +36,14 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/meire-und-meire-2020.jpg"
+          "value": "/images/meire-und-meire/meire-und-meire-2020.jpg"
         }
       },
       {
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/mum_dornbracht.jpg"
+          "value": "/images/meire-und-meire/mum_dornbracht.jpg"
         }
       },
       {
@@ -57,7 +57,7 @@
         "caption": "<p>The Carousel</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/mum_carousel.jpg"
+          "value": "/images/meire-und-meire/mum_carousel.jpg"
         }
       },
       {
@@ -85,7 +85,7 @@
         "caption": "",
         "asset": {
           "discriminant": "image",
-          "value": "/images/mum_bmw.jpg"
+          "value": "/images/meire-und-meire/mum_bmw.jpg"
         }
       },
       {

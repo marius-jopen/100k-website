@@ -2,16 +2,16 @@
   "title": "Running Order",
   "displayTitle": "Running Order",
   "shortDescription": "Online Shop",
-  "description": "<p>We designed, developed, and continue to maintain RUNNING ORDER’s responsive ecommerce website, extending the platform with new features as the fashion brand grows.</p>\n",
+  "description": "We designed, developed, and continue to maintain RUNNING ORDER’s responsive ecommerce website, extending the platform with new features as the fashion brand grows.",
   "externalUrl": "https://runningorder.net/",
-  "featuredImage": "/images/Screenshot-2023-10-15-at-21.28.53.jpeg",
+  "featuredImage": "/images/running-order/Screenshot-2023-10-15-at-21.28.53.jpeg",
   "desktopBackground": {
     "discriminant": "image",
-    "value": "/images/Screenshot-2023-10-15-at-21.28.53.jpeg"
+    "value": "/images/running-order/Screenshot-2023-10-15-at-21.28.53.jpeg"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/Screenshot-2023-10-15-at-21.28.35.jpeg"
+    "value": "/images/running-order/Screenshot-2023-10-15-at-21.28.35.jpeg"
   },
   "credits": [
     {

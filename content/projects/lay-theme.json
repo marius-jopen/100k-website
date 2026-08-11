@@ -2,16 +2,16 @@
   "title": "Lay Theme",
   "displayTitle": "Lay Theme",
   "shortDescription": "Website Builder",
-  "description": "<p>We develop and maintain Lay Theme, a WordPress portfolio website builder used by more than 10,000 customers, with over 250 customization options and a flexible row-and-column layout system.</p>\n",
+  "description": "We develop and maintain Lay Theme, a WordPress portfolio website builder used by more than 10,000 customers, with over 250 customization options and a flexible row-and-column layout system.",
   "externalUrl": "https://laytheme.com/",
-  "featuredImage": "/images/laytheme-1.jpg",
+  "featuredImage": "/images/lay-theme/laytheme-1.jpg",
   "desktopBackground": {
     "discriminant": "image",
-    "value": "/images/laytheme.jpg"
+    "value": "/images/lay-theme/laytheme.jpg"
   },
   "mobileBackground": {
     "discriminant": "image",
-    "value": "/images/laytheme.jpg"
+    "value": "/images/lay-theme/laytheme.jpg"
   },
   "credits": [
     {
@@ -36,7 +36,7 @@
         "caption": "<p>A Website made with Lay Theme</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/laytheme_establishment_casting.jpg"
+          "value": "/images/lay-theme/laytheme_establishment_casting.jpg"
         }
       },
       {
@@ -50,14 +50,14 @@
         "caption": "<p>The \"Buy Now\" Page</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/laytheme_buy.jpg"
+          "value": "/images/lay-theme/laytheme_buy.jpg"
         }
       },
       {
         "caption": "<p>A Website using the Lightbox Addon</p>",
         "asset": {
           "discriminant": "image",
-          "value": "/images/laytheme_lightbox.jpg"
+          "value": "/images/lay-theme/laytheme_lightbox.jpg"
         }
       }
     ]

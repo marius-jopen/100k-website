@@ -136,3 +136,4 @@ SENDGRID_TO_EMAIL=contact@100k.studio    # optional
 script, which throws and leaves the service-card reveal animation inert. This
 exists in the current live site too and was ported as-is rather than silently
 changed. Declaring it is a one-line fix if the animation is wanted.
+# 100k-website

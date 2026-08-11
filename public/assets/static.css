@@ -564,9 +564,19 @@ body.is-project-page-transitioning.is-project-to-project-transitioning #app {
   z-index: auto;
 }
 
+/* Contact Us waits with the toolbar instead of riding over the transition, so
+   the three buttons arrive together once the project is open. Same gate and
+   same moment as `.project-toolbar` above. */
 body.is-project-page-transitioning > .become-a-client {
+  opacity: 0;
   pointer-events: none;
+  transition: none;
   z-index: 2147483647;
+}
+
+body.is-project-page-transitioning.is-project-to-project-transitioning > .become-a-client,
+body.is-project-page-transitioning.is-project-toolbar-ready > .become-a-client {
+  opacity: 1;
 }
 
 .project-page-transition.is-closing {
@@ -896,6 +906,88 @@ footer > .contact-us {
   opacity: var(--footer-content-opacity, 0.1);
 }
 
+/* ============================================================
+   The next project is the project page's footer
+   ============================================================ */
+
+/* The same reveal the home page has: the footer sits at the bottom of the
+   scroller and the white content slides up over it, uncovering it through its
+   own rounded corners, while the footer's text fades up out of the dark.
+
+   Sticky rather than the home page's `fixed`, because the scroller here is
+   `#post` and it carries a transform — inside one, `fixed` resolves against
+   that element and scrolls away with the content instead of pinning. Sticky
+   also keeps the block in the flow, so it still reserves its own room. */
+@media (min-width: 701px) {
+  #post .next-project {
+    bottom: 0;
+    position: sticky;
+    z-index: 1;
+  }
+
+  /* The rounded corners cut a notch out of the white page, and behind `#post`
+     — which paints nothing — that notch was showing the home page still sitting
+     underneath. The home page has no such gap because `#frontpage` carries the
+     same colour as its footer, so here the footer's own ground is carried up
+     behind the corners instead: a band of its black, and its blurred still
+     stretched to cover the same band. Both sit under the white page and are
+     only ever seen through the notch. */
+  #post .next-project::before {
+    background-color: #000;
+    content: "";
+    height: 50px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -50px;
+  }
+
+  #post .next-project img {
+    height: calc(100% + 50px);
+    top: -50px;
+  }
+
+  /* The 20px tail is the home page's too (`.main`): without it the last of the
+     content sits right on the curve. */
+  #post .grid {
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    box-shadow: 0 10px 31px rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
+    z-index: 2;
+  }
+
+  /* As on the home page it is the content that fades up, not the ground it
+     sits on — the blurred still behind it stays as it is. */
+  #post .next-project .next-project-text-wrap {
+    opacity: var(--footer-content-opacity, 0.1);
+  }
+
+  /* With the card turned, the morph is the bottom of the page rather than the
+     gallery, so the container's 20px tail would sit under it as a white border
+     and the corners would be cut into that white instead of into the wash.
+
+     The stage grows over the tail rather than the tail being taken away: this
+     changes nothing about the page's height, so it can be held until the wash
+     has finished fading — take the tail away instead and it snaps back the
+     instant the card starts turning home, flashing white under a backdrop that
+     is still there. `height` grows and `padding-bottom` takes the growth back
+     out of the content box, so the card stays centred on the same area it was;
+     only the padding box, which is what the morph is sized against, gets
+     taller. */
+  .project-media-carousel.is-flip-morph .project-media-carousel__sticky {
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    height: calc(100vh + 20px);
+    /* Sticky is held inside its section by the margin box, and the tail lies
+       outside that section — so without this the stage stops 20px short of the
+       container's edge the moment the section gets its length back, which is
+       the band reappearing halfway through the card turning home. */
+    margin-bottom: -20px;
+    padding-bottom: 20px;
+  }
+}
+
 @media (min-width: 700px) {
   #frontpage {
     padding-bottom: var(--footer-height, 600px);
@@ -1201,7 +1293,9 @@ footer > .contact-us {
   visibility: visible;
 }
 
-body.show-project-info-modal #post {
+/* Only the overlay modal (mobile, or a project with no media grid) locks the
+   page behind it. The flip is part of the page and scrolls with it. */
+body.show-project-info-modal:not(.show-project-info-flip) #post {
   overflow: hidden;
 }
 
@@ -1294,6 +1388,14 @@ body.show-project-info-modal #post {
     height: var(--project-media-carousel-height, 100vh);
     position: relative;
     width: 100%;
+  }
+
+  /* The section is only tall so that scrolling can step through the gallery.
+     With the card turned there is no gallery to step through, so that height is
+     dead scroll — the page collapses to what you can actually see, and the next
+     turn of the wheel goes straight to what is below the fold. */
+  body.show-project-info-flip .project-media-carousel {
+    height: 100vh;
   }
 
   .project-media-carousel__sticky {
@@ -1408,7 +1510,8 @@ body.show-project-info-modal #post {
   .project-media-carousel .static-grid-block figcaption {
     align-self: stretch;
     flex: 0 0 auto;
-    margin-top: 0.5em;
+    /* Same 12px the home page's spotlight caption sits under its frame. */
+    margin-top: 12px;
     max-width: min(86vw, 1200px);
     width: 100%;
   }
@@ -1437,14 +1540,15 @@ body.show-project-info-modal #post {
   width: 100%;
 }
 
-/* Matches the home page's spotlight caption (`._bigtext`), centred under the
-   media rather than flush left. */
+/* Matches the home page's spotlight caption (`._bigtext` at `.short-description`'s
+   1.3 line height, sitting 12px under the frame), centred under the media
+   rather than flush left. */
 .static-grid-block figcaption {
   font-family: "Rethink Sans", Arial, Helvetica, sans-serif;
   font-weight: 600;
   font-size: 20px;
-  line-height: 1.2;
-  margin-top: 0.5em;
+  line-height: 1.3;
+  margin-top: 12px;
   text-align: center;
 }
 
@@ -1620,6 +1724,19 @@ body.show-project-info-modal #post {
     backface-visibility: hidden;
   }
 
+  /* Turning the grid away hides it but does not stop it being hit: its figures
+     are absolutely positioned and go on answering clicks through the back of
+     the card, so a click on Visit Website landed on the media behind it. The
+     back face is enabled the same way, from the other side.
+
+     The figures are named as well as the grid: the showing one turns pointer
+     events back on for itself (`.is-project-media-active` above), so inherited
+     `none` from the grid does not reach it. */
+  .project-media-carousel.is-info-flipped .project-media-carousel__flip > .static-project-grid,
+  .project-media-carousel.is-info-flipped .static-grid-block {
+    pointer-events: none;
+  }
+
   .project-media-carousel__back {
     align-items: center;
     backface-visibility: hidden;
@@ -1674,18 +1791,12 @@ body.show-project-info-modal #post {
    Project info flip — refinements
    ============================================================ */
 
-/* The flip keeps the toolbar so Info can act as the way back; only the overlay
-   modal (mobile, no carousel) still hides it. */
-/* While the card is flipped only the top-left Back survives — it is what turns
-   the card back. The Info button and Contact Us step aside. */
+/* The flip keeps the toolbar: the Info button stays exactly where it is,
+   relabelled "Back", and turning the card back is its second job. Only the
+   overlay modal (mobile, no carousel) still hides the toolbar. */
 body.show-project-info-modal.show-project-info-flip .project-toolbar {
   opacity: 1;
   pointer-events: auto;
-}
-
-body.show-project-info-modal.show-project-info-flip .project-toolbar .info-button {
-  opacity: 0 !important;
-  pointer-events: none;
 }
 
 /* Contact Us steps out of the way whenever the info is showing. */
@@ -1941,26 +2052,19 @@ body.show-project-info-modal > .become-a-client {
   }
 }
 
-/* Against the blurred project morph the toolbar's translucent fill reads as
-   muddy, so the surviving Back button goes solid. */
-body:is(.show-project-info-flip, .show-project-contact-flip) .project-toolbar .back-button {
+/* Against the blurred project morph a translucent fill reads as muddy, so the
+   button that turns the card back goes solid. */
+body.show-project-info-flip .project-toolbar .info-button,
+body.show-project-contact-flip .project-toolbar .back-button {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   background: #fff;
 }
 
-/* While the card is turned, Back takes the bottom left — the spot Info leaves
-   behind when it steps aside — so the way out stays under the reader's eye
-   instead of above the card. It cuts straight there: only `opacity` is in the
-   button's transition, so the offset is not animated. */
-@media (min-width: 701px) {
-  body:is(.show-project-info-flip, .show-project-contact-flip) .project-toolbar .back-button {
-    /* Toolbar top is 20px, so travel the viewport height less both insets and
-       the button's own height (100% resolves against it in a translate), then
-       ride up with the arriving next-project section exactly as the Info button
-       does — same `--project-info-lift`, set in SiteShell. */
-    transform: translateY(
-      calc(100vh - 40px - 100% - var(--project-info-lift, 0px))
-    );
-  }
+/* The info box carries its own way out — the Info button, now reading "Back" —
+   so the top-left Back steps aside while it is showing. (The contact card is
+   still closed by that button, so it stays for the contact flip.) */
+body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .back-button {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }

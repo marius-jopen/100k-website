@@ -341,35 +341,34 @@ const serviceWebglTimings = [
   // It cannot just sit in the flow — `#post` is the scroll container and the
   // button lives outside it in the fixed toolbar — so it is lifted by however
   // far the next-project block has risen past the bottom of the viewport.
-  //
-  // Back reads the same measurement: while the card is flipped it takes the
-  // Info button's place, and travelling with the scroll the same way keeps it
-  // behaving like the button it replaced.
-  const projectBackButton = document.querySelector(".project-toolbar .back-button");
-
   if (projectInfoButton instanceof HTMLElement && postContainer) {
     let infoOffsetFrame = 0;
 
     const getInfoButtonLift = () => {
       if (!document.body.classList.contains("show-post")) return 0;
+      // Mid-navigation the outgoing project is still in the scroller, so any
+      // lift measured off it belongs to a page that is on its way out. The
+      // button would hold that raised position until the new content landed and
+      // then drop. It sits at its base until there is something new to measure.
+      if (document.body.classList.contains("is-project-page-transitioning")) return 0;
 
-      const nextProject = postContainer.querySelector(".next-project");
-      if (!(nextProject instanceof HTMLElement)) return 0;
+      // Measured off the content's bottom edge rather than the next-project
+      // block: that block is pinned to the bottom of the scroller, so its own
+      // top never moves. What rises is the white page uncovering it.
+      const content = postContainer.querySelector(".grid");
+      if (!(content instanceof HTMLElement)) return 0;
 
       const scrollerBottom = postContainer.getBoundingClientRect().bottom;
-      const nextProjectTop = nextProject.getBoundingClientRect().top;
+      const contentBottom = content.getBoundingClientRect().bottom;
 
-      // 0 until the section reaches the bottom edge; from then on the button
-      // rides up with it rather than sitting on top of it.
-      return Math.max(scrollerBottom - nextProjectTop, 0);
+      // 0 until the content's end reaches the bottom edge; from then on the
+      // button rides up with it rather than sitting on the footer.
+      return Math.max(scrollerBottom - contentBottom, 0);
     };
 
     const applyInfoButtonLift = () => {
       infoOffsetFrame = 0;
-      const lift = `${getInfoButtonLift()}px`;
-
-      projectInfoButton.style.setProperty("--project-info-lift", lift);
-      projectBackButton?.style.setProperty("--project-info-lift", lift);
+      projectInfoButton.style.setProperty("--project-info-lift", `${getInfoButtonLift()}px`);
     };
 
     const requestInfoButtonLift = () => {
@@ -394,6 +393,59 @@ const serviceWebglTimings = [
     applyInfoButtonLift();
   }
 
+  // The next-project block is the project page's footer, revealed the way the
+  // home page reveals its own: it is pinned to the bottom of the scroller (see
+  // static.css) and the content above it reserves exactly its height, so the
+  // last stretch of scrolling slides the page off it. Its text fades up over
+  // that same stretch — the home page's `--footer-content-opacity`, measured
+  // against `#post` instead of the window.
+  if (postContainer) {
+    let projectFooterFrame = 0;
+
+    const updateProjectFooter = () => {
+      projectFooterFrame = 0;
+
+      const nextProject = postContainer.querySelector(".next-project");
+      if (!(nextProject instanceof HTMLElement)) return;
+
+      const footerHeight = nextProject.offsetHeight;
+      const maxScroll = Math.max(postContainer.scrollHeight - postContainer.clientHeight, 0);
+      const revealDistance = Math.min(footerHeight, maxScroll);
+      const revealStart = maxScroll - revealDistance;
+      const revealProgress = revealDistance > 0
+        ? Math.min(Math.max((postContainer.scrollTop - revealStart) / revealDistance, 0), 1)
+        : 1;
+
+      nextProject.style.setProperty(
+        "--footer-content-opacity",
+        (0.1 + revealProgress * 0.9).toFixed(3),
+      );
+    };
+
+    const requestProjectFooterUpdate = () => {
+      if (!projectFooterFrame) {
+        projectFooterFrame = window.requestAnimationFrame(updateProjectFooter);
+      }
+    };
+
+    postContainer.addEventListener("scroll", requestProjectFooterUpdate, { passive: true });
+    window.addEventListener("resize", requestProjectFooterUpdate);
+
+    // A project's content arrives after the page does, and turning the info
+    // card resizes the scroller under it.
+    new MutationObserver(requestProjectFooterUpdate).observe(postContainer, {
+      childList: true,
+      subtree: true,
+    });
+    new MutationObserver(requestProjectFooterUpdate).observe(document.body, {
+      attributeFilter: ["class"],
+      attributes: true,
+    });
+
+    document.fonts?.ready.then(requestProjectFooterUpdate);
+    updateProjectFooter();
+  }
+
   const updateNextProjectArrow = (root = postContainer) => {
     const label = root?.querySelector(".next-project .next-project-text > span:first-child");
     if (!label || label.dataset.arrowUpdated === "true" || !nextProjectArrowTemplate) return;
@@ -413,6 +465,39 @@ const serviceWebglTimings = [
   const getProjectFlipBack = () =>
     postContainer?.querySelector(".project-media-carousel__back");
 
+  /* ------------------------------------------------- the button's two words */
+
+  // The button that opened the info is also the way out of it, so it is
+  // relabelled in place. Its text lives in three spans — the two copies the
+  // slide-on-hover effect swaps between, plus the hidden sizer that reserves
+  // the width — and all three have to say the same thing.
+  const setProjectInfoButtonLabel = (label) => {
+    projectInfoButton
+      ?.querySelectorAll(".lay-button-effect__text-sizer, .lay-button-effect__text")
+      .forEach((span) => {
+        span.textContent = label;
+      });
+  };
+
+  /** Where the carousel section starts, in the project scroller's coordinates. */
+  const getCarouselScrollTop = (carousel) => {
+    if (!(carousel instanceof HTMLElement) || !postContainer) return 0;
+
+    return Math.max(
+      carousel.getBoundingClientRect().top
+        - postContainer.getBoundingClientRect().top
+        + postContainer.scrollTop,
+      0,
+    );
+  };
+
+  // Where the reader was in the gallery when the card was turned, so closing it
+  // puts them back on the same media rather than at the top of it, and where the
+  // scroll was left once it had turned, so an untouched card can put the scroll
+  // back exactly rather than only equivalently.
+  let galleryScrollTop = null;
+  let flipOpenScrollTop = null;
+
   const setProjectInfoFlipped = (modal, isOpen) => {
     const backFace = getProjectFlipBack();
     if (!(backFace instanceof HTMLElement)) return false;
@@ -420,65 +505,70 @@ const serviceWebglTimings = [
     if (isOpen && modal.parentElement !== backFace) backFace.appendChild(modal);
 
     const carousel = backFace.closest(".project-media-carousel");
-    // On open the class is added after the scroll settles (below); on close it
-    // comes off immediately.
-    if (!isOpen) carousel?.classList.remove("is-info-flipped");
+    const stage = carousel?.querySelector(".project-media-carousel__sticky");
+    const carouselTop = getCarouselScrollTop(carousel);
+    // Where the stage sits in the viewport at this moment. Turning the card
+    // resizes the section it lives in (see static.css), and the scroll is then
+    // set to whatever keeps this number the same — so the card takes over
+    // exactly the space the gallery occupied and nothing jumps, whether the
+    // reader is mid-gallery or at the very bottom with it half out of frame.
+    const stageOffset = stage && postContainer
+      ? Math.round(
+          stage.getBoundingClientRect().top - postContainer.getBoundingClientRect().top,
+        )
+      : 0;
+
+    if (isOpen) galleryScrollTop = postContainer?.scrollTop ?? null;
+
+    // The class comes first so the gallery freezes (see project-media-carousel)
+    // before the scroll moves under it, and the scroll is set in the same task
+    // so only the finished state is ever painted.
+    carousel?.classList.toggle("is-info-flipped", isOpen);
     // Distinguishes the flip from the overlay modal, which still hides the
     // toolbar entirely.
     document.body.classList.toggle("show-project-info-flip", isOpen);
 
-    // The card is only full-screen when the sticky stage is at the top of the
-    // viewport, so get there first and only then turn it over.
-    if (isOpen) {
-      window.setProjectFlipMorphActive?.(true);
-      scrollProjectToCarousel().then(() => {
-        if (document.body.classList.contains("show-project-info-modal")) {
-          carousel?.classList.add("is-info-flipped");
+    if (postContainer && carousel instanceof HTMLElement) {
+      if (isOpen) {
+        postContainer.scrollTop = carouselTop - stageOffset;
+        flipOpenScrollTop = postContainer.scrollTop;
+      } else {
+        // Reading the height flushes the restored layout, so the scroll below
+        // is clamped against the full-length section rather than the short one.
+        const sectionHeight = carousel.getBoundingClientRect().height;
+        const stickyEnd = carouselTop + sectionHeight - postContainer.clientHeight;
+        const returnTo = galleryScrollTop;
+        // Untouched while it was turned: hand back the exact position rather
+        // than one that merely puts the stage in the same place. The two differ
+        // by the container's 20px tail, which the card covers and the gallery
+        // does not, at the very end of the page.
+        const untouched = flipOpenScrollTop !== null
+          && Math.abs(postContainer.scrollTop - flipOpenScrollTop) < 2
+          && returnTo !== null;
+
+        if (untouched) {
+          postContainer.scrollTop = returnTo;
+        } else {
+          postContainer.scrollTop = stageOffset < 0
+            // The card was partly scrolled away, so the gallery comes back just
+            // as far past the end of its sticky run.
+            ? stickyEnd - stageOffset
+            // The card filled the frame, and so does the gallery anywhere in
+            // that run — so return to the media the reader came from, held
+            // inside it. Unclamped, a reader who opened the card at the bottom
+            // and scrolled up to read it would be dropped back down on closing.
+            : Math.min(Math.max(returnTo ?? carouselTop, carouselTop), stickyEnd);
         }
-      });
-      return true;
+
+        galleryScrollTop = null;
+        flipOpenScrollTop = null;
+      }
     }
 
-    window.setProjectFlipMorphActive?.(false);
+    window.setProjectFlipMorphActive?.(isOpen);
+
     return true;
   };
-
-  /**
-   * Brings the carousel stage back to the top of the scroller so the flipped
-   * card is seen against a full-screen backdrop, and resolves once it is there
-   * — the flip is sequenced after it rather than racing it.
-   */
-  const scrollProjectToCarousel = () => new Promise((resolve) => {
-    if (!postContainer) return resolve();
-
-    const carousel = postContainer.querySelector(".project-media-carousel");
-    if (!(carousel instanceof HTMLElement)) return resolve();
-
-    const top = Math.max(
-      carousel.getBoundingClientRect().top
-        - postContainer.getBoundingClientRect().top
-        + postContainer.scrollTop,
-      0,
-    );
-
-    if (Math.abs(postContainer.scrollTop - top) < 2) return resolve();
-
-    postContainer.scrollTo({ top, behavior: "smooth" });
-
-    // No scrollend in every browser yet: settle when the position stops moving,
-    // with a ceiling so a blocked scroll can never strand the flip.
-    let last = postContainer.scrollTop;
-    let still = 0;
-    const started = Date.now();
-    const tick = () => {
-      const now = postContainer.scrollTop;
-      still = Math.abs(now - last) < 1 ? still + 1 : 0;
-      last = now;
-      if (still > 2 || Date.now() - started > 1200) return resolve();
-      window.requestAnimationFrame(tick);
-    };
-    window.requestAnimationFrame(tick);
-  });
 
   const setProjectInfoOpen = (modal, isOpen, restoreFocus = false) => {
     if (!(modal instanceof HTMLElement)) return;
@@ -505,6 +595,9 @@ const serviceWebglTimings = [
     modal.setAttribute("aria-hidden", String(!isOpen));
     document.body.classList.toggle("show-project-info-modal", isOpen);
     projectInfoButton?.setAttribute("aria-expanded", String(isOpen));
+    // Only the flip keeps the button on screen to be clicked again; the overlay
+    // modal hides the toolbar and closes with its own ✕.
+    if (isFlip) setProjectInfoButtonLabel(isOpen ? "Back" : "Info");
 
     if (isOpen) {
       modal.querySelector(".project-info-modal__close")?.focus({ preventScroll: true });
@@ -514,6 +607,21 @@ const serviceWebglTimings = [
     } else if (restoreFocus && projectInfoButton instanceof HTMLElement) {
       projectInfoButton.focus({ preventScroll: true });
     }
+  };
+
+  // Leaving the project — the top-left Back, a next-project link, browser back —
+  // takes the card with it, so the button has to stop saying "Back" and the
+  // flip state has to come off the body.
+  const resetProjectInfoState = () => {
+    if (
+      !document.body.classList.contains("show-project-info-modal")
+      && !document.body.classList.contains("show-project-info-flip")
+    ) return;
+
+    document.body.classList.remove("show-project-info-modal", "show-project-info-flip");
+    window.setProjectFlipMorphActive?.(false);
+    setProjectInfoButtonLabel("Info");
+    projectInfoButton?.setAttribute("aria-expanded", "false");
   };
 
   const enhanceProjectInfoModal = (root = postContainer) => {
@@ -551,28 +659,32 @@ const serviceWebglTimings = [
     closeButton.addEventListener("click", () => setProjectInfoOpen(modal, false, true));
 
     if (root === postContainer && projectInfoButton instanceof HTMLButtonElement) {
+      // A fresh project's card is never the one that was turned, so whatever
+      // the last one left behind — including a button still reading "Back"
+      // after a browser-back — is cleared here.
+      resetProjectInfoState();
       document.body.classList.remove("show-project-info-modal");
       projectInfoButton.disabled = false;
       projectInfoButton.setAttribute("aria-expanded", "false");
     }
   };
 
+  // The one button does both jobs: it says "Info" and turns the card over, then
+  // says "Back" and turns it home again.
   projectInfoButton?.addEventListener("click", () => {
-    setProjectInfoOpen(getProjectInfoModal(), true);
+    const isOpen = document.body.classList.contains("show-project-info-modal");
+    setProjectInfoOpen(getProjectInfoModal(), !isOpen);
   });
 
-  // Two ways out of the info card, both handled here in the capture phase so
-  // they run before the page-transition handler that would otherwise start the
-  // exit animation:
-  //   - the top-left Back button (a second click then leaves the project)
-  //   - a click on the empty space around the card
+  // A click on the empty space around the card also closes it. Handled in the
+  // capture phase so it runs before the page-transition handler that would
+  // otherwise read it as a click on the project underneath.
   document.addEventListener("click", (event) => {
     if (!document.body.classList.contains("show-project-info-modal")) return;
 
     const target = event.target;
     if (!(target instanceof Element)) return;
 
-    const isBackButton = Boolean(target.closest(".back-button"));
     // Anything inside the card itself — text, the Visit Website link — must
     // still work, so only count clicks that land outside the panel.
     const isBackdrop = Boolean(
@@ -582,11 +694,38 @@ const serviceWebglTimings = [
       && !target.closest(".project-info-modal__panel"),
     );
 
-    if (!isBackButton && !isBackdrop) return;
+    if (!isBackdrop) return;
 
     event.preventDefault();
     event.stopImmediatePropagation();
-    setProjectInfoOpen(getProjectInfoModal(), false, isBackButton);
+    setProjectInfoOpen(getProjectInfoModal(), false);
+  }, true);
+
+  // The card is readable while the project scrolls, so the ways out of the
+  // project — the top-left Back, a next-project link — are reachable while it
+  // is still turned. They take `#post` with them, so let the click through and
+  // put the button's label and the flip state back.
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    // Back does not leave the project while the contact form is on the card —
+    // it closes the form first, handled further down — so leave that click be.
+    const isLeavingByBack = Boolean(target.closest(".back-button"))
+      && !document.body.classList.contains("show-project-contact-flip");
+
+    // Only links that actually take `#post` with them. The card's own Visit
+    // Website opens a tab of its own and leaves the project standing, so
+    // tearing the card down for it would be wrong.
+    const link = target.closest("#post a[href]");
+    const isLeavingByLink = Boolean(link)
+      && link.target !== "_blank"
+      && !link.closest(".project-info-modal, .become-a-client-modal");
+
+    if (!isLeavingByBack && !isLeavingByLink) return;
+
+    window.restoreContactModal?.();
+    resetProjectInfoState();
   }, true);
 
   /* ---------------------------------------------- contact on the flip face */
@@ -609,22 +748,13 @@ const serviceWebglTimings = [
     }
 
     const carousel = backFace.closest(".project-media-carousel");
-    if (!isOpen) carousel?.classList.remove("is-info-flipped");
+    // Turns in place, like the info card — no scrolling to the stage first.
+    carousel?.classList.toggle("is-info-flipped", isOpen);
     document.body.classList.toggle("show-project-info-flip", isOpen);
     document.body.classList.toggle("show-project-contact-flip", isOpen);
     document.body.classList.toggle("show-client-modal", isOpen);
+    window.setProjectFlipMorphActive?.(isOpen);
 
-    if (isOpen) {
-      window.setProjectFlipMorphActive?.(true);
-      scrollProjectToCarousel().then(() => {
-        if (document.body.classList.contains("show-project-contact-flip")) {
-          carousel?.classList.add("is-info-flipped");
-        }
-      });
-      return true;
-    }
-
-    window.setProjectFlipMorphActive?.(false);
     return true;
   };
 

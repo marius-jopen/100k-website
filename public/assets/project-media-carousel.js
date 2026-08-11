@@ -307,6 +307,11 @@
     const figures = Array.from(carousel.querySelectorAll(".static-grid-block"));
 
     if (!(scroller instanceof HTMLElement) || !figures.length) return;
+    // Turning the card shortens the section and moves the scroll with it, which
+    // would otherwise read as a jump back to the first media — and the front
+    // face is still facing the reader for the first half of the flip, so that
+    // swap is visible. The gallery holds its place until the card comes back.
+    if (carousel.classList.contains("is-info-flipped")) return;
 
     const stepDistance = Number(carousel.dataset.stepDistance) || 1;
     const carouselTop = getCarouselTop(carousel, scroller);
@@ -415,33 +420,71 @@
     }
 
     const figures = Array.from(carousel.querySelectorAll(".static-grid-block"));
-    const sources = figures
-      .map((figure) => {
-        const media = figure.querySelector("img, video");
-        if (media instanceof HTMLImageElement) return media.currentSrc || media.src;
-        if (media instanceof HTMLVideoElement) return media.getAttribute("poster");
-        return null;
-      })
-      .filter(Boolean);
+    // Not filtered: a layer carries the index of the media it came from, so a
+    // figure that contributes no still leaves a gap rather than shifting every
+    // layer after it out of step with the gallery.
+    const sources = figures.map((figure) => {
+      const media = figure.querySelector("img, video");
+      if (media instanceof HTMLImageElement) return media.currentSrc || media.src;
+      if (media instanceof HTMLVideoElement) return media.getAttribute("poster");
+      return null;
+    });
 
-    if (!sources.length) return;
+    if (!sources.some(Boolean)) return;
 
     const morph = document.createElement("div");
     morph.className = "project-media-carousel__morph";
     morph.setAttribute("aria-hidden", "true");
 
     sources.forEach((source, index) => {
+      if (!source) return;
+
       const layer = document.createElement("div");
       layer.className = "project-media-carousel__morph-layer";
+      layer.dataset.mediaIndex = String(index);
       layer.style.backgroundImage = `url("${source}")`;
-      if (index === 0) layer.classList.add("is-active");
       morph.appendChild(layer);
     });
 
     const stickyStage = carousel.querySelector(".project-media-carousel__sticky");
     // First child so it sits behind the flipper without needing a z-index war.
     stickyStage?.prepend(morph);
-    carousel.morphLayerCount = sources.length;
+    carousel.morphLayerCount = morph.children.length;
+  };
+
+  /**
+   * Points the backdrop at whichever media is on show, without a crossfade —
+   * the wash should come up already carrying the picture the reader was
+   * looking at, not the first one in the project and not wherever the last
+   * visit left the rotation.
+   */
+  const syncFlipMorphToActiveMedia = (carousel) => {
+    const layers = Array.from(
+      carousel.querySelectorAll(".project-media-carousel__morph-layer"),
+    );
+    if (!layers.length) return;
+
+    const activeIndex = Number(carousel.dataset.activeMediaIndex) || 0;
+    let match = layers.findIndex(
+      (layer) => Number(layer.dataset.mediaIndex) === activeIndex,
+    );
+
+    // That media contributed no still (a video without a poster): fall back to
+    // the nearest one before it.
+    if (match < 0) {
+      match = 0;
+      layers.forEach((layer, index) => {
+        if (Number(layer.dataset.mediaIndex) <= activeIndex) match = index;
+      });
+    }
+
+    layers.forEach((layer) => {
+      layer.style.transition = "none";
+      layer.classList.toggle("is-active", layer === layers[match]);
+    });
+    // Flush, so removing the override cannot animate the switch just made.
+    void carousel.offsetHeight;
+    layers.forEach((layer) => layer.style.removeProperty("transition"));
   };
 
   const startFlipMorph = (carousel) => {
@@ -470,12 +513,31 @@
   // it is actually on screen.
   window.setProjectFlipMorphActive = (isActive) => {
     document.querySelectorAll(`#post ${carouselSelector}`).forEach((carousel) => {
+      window.clearTimeout(carousel.morphHoldTimer);
+
       if (isActive) {
         buildFlipBackdrop(carousel);
+        syncFlipMorphToActiveMedia(carousel);
         startFlipMorph(carousel);
-      } else {
-        stopFlipMorph(carousel);
+        carousel.classList.add("is-flip-morph");
+        return;
       }
+
+      stopFlipMorph(carousel);
+
+      // The wash takes its time going out, and the stage has to keep the shape
+      // it wears behind it until it has gone — drop it the moment the card
+      // starts turning home and the container's tail flashes white under a
+      // backdrop that is still on screen. Held for exactly as long as the fade
+      // itself, read off the element so the two cannot drift apart.
+      const morph = carousel.querySelector(".project-media-carousel__morph");
+      const fade = morph
+        ? parseFloat(window.getComputedStyle(morph).transitionDuration) * 1000
+        : 0;
+
+      carousel.morphHoldTimer = window.setTimeout(() => {
+        carousel.classList.remove("is-flip-morph");
+      }, Number.isFinite(fade) ? fade : 0);
     });
   };
 

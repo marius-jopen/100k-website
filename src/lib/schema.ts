@@ -59,6 +59,13 @@ export interface Project {
   layout: ProjectLayout;
 }
 
+export interface ClientLogo {
+  name: string;
+  /** Inline SVG markup; empty when the logo only exists as an image. */
+  svg: string;
+  image: Asset | null;
+}
+
 export interface ServiceCard {
   title: string;
   services: string[];
@@ -67,7 +74,7 @@ export interface ServiceCard {
 
 export interface SiteContent {
   name: string;
-  clients: Asset[];
+  clients: ClientLogo[];
   servicesIntro: string;
   services: ServiceCard[];
   webglBackgrounds: Asset[];

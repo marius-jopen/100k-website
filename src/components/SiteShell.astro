@@ -235,8 +235,15 @@ const serviceWebglTimings = [
       <div class="_bigtext2 our-clients">
         <h2 class="_bigtext2 left-padding">Worked for or worked as subcontractor for</h2>
         <div class="clients-region clients-grid">
+          {/* The logos are inline SVG: sharp at any size, no request of their
+              own, and the colour is the file's. The ones no vector exists for
+              still come through as an image. */}
           {clients.map((client) => (
-            <span><img src={client.src} sizes="(max-width: 700px) 50vw, 25vw" alt={client.alt} /></span>
+            client.svg
+              ? <span role="img" aria-label={client.name} set:html={client.svg}></span>
+              : client.image && (
+                <span><img src={client.image.src} sizes="(max-width: 700px) 50vw, 25vw" alt={client.name} /></span>
+              )
           ))}
         </div>
       </div>

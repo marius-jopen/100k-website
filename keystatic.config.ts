@@ -177,10 +177,32 @@ export default config({
             itemLabel: (props) => props.value ?? "Project",
           },
         ),
-        clients: fields.array(imageField("Client logo"), {
-          label: "Client logos",
-          itemLabel: (props) => props.value?.filename ?? "Logo",
-        }),
+        // Logos are pasted in as SVG code rather than uploaded: inline in the
+        // page they stay sharp at any size and cost no request. The image is
+        // the fallback for the ones no vector exists for.
+        clients: fields.array(
+          fields.object(
+            {
+              name: fields.text({
+                label: "Name",
+                validation: { isRequired: true },
+              }),
+              svg: fields.text({
+                label: "SVG code",
+                description:
+                  "Paste the whole <svg> element. Give every id a name of its own — ten of these end up in one page and identical ids overwrite each other.",
+                multiline: true,
+                defaultValue: "",
+              }),
+              image: imageField("Image", "Only used when there is no SVG code."),
+            },
+            { label: "Client logo" },
+          ),
+          {
+            label: "Client logos",
+            itemLabel: (props) => props.fields.name.value || "Logo",
+          },
+        ),
         servicesIntro: fields.text({
           label: "Services intro",
           multiline: true,

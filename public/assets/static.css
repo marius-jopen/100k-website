@@ -1254,7 +1254,10 @@ footer > .contact-us {
   padding: 20px;
 }
 
-.clients-grid img {
+/* The SVGs carry a viewBox and no width, so they are sized here exactly as the
+   images are — held inside the cell whichever way round the logo is. */
+.clients-grid img,
+.clients-grid svg {
   display: block;
   height: auto;
   max-height: 100px;
@@ -1272,7 +1275,8 @@ footer > .contact-us {
     padding: 15px;
   }
 
-  .clients-grid img {
+  .clients-grid img,
+  .clients-grid svg {
     max-height: 80px;
   }
 }

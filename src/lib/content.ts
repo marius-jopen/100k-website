@@ -93,7 +93,11 @@ if (!siteEntry) {
 
 export const siteContent: SiteContent = {
   name: siteEntry.name,
-  clients: siteEntry.clients.map(imageAsset).filter((asset): asset is Asset => Boolean(asset)),
+  clients: siteEntry.clients.map((client) => ({
+    name: client.name,
+    svg: client.svg.trim(),
+    image: imageAsset(client.image),
+  })),
   servicesIntro: siteEntry.servicesIntro,
   services: siteEntry.services.map((service) => ({
     title: service.title,

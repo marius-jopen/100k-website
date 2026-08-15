@@ -2237,13 +2237,28 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   white-space: nowrap;
 }
 
-/* Exactly the list's own highlighted pill (`.projects-list a.hover`). */
+/* Exactly the list's own highlighted pill (`.projects-list a.hover`), arrow
+   and all: it takes the place of the left padding and the text steps aside. */
 .project-filter__option:hover,
 .project-filter__option:focus-visible,
 .project-filter__option.is-active {
+  align-items: center;
   background-color: #000;
   border-color: #000;
   color: #fff;
+  display: inline-flex;
+  gap: 0.25em;
+  padding-left: 0.25em;
+}
+
+.project-filter__option .button-arrow {
+  display: none;
+}
+
+.project-filter__option:hover .button-arrow,
+.project-filter__option:focus-visible .button-arrow,
+.project-filter__option.is-active .button-arrow {
+  display: block;
 }
 
 /* Clickable: it takes the reader back to the unfiltered list at the top. */
@@ -2296,6 +2311,14 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
 
   .project-filter__option {
     padding: 5px 10px 4px;
+  }
+
+  /* Re-stated after the shorthand above, which would otherwise put the
+     arrow's own left padding back to 10px. */
+  .project-filter__option:hover,
+  .project-filter__option:focus-visible,
+  .project-filter__option.is-active {
+    padding-left: 0.25em;
   }
 }
 

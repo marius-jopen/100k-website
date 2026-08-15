@@ -207,9 +207,11 @@ const serviceWebglTimings = [
               </span>
             </button></h2>
             <div class="project-filter__menu" id="project-filter-menu">
+              {/* `is-highlighted` is the black pill and moves with the
+                  pointer; it starts on the category the list is showing. */}
               {filterOptions.map((option) => (
                 <a
-                  class={`project-filter__option ${option.value === (activeTag ?? "") ? "is-active" : ""}`}
+                  class={`project-filter__option ${option.value === (activeTag ?? "") ? "is-active is-highlighted" : ""}`}
                   href={projectTagUrl(option.value)}
                   data-tag={option.value}
                   data-headline={option.headline}

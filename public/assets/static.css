@@ -2238,10 +2238,10 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
 }
 
 /* Exactly the list's own highlighted pill (`.projects-list a.hover`), arrow
-   and all: it takes the place of the left padding and the text steps aside. */
-.project-filter__option:hover,
-.project-filter__option:focus-visible,
-.project-filter__option.is-active {
+   and all: it takes the place of the left padding and the text steps aside.
+   Driven by a class rather than `:hover`, because — again as in the list —
+   only one pill is ever black, and it stays on the one last pointed at. */
+.project-filter__option.is-highlighted {
   align-items: center;
   background-color: #000;
   border-color: #000;
@@ -2255,9 +2255,7 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   display: none;
 }
 
-.project-filter__option:hover .button-arrow,
-.project-filter__option:focus-visible .button-arrow,
-.project-filter__option.is-active .button-arrow {
+.project-filter__option.is-highlighted .button-arrow {
   display: block;
 }
 
@@ -2315,9 +2313,7 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
 
   /* Re-stated after the shorthand above, which would otherwise put the
      arrow's own left padding back to 10px. */
-  .project-filter__option:hover,
-  .project-filter__option:focus-visible,
-  .project-filter__option.is-active {
+  .project-filter__option.is-highlighted {
     padding-left: 0.25em;
   }
 }

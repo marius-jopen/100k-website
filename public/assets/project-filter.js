@@ -115,6 +115,7 @@
     const headline = option.dataset.headline || option.textContent.trim();
 
     options.forEach((entry) => entry.classList.toggle("is-active", entry === option));
+    setHighlightedOption(option);
     if (currentLabel) currentLabel.textContent = headline;
     if (sizerLabel) sizerLabel.textContent = headline;
 
@@ -175,13 +176,28 @@
     return index;
   };
 
+  // The black pill, exactly as the list carries it: one at a time, following
+  // the pointer and staying where it was left.
+  const setHighlightedOption = (option) => {
+    options.forEach((entry) => entry.classList.toggle("is-highlighted", entry === option));
+  };
+
   options.forEach((option) => {
-    option.addEventListener("mouseenter", () => {
+    const highlight = () => {
+      setHighlightedOption(option);
       const index = previewIndexFor(option.dataset.tag || "");
       if (index >= 0) window.previewProjectSpotlight?.(index);
-    });
+    };
 
-    option.addEventListener("mouseleave", () => window.clearProjectSpotlightPreview?.());
+    option.addEventListener("mouseenter", highlight);
+    option.addEventListener("focus", highlight);
+  });
+
+  // Handed back on the way out of the menu rather than out of an entry, so
+  // crossing the gap between two of them changes nothing.
+  menu.addEventListener("mouseleave", () => {
+    setHighlightedOption(optionFor(activeTag));
+    window.clearProjectSpotlightPreview?.();
   });
 
   /* --------------------------------------------------------- the menu */
@@ -189,8 +205,11 @@
   function setMenuOpen(open) {
     isMenuOpen = open;
     // A menu that closes under the pointer never gets its `mouseleave`, so the
-    // preview is handed back here rather than only on the way out of an entry.
-    if (!open) window.clearProjectSpotlightPreview?.();
+    // preview and the highlight are handed back here as well.
+    if (!open) {
+      window.clearProjectSpotlightPreview?.();
+      setHighlightedOption(optionFor(activeTag));
+    }
     filter.classList.toggle("is-filter-open", open);
     toggle.setAttribute("aria-expanded", String(open));
   }

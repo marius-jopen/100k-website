@@ -2,6 +2,7 @@
   "title": "Marcel Wepper",
   "displayTitle": "Marcel Wepper",
   "shortDescription": "Photographer Director",
+  "tag": "portfolio",
   "description": "We developed a Prismic and SvelteKit portfolio for filmmaker Marcel Wepper, centered on a full-screen video slideshow with custom captions.",
   "externalUrl": "https://www.marcelwepper.com/",
   "featuredImage": "/images/marcel-wepper/Screenshot-2023-10-15-at-18.23.02-scaled.jpeg",

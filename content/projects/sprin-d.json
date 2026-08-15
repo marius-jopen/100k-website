@@ -2,6 +2,7 @@
   "title": "SPRIN-D",
   "displayTitle": "SPRIN-D",
   "shortDescription": "Federal Agency for Innovation",
+  "tag": "business",
   "description": "We developed the bilingual, server-rendered SPRIND website with Strapi CMS from a design by Meiré und Meiré.",
   "externalUrl": "https://www.sprind.org/",
   "featuredImage": "/images/sprin-d/sprind-rectangle.jpg",

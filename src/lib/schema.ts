@@ -48,6 +48,8 @@ export interface Project {
   title: string;
   displayTitle: string;
   shortDescription: string;
+  /** Category slug from `PROJECT_TAGS`; drives the homepage filter. */
+  tag: string;
   description: string;
   externalUrl: string;
   featuredImage: Asset | null;

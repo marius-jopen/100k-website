@@ -148,6 +148,7 @@ export const projects: Project[] = projectEntries
       title: entry.title,
       displayTitle: entry.displayTitle,
       shortDescription: entry.shortDescription,
+      tag: entry.tag,
       description: entry.description,
       externalUrl: entry.externalUrl,
       featuredImage: imageAsset(entry.featuredImage),

@@ -33,15 +33,37 @@
   let currentFrameIndex = -1;
   let hoveredProjectIndex = -1;
 
+  /*
+   * A category filter hides rows without touching the slides — a slide is
+   * addressed by its position in the full project list everywhere else on the
+   * page — so the two are kept apart here: `activeIndices` is the rows still on
+   * screen, in order, and everything that reads as a position in the list
+   * (`getScrollPosition`, the stack, the row measurements) works in that space
+   * and is translated back through it before touching a slide.
+   */
+  let activeIndices = [];
+  let activeRankByIndex = new Map();
+
+  const refreshActiveProjects = () => {
+    activeIndices = projectRows
+      .map((row, index) => (row.classList.contains("is-filtered-out") ? -1 : index))
+      .filter((index) => index >= 0);
+    activeRankByIndex = new Map(activeIndices.map((index, rank) => [index, rank]));
+  };
+
+  refreshActiveProjects();
+
   const getSpotlightStackOffset = (distance, step) => {
     if (distance <= 0) return 0;
     return step * (1 - Math.pow(spotlightStepDecay, distance)) / (1 - spotlightStepDecay);
   };
 
   const measureProjectRows = () => {
-    projectRowTops = projectRows.map((row) => row.getBoundingClientRect().top + window.scrollY);
+    projectRowTops = activeIndices.map(
+      (index) => projectRows[index].getBoundingClientRect().top + window.scrollY,
+    );
 
-    if (!projectListSection) return;
+    if (!projectListSection || !projectRowTops.length) return;
     if (window.innerWidth <= 700) {
       projectListSection.style.removeProperty("padding-bottom");
       return;
@@ -196,13 +218,30 @@
     return true;
   };
 
+  // The two steps either side, counted along the list as it stands — with a
+  // category filter on, the project that follows is rarely the next slide.
+  const framePrefetchIndices = (index) => {
+    const rank = activeRankByIndex.get(index);
+    if (rank === undefined) return [index];
+
+    const indices = [];
+    for (let offset = -framePrefetchRadius; offset <= framePrefetchRadius; offset += 1) {
+      const neighbour = activeIndices[rank + offset];
+      if (neighbour !== undefined) indices.push(neighbour);
+    }
+
+    return indices;
+  };
+
   const evictFrameMediaBeyondRadius = (index, { keepVisible = false } = {}) => {
+    const keep = new Set(framePrefetchIndices(index));
+
     Array.from(frameMediaByIndex.keys()).forEach((cachedIndex) => {
       if (keepVisible && cachedIndex === currentFrameIndex) return;
       // Never drop the clip we are actively waiting on — tearing down its
       // player mid-load is what leaves the box with nothing to swap in.
       if (cachedIndex === pendingFrameIndex) return;
-      if (Math.abs(cachedIndex - index) > framePrefetchRadius) releaseFrameMedia(cachedIndex);
+      if (!keep.has(cachedIndex)) releaseFrameMedia(cachedIndex);
     });
   };
 
@@ -253,9 +292,7 @@
     // most a handful of clips ever compete for bandwidth. The visible one is
     // spared even on a long jump — it is the fallback that keeps the box full.
     evictFrameMediaBeyondRadius(index, { keepVisible: true });
-    for (let offset = -framePrefetchRadius; offset <= framePrefetchRadius; offset += 1) {
-      ensureFrameMedia(index + offset);
-    }
+    framePrefetchIndices(index).forEach(ensureFrameMedia);
 
     if (index === currentFrameIndex || index === pendingFrameIndex) return;
 
@@ -307,7 +344,10 @@
         return;
       }
 
-      const distance = Math.abs(index - scrollPosition);
+      const rank = activeRankByIndex.get(index);
+      if (rank === undefined) return;
+
+      const distance = Math.abs(rank - scrollPosition);
       const opacity = Math.max(
         projectButtonMinimumOpacity,
         1 - distance * projectButtonOpacityStep,
@@ -322,7 +362,7 @@
     const scrollPosition = getScrollPosition();
     updateProjectButtonOpacities(scrollPosition);
 
-    if (window.innerWidth <= 700 || !slides.length) {
+    if (window.innerWidth <= 700 || !activeIndices.length) {
       slides.forEach((slide) => {
         slide.classList.remove("is-spotlight-frame-source", "has-spotlight-shadow");
       });
@@ -333,39 +373,50 @@
       return;
     }
 
-    const spotlightWidth = slides[0].offsetWidth;
+    const spotlightWidth = slides[activeIndices[0]].offsetWidth;
     const spotlightHalfWidth = spotlightWidth / 2;
     const spotlightCenter = spotlight.clientWidth / 2;
-    const scales = slides.map((_, index) => Math.pow(spotlightScale, Math.abs(index - scrollPosition)));
-    const opacities = slides.map((_, index) => Math.pow(spotlightOpacityStep, Math.abs(index - scrollPosition)));
-    const visualWidths = slides.map((slide, index) => slide.offsetWidth * scales[index]);
 
     slides.forEach((slide, index) => {
-      const distance = index - scrollPosition;
+      const rank = activeRankByIndex.get(index);
+
+      // Filtered out of the list, so it has no place in the stack.
+      if (rank === undefined) {
+        slide.style.setProperty("--project-spotlight-scale", 0);
+        slide.style.setProperty("--project-spotlight-opacity", 0);
+        slide.style.pointerEvents = "none";
+        slide.classList.remove("has-spotlight-shadow");
+        return;
+      }
+
+      const distance = rank - scrollPosition;
       const absoluteDistance = Math.abs(distance);
+      const scale = Math.pow(spotlightScale, absoluteDistance);
+      const opacity = Math.pow(spotlightOpacityStep, absoluteDistance);
+      const visualWidth = slide.offsetWidth * scale;
       const stackOffset = getSpotlightStackOffset(absoluteDistance, spotlightStep);
       let desiredCenter = spotlightCenter;
 
       if (distance > 0) {
-        desiredCenter += spotlightHalfWidth + stackOffset - visualWidths[index] / 2;
+        desiredCenter += spotlightHalfWidth + stackOffset - visualWidth / 2;
       } else if (distance < 0) {
-        desiredCenter -= spotlightHalfWidth + stackOffset - visualWidths[index] / 2;
+        desiredCenter -= spotlightHalfWidth + stackOffset - visualWidth / 2;
       }
 
-      const visualLeft = desiredCenter - visualWidths[index] / 2;
-      const visualRight = desiredCenter + visualWidths[index] / 2;
+      const visualLeft = desiredCenter - visualWidth / 2;
+      const visualRight = desiredCenter + visualWidth / 2;
       let clipInset = "inset(0)";
 
-      if (scales[index] > 0 && distance > 0 && visualLeft < spotlightCenter - spotlightHalfWidth) {
-        clipInset = `inset(0 0 0 ${(spotlightCenter - spotlightHalfWidth - visualLeft) / scales[index]}px)`;
-      } else if (scales[index] > 0 && distance < 0 && visualRight > spotlightCenter + spotlightHalfWidth) {
-        clipInset = `inset(0 ${(visualRight - spotlightCenter - spotlightHalfWidth) / scales[index]}px 0 0)`;
+      if (scale > 0 && distance > 0 && visualLeft < spotlightCenter - spotlightHalfWidth) {
+        clipInset = `inset(0 0 0 ${(spotlightCenter - spotlightHalfWidth - visualLeft) / scale}px)`;
+      } else if (scale > 0 && distance < 0 && visualRight > spotlightCenter + spotlightHalfWidth) {
+        clipInset = `inset(0 ${(visualRight - spotlightCenter - spotlightHalfWidth) / scale}px 0 0)`;
       }
 
-      slide.style.setProperty("--project-spotlight-scale", scales[index]);
+      slide.style.setProperty("--project-spotlight-scale", scale);
       slide.style.setProperty(
         "--project-spotlight-opacity",
-        projectSpotlightOptions.showGhostImages ? opacities[index] : 0,
+        projectSpotlightOptions.showGhostImages ? opacity : 0,
       );
       slide.style.setProperty("--project-spotlight-translate-x", `${desiredCenter - spotlightCenter}px`);
       slide.style.setProperty("--project-spotlight-clip", clipInset);
@@ -376,8 +427,8 @@
       );
     });
 
-    slides
-      .map((_, index) => ({ index, distance: Math.abs(index - scrollPosition) }))
+    activeIndices
+      .map((index, rank) => ({ index, distance: Math.abs(rank - scrollPosition) }))
       .sort((a, b) => b.distance - a.distance)
       .forEach((item, stackIndex) => {
         slides[item.index].style.zIndex = String(stackIndex + 1);
@@ -386,7 +437,9 @@
     // Hovering a project in the list takes precedence over the scroll position,
     // so an incoming scroll frame does not yank the preview back.
     syncSpotlightFrame(
-      hoveredProjectIndex >= 0 ? hoveredProjectIndex : Math.floor(scrollPosition + 0.0001),
+      hoveredProjectIndex >= 0
+        ? hoveredProjectIndex
+        : activeIndices[Math.floor(scrollPosition + 0.0001)],
     );
   };
 
@@ -405,12 +458,47 @@
   };
 
   window.alignProjectSpotlightToIndex = (index) => {
-    const projectIndex = Math.min(Math.max(Number(index) || 0, 0), projectRows.length - 1);
+    // Called with a project's place in the full list — the project that is
+    // being returned from, which a filter may have since taken off screen.
+    const rank = activeRankByIndex.get(Math.max(Number(index) || 0, 0)) ?? 0;
 
     measureProjectRows();
+    if (!projectRowTops.length) return;
+
+    const projectIndex = Math.min(rank, projectRowTops.length - 1);
     window.scrollTo(0, Math.max(0, projectRowTops[projectIndex] - projectActivationOffset));
     updateSpotlightSlideScales();
   };
+
+  /*
+   * The category menu previews what a filter would hold: hovering an entry
+   * puts one of its projects in the frame. It goes through the same channel a
+   * hovered row does, so it takes the same precedence over the scroll position
+   * and is given up again the same way.
+   */
+  window.previewProjectSpotlight = (index) => {
+    const projectIndex = Number(index);
+
+    if (window.innerWidth <= 700) return;
+    if (!Number.isInteger(projectIndex) || projectIndex < 0 || projectIndex >= slides.length) return;
+
+    hoveredProjectIndex = projectIndex;
+    syncSpotlightFrame(projectIndex);
+  };
+
+  window.clearProjectSpotlightPreview = () => {
+    if (hoveredProjectIndex < 0) return;
+    hoveredProjectIndex = -1;
+    scheduleSpotlightUpdate();
+  };
+
+  // The category filter hides rows; the spotlight follows the ones that are
+  // left, and re-measures because the list has just changed height.
+  window.addEventListener("projectfilterchange", () => {
+    refreshActiveProjects();
+    hoveredProjectIndex = -1;
+    refreshSpotlightLayout();
+  });
 
   // The legacy app already moves the `.hover` highlight down the list on
   // mouseenter; this makes the preview follow it. Leaving a row hands control

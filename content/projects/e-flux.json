@@ -2,6 +2,7 @@
   "title": "e-flux",
   "displayTitle": "e-flux",
   "shortDescription": "Art News Website",
+  "tag": "culture",
   "description": "We rebuilt e-flux’s frontend and interconnected digital platform, migrating hundreds of thousands of files and database records to a new custom CMS while modernizing search, Salesforce, newsletters, reminders, client tools, and the iOS app.",
   "externalUrl": "https://e-flux.com",
   "featuredImage": "/images/e-flux/e-flux-11.webp",

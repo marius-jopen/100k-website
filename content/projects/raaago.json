@@ -2,6 +2,7 @@
   "title": "Raaago App",
   "displayTitle": "Raaago App",
   "shortDescription": "iOS Travelling App",
+  "tag": "product",
   "description": "We developed the Raaago iOS app in Swift with Random Access Studios and created its companion website, forming one coherent digital platform for discovering places around Berlin.",
   "externalUrl": "https://www.raaago.com/",
   "featuredImage": "/images/raaago/raaago1.png",

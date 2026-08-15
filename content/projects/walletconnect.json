@@ -2,6 +2,7 @@
   "title": "WalletConnect",
   "displayTitle": "WalletConnect",
   "shortDescription": "Crypto Tools for Developers",
+  "tag": "crypto",
   "description": "We developed WalletConnect’s website in one month using Next.js and Prismic, delivering a fast and flexible platform for the Web3 company.",
   "externalUrl": "https://walletconnect.com",
   "featuredImage": "/images/walletconnect/wc200.jpg",

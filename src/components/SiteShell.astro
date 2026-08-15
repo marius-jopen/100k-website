@@ -1,8 +1,36 @@
 ---
 import { projects, siteContent } from "../lib/content";
 import type { Asset } from "../lib/schema";
+import {
+  ALL_PROJECTS_LABEL,
+  PROJECT_FILTER_PROMPT,
+  PROJECT_TAGS,
+  findProjectTag,
+  projectTagHeadline,
+  projectTagUrl,
+} from "../lib/tags";
 import ArrowRight from "./ArrowRight.astro";
 import XMark from "./XMark.astro";
+
+interface Props {
+  /** Category the list starts filtered to; `/tag/<value>/` sets it. */
+  activeTag?: string | null;
+}
+
+// The shell is also what a project page renders behind its own content, and
+// that one is never filtered.
+const activeTag = findProjectTag(Astro.props.activeTag)?.value ?? null;
+const filterHeadline = projectTagHeadline(activeTag);
+// The list highlights whatever is level with the top of the screen, which
+// before any scrolling is its first row — the first one the filter left.
+const highlightedIndex = projects.findIndex((project) => !activeTag || project.tag === activeTag);
+// Every category is prerendered, so each menu entry is a real link: without
+// JavaScript it navigates to a page that is already filtered, and with it the
+// click is intercepted and the list is filtered where it stands.
+const filterOptions = [
+  { value: "", label: ALL_PROJECTS_LABEL, headline: projectTagHeadline(null) },
+  ...PROJECT_TAGS.map((tag) => ({ value: tag.value, label: tag.headline, headline: tag.headline })),
+];
 
 const orientationClass = (asset: Asset) => {
   if (!asset.width || !asset.height) return undefined;
@@ -148,12 +176,52 @@ const serviceWebglTimings = [
         </div>
 
         <div class="plist-wrap-2">
-          <h2 class="_bigtext left-padding selected-projects-headline">Selected Projects</h2>
+          {/* The heading is the control: it reads as the list's title, slides
+              to the invitation on hover, and opens the category menu on click. */}
+          {/* `_bigtext` on the wrapper, not just the heading: it is what grows
+              to 25px past 1500px wide, and the menu has to grow with the
+              project list it stands in for. */}
+          <div class="_bigtext project-filter" data-active-tag={activeTag ?? ""}>
+            <h2 class="_bigtext selected-projects-headline project-filter__heading">{
+              /* Nothing between the tag and the button: it is inline-block, and
+                 a whitespace text node in front of it would indent it. */
+            }<button
+              class="project-filter__toggle"
+              type="button"
+              data-lay-button-effect-text-slide="1"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="project-filter-menu"
+            >
+              <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+                {/* Both labels sit in the sizer so the button is as wide as the
+                    longer of the two and neither ever gets clipped. */}
+                <span class="lay-button-effect__text-sizer" aria-hidden="true">
+                  <span class="project-filter__sizer-text">{filterHeadline}</span>
+                  <span>{PROJECT_FILTER_PROMPT}</span>
+                </span>
+                <span class="lay-button-effect__text-clip">
+                  <span class="lay-button-effect__text lay-button-effect__text--current">{filterHeadline}</span>
+                  <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">{PROJECT_FILTER_PROMPT}</span>
+                </span>
+              </span>
+            </button></h2>
+            <div class="project-filter__menu" id="project-filter-menu">
+              {filterOptions.map((option) => (
+                <a
+                  class={`project-filter__option ${option.value === (activeTag ?? "") ? "is-active" : ""}`}
+                  href={projectTagUrl(option.value)}
+                  data-tag={option.value}
+                  data-headline={option.headline}
+                >{option.label}</a>
+              ))}
+            </div>
+          </div>
           <div class="_bigtext projects-list-region">
             <div class="projects-list">
               {projects.map((project, index) => (
-                <div>
-                  <a class={`project-list-item ${index === 0 ? "hover" : ""}`} href={`/${project.slug}/`} data-ix={index}><ArrowRight />{project.title}</a>
+                <div class={activeTag && project.tag !== activeTag ? "is-filtered-out" : undefined} data-tag={project.tag}>
+                  <a class={`project-list-item ${index === highlightedIndex ? "hover" : ""}`} href={`/${project.slug}/`} data-ix={index}><ArrowRight />{project.title}</a>
                   {project.shortDescription && <div class="short-description">{project.shortDescription}</div>}
                 </div>
               ))}
@@ -1038,6 +1106,7 @@ const serviceWebglTimings = [
 </script>
 
 <script is:inline src="/assets/service-webgl-slideshow.js"></script>
+<script is:inline src="/assets/project-filter.js"></script>
 <script is:inline src="/assets/project-spotlight.js"></script>
 <script is:inline src="/assets/project-page-transition.js"></script>
 

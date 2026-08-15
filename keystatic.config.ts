@@ -1,4 +1,5 @@
 import { config, collection, singleton, fields } from "@keystatic/core";
+import { PROJECT_TAGS } from "./src/lib/tags";
 
 /**
  * Images and videos are handled differently on purpose.
@@ -104,6 +105,16 @@ export default config({
         shortDescription: fields.text({
           label: "Short description",
           defaultValue: "",
+        }),
+        // Exactly one category per project — it is what the homepage filter
+        // sorts the list by, and a project in two places would show up twice.
+        tag: fields.select({
+          label: "Category",
+          description: `Which filter the project shows up under. ${PROJECT_TAGS.map(
+            (tag) => `${tag.label}: ${tag.description}`,
+          ).join(" · ")}`,
+          options: PROJECT_TAGS.map((tag) => ({ label: tag.label, value: tag.value })),
+          defaultValue: PROJECT_TAGS[0].value,
         }),
         description: fields.text({
           label: "Description",

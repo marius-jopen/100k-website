@@ -60,6 +60,28 @@ defined once and reused everywhere.
 
 The schema lives in `keystatic.config.ts`.
 
+### Categories
+
+Every project carries one **Category**. The six of them are defined in
+`src/lib/tags.ts` — the only place they are written down. Keystatic builds its
+select from that list, the homepage builds the filter menu behind the "Selected
+Projects" heading from it, and `src/pages/tag/[tag].astro` prerenders one
+already-filtered copy of the homepage per category:
+
+| URL                  | Shows                                                  |
+| -------------------- | ------------------------------------------------------ |
+| `/`                  | Every project, heading reads "Selected Projects"        |
+| `/tag/culture/`      | Art, music, magazines, labels, institutions of culture  |
+| `/tag/crypto/`       | Web3, wallets, tokens, NFT platforms                    |
+| `/tag/portfolio/`    | Studios, agencies, architects, photographers, directors |
+| `/tag/brand/`        | Campaigns, takeovers and shops for brands               |
+| `/tag/product/`      | Apps, plugins, tools and the sites that sell them       |
+| `/tag/business/`     | Companies, agencies of the state, research, services    |
+
+Choosing a category in the menu never reloads the page: `project-filter.js`
+hides the other rows and pushes the matching URL, so the address is always one
+that can be opened cold. Adding a category is one entry in `src/lib/tags.ts`.
+
 ## Media
 
 ### Images

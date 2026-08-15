@@ -811,7 +811,7 @@ footer .become-a-client {
   color: #111 !important;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] {
   overflow: hidden;
 }
 
@@ -827,15 +827,15 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   position: fixed;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__content--text-slide {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__content--text-slide {
   position: static;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-sizer {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-sizer {
   visibility: hidden;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-clip {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-clip {
   border-radius: inherit;
   inset: 0;
   overflow: hidden;
@@ -844,7 +844,7 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   z-index: 1;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
   align-items: center;
   box-sizing: border-box;
   display: flex;
@@ -855,32 +855,32 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   transition: transform 350ms cubic-bezier(.4, .2, .2, 1);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--current {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--current {
   transform: translate(0, 0);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--next {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--next {
   transform: translateY(-100%);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--current,
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--current {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--current,
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--current {
   transform: translateY(100%);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--next,
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--next {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--next,
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--next {
   transform: translate(0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
     transition-duration: .01ms;
   }
 }
 
 @media (max-width: 699px) {
-  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
     padding: 5px 10px;
   }
 
@@ -2083,4 +2083,226 @@ body.show-project-contact-flip .project-toolbar .back-button {
 body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .back-button {
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+/* ============================================================
+   Project categories — the list's heading is its filter
+   ============================================================ */
+
+/* The heading reads as a title, slides to the invitation on hover, and drops
+   the categories underneath on click. Its own box stays transparent and
+   click-through so nothing changes until the pointer is actually on it. */
+.project-filter {
+  /* Flush with the list it filters: `.projects-list a` carries the same 20px,
+     so the heading's pill and the project pills share one left edge — and
+     their text, 20px further in, shares another. */
+  margin: 0 0 20px 20px;
+  padding: 0;
+  pointer-events: none;
+  position: relative;
+  width: -moz-fit-content;
+  width: fit-content;
+  /* Above `.projects-list-region`, which is raised to 3 below the breakpoint —
+     the open menu hangs over the first rows of the list it is filtering. */
+  z-index: 5;
+}
+
+/* The heading's own spacing lives on the wrapper, which is what the menu is
+   positioned against. */
+.project-filter__heading {
+  margin: 0;
+}
+
+/* Deliberately not in the shared button sizing further up: those hold every
+   button at 20px, while this one has to stay the size of the project list it
+   heads — which grows to 25px past 1500px wide. Left padding is missing on
+   purpose; see the hover rule below. */
+.project-filter__toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+  font: inherit;
+  line-height: 1.3;
+  margin: 0;
+  outline: none;
+  padding: 5px 20px 4px 0;
+  pointer-events: auto;
+  position: relative;
+  text-align: left;
+  transition: background-color 350ms ease, border-color 350ms ease, padding-left 350ms ease;
+}
+
+/* The same pill the projects below it are drawn as, down to the grey of its
+   outline — it only takes that shape once it is being used. At rest the
+   heading sits on the list's left edge, where a project pill starts; the pill
+   it becomes needs its 20px of padding, so the text travels those 20px inwards
+   as the fill arrives and lands on the project titles. */
+.project-filter__toggle:hover,
+.project-filter__toggle:focus-visible,
+.project-filter.is-filter-open .project-filter__toggle {
+  background-color: #fff;
+  border-color: #c5c5c5;
+  padding-left: 20px;
+}
+
+/* Both labels are laid on top of each other in the hidden sizer, so the button
+   is as wide as the longer of the two: neither the category the list is
+   showing nor the invitation ever gets clipped as they slide past. */
+.project-filter__toggle .lay-button-effect__text-sizer {
+  display: grid;
+}
+
+.project-filter__toggle .lay-button-effect__text-sizer > span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+/* Left aligned rather than centred: the two labels are different lengths, and
+   centring them in a box sized to the longer one made the text step sideways
+   as it slid. The padding travels with the button's own (see above), so the
+   label and the pill around it arrive together.
+   `!important` throughout because the shared rule above sets all of this from
+   inside an `:is()` that no plain selector here can outweigh. */
+.project-filter__toggle[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+  font-size: inherit !important;
+  justify-content: flex-start !important;
+  line-height: inherit !important;
+  padding-left: 0 !important;
+  transition:
+    padding-left 350ms ease,
+    transform 350ms cubic-bezier(.4, .2, .2, 1) !important;
+  white-space: nowrap;
+}
+
+/* After the rule above, not with the button's own hover block: same weight,
+   so it only wins by coming later. */
+.project-filter__toggle:hover .lay-button-effect__text,
+.project-filter__toggle:focus-visible .lay-button-effect__text,
+.project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text {
+  padding-left: 20px !important;
+}
+
+/* Set to the list's own measurements, so the menu lands exactly where the
+   projects are: 24px below the heading is where the first project sits (the
+   heading's 20px margin plus the row's own 4px), and the 8px gap plus the pill
+   height repeats the list's 45px rhythm. The two cross-fade in place. */
+.project-filter__menu {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  left: 0;
+  opacity: 0;
+  padding-top: 24px;
+  position: absolute;
+  top: 100%;
+  transition: opacity 220ms ease, visibility 0s linear 220ms;
+  visibility: hidden;
+  z-index: 12;
+}
+
+/* `:focus-within` is the keyboard way in when the script never arrives; once
+   it has, the class it adds takes the menu over so a click that closes the
+   menu is not undone by the focus the same click leaves on the button. */
+.project-filter.is-filter-open .project-filter__menu,
+.project-filter:not(.is-filter-enhanced):focus-within .project-filter__menu {
+  opacity: 1;
+  transition-delay: 0s;
+  visibility: visible;
+}
+
+/* A project pill in every respect — same weight, same grey outline, same
+   radius — so the menu reads as the list it is about to become. */
+.project-filter__option {
+  background-color: #fff;
+  border: 1px solid #c5c5c5;
+  border-radius: 100px;
+  color: #000;
+  cursor: pointer;
+  display: inline-block;
+  /* `._bigtext` off the wrapper — the same 20px/25px the projects are set in. */
+  font-size: inherit;
+  font-weight: 600;
+  line-height: 1.3;
+  outline: none;
+  padding: 5px 20px 4px;
+  pointer-events: auto;
+  text-decoration: none;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  white-space: nowrap;
+}
+
+/* Exactly the list's own highlighted pill (`.projects-list a.hover`). */
+.project-filter__option:hover,
+.project-filter__option:focus-visible,
+.project-filter__option.is-active {
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+/* Clickable: it takes the reader back to the unfiltered list at the top. */
+body.show-frontpage :is(.introtext, .mobile-logo) {
+  cursor: pointer;
+}
+
+/* The menu stands in for the list while it is open — same pills, same place —
+   so the list goes out as the menu comes in, on the same fade. */
+.plist-wrap-2 .projects-list {
+  transition: opacity 220ms ease;
+}
+
+.plist-wrap-2:has(.project-filter.is-filter-open) .projects-list {
+  opacity: 0;
+}
+
+.plist-wrap-2:has(.project-filter.is-filter-open) .projects-list a {
+  pointer-events: none;
+}
+
+/* Filtered out of the list. The slides keep their place — a project is
+   addressed by its position in the full list everywhere else on the page. */
+.projects-list > div.is-filtered-out {
+  display: none;
+}
+
+@media (max-width: 699px) {
+  /* Still flush with the list, which sits at 10px below the breakpoint — and
+     the pill's padding shrinks with the list's, so the text travels 10px. */
+  .project-filter {
+    margin-left: 10px;
+  }
+
+  .project-filter__toggle {
+    padding: 5px 10px 4px 0;
+  }
+
+  .project-filter__toggle:hover,
+  .project-filter__toggle:focus-visible,
+  .project-filter.is-filter-open .project-filter__toggle {
+    padding-left: 10px;
+  }
+
+  .project-filter__toggle:hover .lay-button-effect__text,
+  .project-filter__toggle:focus-visible .lay-button-effect__text,
+  .project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text {
+    padding-left: 10px !important;
+  }
+
+  .project-filter__option {
+    padding: 5px 10px 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-filter__toggle,
+  .project-filter__menu,
+  .project-filter__option {
+    transition-duration: 1ms;
+  }
 }

@@ -137,9 +137,23 @@
     if (window.passedData) window.passedData.url = urlFor(tag);
   };
 
+  // Picking a category must not move the page. Hiding rows re-flows everything
+  // below them and shortens the document, and a browser is free to clamp or
+  // re-anchor the scroll while that happens — so the position is taken before
+  // the change and put back on the frame after it.
+  const keepScrollPosition = (change) => {
+    const scrollY = window.scrollY;
+
+    change();
+
+    window.requestAnimationFrame(() => {
+      if (Math.abs(window.scrollY - scrollY) > 1) window.scrollTo(0, scrollY);
+    });
+  };
+
   const selectTag = (tag) => {
     if (tag !== activeTag) {
-      applyTag(tag);
+      keepScrollPosition(() => applyTag(tag));
       rememberFrontpageUrl(tag);
       // The same state shape the legacy app pushes for the front page: its own
       // popstate handler reads `type` off it and would throw on a bare state.

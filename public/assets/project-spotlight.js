@@ -492,6 +492,13 @@
     scheduleSpotlightUpdate();
   };
 
+  // Gives up the claim without pulling the frame back: what was last pointed
+  // at stays on screen, and the scroll position takes over again at the next
+  // frame it asks for — the way the list leaves its highlight where it was.
+  window.releaseProjectSpotlightPreview = () => {
+    hoveredProjectIndex = -1;
+  };
+
   // The category filter hides rows; the spotlight follows the ones that are
   // left, and re-measures because the list has just changed height.
   window.addEventListener("projectfilterchange", () => {

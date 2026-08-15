@@ -207,11 +207,12 @@
     option.addEventListener("focus", highlight);
   });
 
-  // Handed back on the way out of the menu rather than out of an entry, so
-  // crossing the gap between two of them changes nothing.
+  // Leaving the menu changes nothing on screen: the pill stays black where the
+  // pointer left it and its project stays in the frame, exactly as the list
+  // keeps its own highlight. Only the claim on the spotlight is given up, so
+  // scrolling takes it back from there.
   menu.addEventListener("mouseleave", () => {
-    setHighlightedOption(optionFor(activeTag));
-    window.clearProjectSpotlightPreview?.();
+    window.releaseProjectSpotlightPreview?.();
   });
 
   /* --------------------------------------------------------- the menu */

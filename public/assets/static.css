@@ -1241,27 +1241,40 @@ footer > .contact-us {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+/* Every logo is drawn in two colours it takes from here: `currentColor` for
+   the ink, `--client-logo-knockout` for the holes in it. Pointing at a cell
+   swaps the pair, so the whole thing inverts with the box. */
 .clients-grid span {
+  --client-logo-knockout: #fff;
   align-items: center;
   background: #fff;
   border-right: 0;
   box-sizing: border-box;
+  color: #000;
   display: flex;
   justify-content: center;
   min-height: 140px;
   min-width: 0;
   outline: 1px solid #e7e7e7;
   padding: 20px;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.clients-grid span:hover {
+  --client-logo-knockout: #000;
+  background: #000;
+  color: #fff;
 }
 
 /* The SVGs carry a viewBox and no width, so they are sized here exactly as the
-   images are — held inside the cell whichever way round the logo is. */
+   images are — held inside the cell whichever way round the logo is, and well
+   clear of its edges. */
 .clients-grid img,
 .clients-grid svg {
   display: block;
   height: auto;
-  max-height: 100px;
-  max-width: 100%;
+  max-height: 56px;
+  max-width: 70%;
   width: auto;
 }
 
@@ -1277,7 +1290,7 @@ footer > .contact-us {
 
   .clients-grid img,
   .clients-grid svg {
-    max-height: 80px;
+    max-height: 44px;
   }
 }
 

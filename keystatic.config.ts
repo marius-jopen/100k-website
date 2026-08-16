@@ -253,7 +253,7 @@ export default config({
         ),
         contact: fields.object(
           {
-            endpoint: fields.text({ label: "Form endpoint", defaultValue: "/api/contact" }),
+            endpoint: fields.text({ label: "Form endpoint", defaultValue: "https://api.staticforms.dev/submit" }),
           },
           { label: "Contact form" },
         ),

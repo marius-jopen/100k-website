@@ -143,14 +143,21 @@ name alone silently pairs them with the wrong video.
 
 ## Contact form
 
-The form posts to `/api/contact` — a Vercel function, which Vercel picks up from
-`api/` whatever the build produces. It exists to hold the key: the browser posts
-to it, it posts on to [Static Forms](https://www.staticforms.dev) with
-`STATIC_FORM_API_KEY` attached. Set that in the Vercel project; without it the
-endpoint answers "not configured yet" and nothing is sent.
+The form posts straight from the page to [Static Forms](https://www.staticforms.dev),
+carrying `PUBLIC_STATIC_FORM_API_KEY` in a hidden field. Set that in the Vercel
+project; it is baked into the pages at build time.
 
-The endpoint itself is a CMS field (`Homepage & footer → Contact form`), so it
-can be pointed elsewhere without a deploy.
+That key is public, which is how Static Forms is built — their own snippet puts
+it in a hidden input — and it was tried the other way first. A Vercel function
+held the key and posted on behalf of the browser, which worked in the sense that
+every submission was accepted, and failed in the sense that every one of them
+was filed as spam and no email was sent: posted from a server, submissions
+arrive from a datacenter address. Sent from the page they land in the inbox.
+The two were run side by side to be sure.
+
+The endpoint is a CMS field (`Homepage & footer → Contact form`), so it can be
+pointed elsewhere without a deploy. Where submissions are delivered is a form
+setting in the Static Forms dashboard, not something the site says.
 
 `public/contact.php` is the old SendGrid endpoint, kept for a plain PHP host.
 Nothing posts to it on Vercel — PHP does not run there — and it needs

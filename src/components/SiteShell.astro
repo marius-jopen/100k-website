@@ -120,6 +120,8 @@ const serviceWebglTimings = [
  * whether the send button is live and would never see three sets of them
  * filled in.
  */
+// Baked into the page at build time; see `.env.example`.
+const contactApiKey = import.meta.env.PUBLIC_STATIC_FORM_API_KEY ?? "";
 const contactHeadline = "Become a Client";
 const contactSendLabel = "Send Message";
 const contactBudgets = [
@@ -1233,6 +1235,12 @@ const contactFields = [
         reader cannot. It sits after the real fields on purpose: the legacy
         script finds the name field with `input[type="text"]`, which means the
         first one in the document. */}
+    {/* Static Forms takes the key from the form itself. It is meant to be
+        public — their own snippet puts it in a hidden input — and posting from
+        a server instead cost us delivery: submissions then arrive from a
+        datacenter address and are filed as spam. */}
+    <input type="hidden" name="apiKey" value={contactApiKey} />
+    <input type="hidden" name="subject" value="" />
     <input class="contact-honeypot" type="text" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
     <p class="contact-status" role="status" aria-live="polite"></p>
   </form>

@@ -1242,8 +1242,8 @@ footer > .contact-us {
 }
 
 /* Every logo is drawn in two colours it takes from here: `currentColor` for
-   the ink, `--client-logo-knockout` for the holes in it. Pointing at a cell
-   swaps the pair, so the whole thing inverts with the box. */
+   the ink, `--client-logo-knockout` for the holes in it — the letters inside
+   Marvel's box, the details on Warner's shield. */
 .clients-grid span {
   --client-logo-knockout: #fff;
   align-items: center;
@@ -1257,13 +1257,6 @@ footer > .contact-us {
   min-width: 0;
   outline: 1px solid #e7e7e7;
   padding: 20px;
-  transition: background-color 200ms ease, color 200ms ease;
-}
-
-.clients-grid span:hover {
-  --client-logo-knockout: #000;
-  background: #000;
-  color: #fff;
 }
 
 /* The SVGs carry a viewBox and no width, so they are sized here exactly as the

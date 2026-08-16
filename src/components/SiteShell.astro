@@ -1220,9 +1220,31 @@ const contactFields = [
           <input name={field.name} type={field.type} spellcheck="false" required />
         )}
         {field.kind === "select" && (
-          <select name={field.name} required>
-            {contactBudgets.map((budget) => <option value={budget.value}>{budget.label}</option>)}
-          </select>
+          /* The browser draws a native menu at the field's own size, which at
+             this one's size is a menu the height of the window. The select
+             stays as the thing that holds the answer and is submitted; what
+             the reader sees and operates is below it. */
+          <div class="contact-select" data-contact-select>
+            <select name={field.name} tabindex="-1" required>
+              {contactBudgets.map((budget) => <option value={budget.value}>{budget.label}</option>)}
+            </select>
+            <button
+              class="contact-select__button"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >{contactBudgets[0].label}</button>
+            <ul class="contact-select__list" role="listbox" aria-label={field.label}>
+              {contactBudgets.map((budget, index) => (
+                <li
+                  class="contact-select__option"
+                  role="option"
+                  aria-selected={index === 0 ? "true" : "false"}
+                  data-value={budget.value}
+                >{budget.label}</li>
+              ))}
+            </ul>
+          </div>
         )}
         {field.kind === "textarea" && (
           <textarea name={field.name} spellcheck="false" required></textarea>
@@ -1233,3 +1255,4 @@ const contactFields = [
   </form>
   <div class="thankyou _bigtext">Thank you for your message.<br />We will get back to you soon!</div>
 </div>
+<script is:inline src="/assets/contact-select.js"></script>

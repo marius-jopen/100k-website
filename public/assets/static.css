@@ -2409,6 +2409,7 @@ body > .become-a-client-modal label,
 /* Boxes around type this size read as containers rather than fields; a rule
    under each one is enough to say where to write. */
 body > .become-a-client-modal :is(input, select, textarea),
+body > .become-a-client-modal .contact-select__button,
 .contact-curtain__field {
   background-color: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
@@ -2420,14 +2421,15 @@ body > .become-a-client-modal :is(input, select, textarea),
   transition: border-color 200ms ease;
 }
 
-body > .become-a-client-modal :is(input, select, textarea):focus {
+body > .become-a-client-modal :is(input, select, textarea):focus,
+body > .become-a-client-modal .contact-select.is-open .contact-select__button {
   background-color: transparent;
   border-bottom-color: #fff;
 }
 
 /* `appearance: none` takes the native arrow with it, and at this size its
    absence reads as a disabled field. */
-body > .become-a-client-modal select,
+body > .become-a-client-modal .contact-select__button,
 .contact-curtain__field--select {
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.5'%3E%3Cpath d='m5 9 7 7 7-7'/%3E%3C/svg%3E");
   background-position: right 0 center;
@@ -2638,4 +2640,85 @@ body.show-client-modal > .become-a-client-modal > :not(.contact-curtain) {
 .contact-curtain__field {
   color: #fff;
   width: 100%;
+}
+
+/* ---------------------------------------------------- the budget's own menu */
+
+.contact-select {
+  position: relative;
+}
+
+/* Kept for the answer it holds and for the form that sends it, out of the way
+   of both the eye and the tab order. */
+.contact-select select {
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+}
+
+.contact-select__button {
+  appearance: none;
+  -webkit-appearance: none;
+  /* A button arrives with a border on all four sides; the field rule it shares
+     only replaces the one underneath. */
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  margin: 0;
+  outline: none;
+  text-align: left;
+  width: 100%;
+}
+
+.contact-select__list {
+  background-color: #000;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  left: 0;
+  list-style: none;
+  margin: 0;
+  max-height: min(40vh, 380px);
+  opacity: 0;
+  overflow-y: auto;
+  padding: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 0s linear 160ms;
+  visibility: hidden;
+  z-index: 3;
+}
+
+.contact-select.is-open .contact-select__list {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0s;
+  visibility: visible;
+}
+
+/* Set below the field itself: seven of these at the field's size would be a
+   list the height of the window, which is what the native one was. */
+.contact-select__option {
+  color: #fff;
+  cursor: pointer;
+  font-size: clamp(15px, min(1.6vw, 2.2vh), 24px);
+  line-height: 1.3;
+  padding: 0.5em 0.7em;
+  transition: background-color 140ms ease;
+}
+
+.contact-select__option.is-active {
+  background-color: #fff;
+  color: #000;
+}
+
+.contact-select__option[aria-selected="true"]::after {
+  content: " ✓";
 }

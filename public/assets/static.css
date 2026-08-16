@@ -2391,13 +2391,15 @@ body > .become-a-client-modal form {
   min-height: 0;
 }
 
-body > .become-a-client-modal > ._bigtext {
+body > .become-a-client-modal > ._bigtext,
+.contact-curtain__ghost > ._bigtext {
   font-size: clamp(28px, min(5vw, 7vh), 72px);
   line-height: 1.05;
   margin-bottom: clamp(12px, 2.5vh, 32px);
 }
 
-body > .become-a-client-modal label {
+body > .become-a-client-modal label,
+.contact-curtain__label {
   font-size: clamp(13px, min(1.4vw, 2vh), 20px);
   margin-bottom: 0;
   margin-top: clamp(10px, 1.8vh, 24px);
@@ -2405,7 +2407,8 @@ body > .become-a-client-modal label {
 
 /* Boxes around type this size read as containers rather than fields; a rule
    under each one is enough to say where to write. */
-body > .become-a-client-modal :is(input, select, textarea) {
+body > .become-a-client-modal :is(input, select, textarea),
+.contact-curtain__field {
   background-color: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 0;
@@ -2423,7 +2426,8 @@ body > .become-a-client-modal :is(input, select, textarea):focus {
 
 /* `appearance: none` takes the native arrow with it, and at this size its
    absence reads as a disabled field. */
-body > .become-a-client-modal select {
+body > .become-a-client-modal select,
+.contact-curtain__field--select {
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.5'%3E%3Cpath d='m5 9 7 7 7-7'/%3E%3C/svg%3E");
   background-position: right 0 center;
   background-repeat: no-repeat;
@@ -2439,7 +2443,8 @@ body > .become-a-client-modal option {
   font-size: 17px;
 }
 
-body > .become-a-client-modal textarea {
+body > .become-a-client-modal textarea,
+.contact-curtain__field--textarea {
   height: 100%;
   min-height: clamp(48px, 8vh, 120px);
   resize: none;
@@ -2478,9 +2483,16 @@ body > .become-a-client-modal .thankyou {
   margin-top: 0 !important;
 }
 
-/* The intro parts two black panels to uncover the site. This is that move
-   turned on its side: they close in from the left and the right, meet, and
-   the form fades up once they have. Same curve as the intro's own. */
+/* ------------------------------------------------------------ the curtain */
+
+/*
+ * The intro splits its logo down the middle and parts the two halves with the
+ * panels they sit on. This is that, closing instead of opening and sideways
+ * instead of up and down: each panel carries a full-width copy of the form and
+ * shows only the half that falls inside it, so the two halves fly in and meet
+ * as one. The real form is put in place the moment they do — it is the same
+ * layout at the same size, so the handover is not visible.
+ */
 body > .become-a-client-modal {
   background-color: transparent;
   filter: none !important;
@@ -2488,51 +2500,131 @@ body > .become-a-client-modal {
   transition: visibility 0s linear 620ms !important;
 }
 
-body > .become-a-client-modal::before,
-body > .become-a-client-modal::after {
+.contact-curtain {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.contact-curtain__panel {
   background-color: #000;
   bottom: 0;
-  content: "";
+  overflow: hidden;
   position: absolute;
   top: 0;
   transition: transform 620ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
   /* Half the screen each and a hair over, so no seam shows where they meet. */
   width: 50.2%;
-  z-index: -1;
 }
 
-body > .become-a-client-modal::before {
+.contact-curtain__panel--left {
   left: 0;
   transform: translateX(-100%);
 }
 
-body > .become-a-client-modal::after {
+.contact-curtain__panel--right {
   right: 0;
   transform: translateX(100%);
 }
 
-body.show-client-modal > .become-a-client-modal::before,
-body.show-client-modal > .become-a-client-modal::after {
+body.show-client-modal .contact-curtain__panel {
   transform: translateX(0);
 }
 
-/* Held back until the panels have met, and gone before they part again. */
-body > .become-a-client-modal > * {
-  opacity: 0;
-  transition: opacity 220ms ease;
+/* A full-screen copy of the form, pinned to the edge its panel is anchored to,
+   so that with the panel home it lands exactly where the real one is. */
+.contact-curtain__ghost {
+  display: grid;
+  grid-template-columns: min(100%, 54rem);
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+  justify-content: center;
+  padding: clamp(28px, 6vh, 72px) clamp(20px, 5vw, 80px);
+  position: absolute;
+  top: 0;
+  width: 100vw;
 }
 
-body.show-client-modal > .become-a-client-modal > * {
-  opacity: 1;
-  transition-delay: 380ms;
+.contact-curtain__panel--left .contact-curtain__ghost {
+  left: 0;
+}
+
+.contact-curtain__panel--right .contact-curtain__ghost {
+  right: 0;
+}
+
+.contact-curtain__form {
+  display: grid;
+  grid-template-rows: repeat(7, auto) minmax(0, 1fr) auto;
+  min-height: 0;
+}
+
+/* Empty divs have no line to give them height; the fields they stand in for
+   are one line tall. Everything here is border-box, so the padding and the
+   rule under it are part of that measurement. */
+.contact-curtain__field {
+  min-height: calc(1.85em + 1px);
+}
+
+.contact-curtain__field--textarea {
+  height: 100%;
+}
+
+.contact-curtain__button {
+  align-self: start;
+  justify-self: start;
+  pointer-events: none;
+}
+
+/* The handover: the copies hold the screen until the panels are home, then the
+   real form takes over. Neither fades — one is simply swapped for the other. */
+.contact-curtain__ghost,
+body > .become-a-client-modal > :not(.contact-curtain) {
+  transition: visibility 0s linear 0s;
+}
+
+/* Stated rather than inherited: a hidden modal would otherwise pass its own
+   hidden down, and the copies would have nothing to switch away from when the
+   panels start moving. Off screen inside a panel that has not arrived, they
+   are out of sight regardless. */
+.contact-curtain__ghost {
+  visibility: visible;
+}
+
+body.show-client-modal .contact-curtain__ghost {
+  transition-delay: 620ms;
+  visibility: hidden;
+}
+
+body > .become-a-client-modal > :not(.contact-curtain) {
+  visibility: hidden;
+}
+
+body.show-client-modal > .become-a-client-modal > :not(.contact-curtain) {
+  transition-delay: 620ms;
+  visibility: visible;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .contact-curtain__panel,
+  .contact-curtain__ghost,
   body > .become-a-client-modal,
-  body > .become-a-client-modal::before,
-  body > .become-a-client-modal::after,
-  body > .become-a-client-modal > * {
+  body > .become-a-client-modal > :not(.contact-curtain) {
     transition-delay: 0s !important;
     transition-duration: 1ms !important;
   }
+}
+
+/* What the copies inherit from the legacy stylesheet through being real form
+   controls, they are given here instead. */
+.contact-curtain__label {
+  color: #fff;
+  display: block;
+  opacity: 0.5;
+}
+
+.contact-curtain__field {
+  color: #fff;
+  width: 100%;
 }

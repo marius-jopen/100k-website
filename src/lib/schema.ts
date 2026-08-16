@@ -66,6 +66,8 @@ export interface ClientLogo {
   image: Asset | null;
   /** Width ÷ height of the logo's own box; `null` when it declares none. */
   aspectRatio: number | null;
+  /** Per-logo nudge, in percent, on the size the wall works out for it. */
+  opticalSize: number;
 }
 
 export interface ServiceCard {

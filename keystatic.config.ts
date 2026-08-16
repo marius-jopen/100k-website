@@ -194,6 +194,13 @@ export default config({
                 multiline: true,
                 defaultValue: "",
               }),
+              opticalSize: fields.integer({
+                label: "Optical size",
+                description:
+                  "Percent. The wall draws every logo to the same area, which is right for most of them — a lockup made of fine print can be given a nudge here.",
+                defaultValue: 100,
+                validation: { min: 50, max: 200 },
+              }),
               image: imageField("Image", "Only used when there is no SVG code."),
             },
             { label: "Client logo" },

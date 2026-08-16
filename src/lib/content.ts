@@ -112,6 +112,7 @@ export const siteContent: SiteContent = {
     svg: client.svg.trim(),
     image: imageAsset(client.image),
     aspectRatio: svgAspectRatio(client.svg),
+    opticalSize: client.opticalSize,
   })),
   servicesIntro: siteEntry.servicesIntro,
   services: siteEntry.services.map((service) => ({

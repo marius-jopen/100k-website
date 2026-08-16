@@ -1228,6 +1228,13 @@ const contactFields = [
       </>
     ))}
     <button class="send-button" type="button"><ArrowRight />{contactSendLabel}</button>
+    {/* Left empty and out of sight. Static Forms drops anything that arrives
+        with a field named honeypot filled in, which is what a bot does and a
+        reader cannot. It sits after the real fields on purpose: the legacy
+        script finds the name field with `input[type="text"]`, which means the
+        first one in the document. */}
+    <input class="contact-honeypot" type="text" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <p class="contact-status" role="status" aria-live="polite"></p>
   </form>
   <div class="thankyou _bigtext">Thank you for your message.<br />We will get back to you soon!</div>
   {/* Last in the modal on purpose: the legacy script binds sending to the
@@ -1260,3 +1267,4 @@ const contactFields = [
   </div>
 </div>
 <script is:inline src="/assets/contact-select.js"></script>
+<script is:inline src="/assets/contact-send.js"></script>

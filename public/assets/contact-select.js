@@ -51,6 +51,14 @@
 
   button.addEventListener("click", () => setOpen(!isOpen));
 
+  // The select is the thing that holds the answer, and it is also reset from
+  // the outside when the form is opened again — so the label follows it.
+  select.addEventListener("change", () => {
+    const option = options.find((entry) => entry.dataset.value === select.value) ?? options[0];
+    button.textContent = option.textContent;
+    options.forEach((entry) => entry.setAttribute("aria-selected", String(entry === option)));
+  });
+
   options.forEach((option, index) => {
     option.addEventListener("click", () => choose(index));
     option.addEventListener("mouseenter", () => setActive(index));

@@ -2480,10 +2480,10 @@ body > .become-a-client-modal .close svg {
   width: clamp(22px, 2.4vw, 38px);
 }
 
+/* `._bigtext` gives it 20px underneath, which centres it 10px high. */
 body > .become-a-client-modal .thankyou {
-  font-size: clamp(24px, min(3.4vw, 5vh), 52px);
   line-height: 1.15;
-  margin-top: 0 !important;
+  margin: 0 !important;
 }
 
 /* ------------------------------------------------------------ the curtain */
@@ -2754,4 +2754,38 @@ body > .become-a-client-modal .contact-status {
 body > .become-a-client-modal.is-sending .send-button {
   opacity: 0.5;
   pointer-events: none;
+}
+
+/* ------------------------------------------------------------ once it is sent */
+
+/* The legacy stylesheet hides the fields one element type at a time, which
+   leaves the budget — a div with a button in it since the menu became ours —
+   standing on an otherwise empty screen. The form goes as a whole, and what
+   is left sits in the middle of the screen. */
+body > .become-a-client-modal.message-sent form {
+  display: none;
+}
+
+body > .become-a-client-modal.message-sent {
+  align-content: center;
+  grid-template-rows: auto;
+}
+
+body > .become-a-client-modal .thankyou {
+  text-align: center;
+}
+
+body > .become-a-client-modal .thankyou__headline {
+  display: block;
+  font-size: clamp(34px, min(6vw, 9vh), 90px);
+  line-height: 1.05;
+}
+
+body > .become-a-client-modal .thankyou__note {
+  display: block;
+  font-size: clamp(15px, min(1.8vw, 2.6vh), 26px);
+  font-weight: 400;
+  line-height: 1.3;
+  margin-top: clamp(10px, 1.8vh, 22px);
+  opacity: 0.6;
 }

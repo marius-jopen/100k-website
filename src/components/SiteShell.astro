@@ -1236,7 +1236,10 @@ const contactFields = [
     <input class="contact-honeypot" type="text" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
     <p class="contact-status" role="status" aria-live="polite"></p>
   </form>
-  <div class="thankyou _bigtext">Thank you for your message.<br />We will get back to you soon!</div>
+  <div class="thankyou _bigtext">
+    <span class="thankyou__headline">Thank you</span>
+    <span class="thankyou__note">We will get back to you soon.</span>
+  </div>
   {/* Last in the modal on purpose: the legacy script binds sending to the
       first `.send-button` in the document, and the copies carry that class
       for their looks. Which of them paints on top is settled by the

@@ -2346,3 +2346,120 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
     transition-duration: 1ms;
   }
 }
+
+/* ============================================================
+   Contact form: the whole screen and nothing else
+   ============================================================ */
+
+/*
+ * Only the standalone form. Inside a project the same element is moved onto
+ * the back of the media card (see SiteShell) and stays the card it is there,
+ * so everything here hangs off `body >`.
+ *
+ * The type is set in `vw` between a floor and a ceiling: the form is meant to
+ * be the only thing on the screen, so it should fill whatever screen it lands
+ * on rather than sit at one size in the middle of it.
+ */
+body > .become-a-client-modal {
+  align-content: safe center;
+  background-color: #000;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: none;
+  display: grid;
+  gap: 0;
+  grid-template-columns: min(100%, 54rem);
+  height: 100dvh !important;
+  inset: 0 !important;
+  justify-content: center;
+  max-height: none;
+  padding: clamp(72px, 12vh, 160px) clamp(20px, 5vw, 80px);
+  transform: none !important;
+  width: 100vw !important;
+}
+
+body.show-client-modal {
+  overflow: hidden;
+}
+
+body > .become-a-client-modal > ._bigtext {
+  font-size: clamp(34px, 5.5vw, 80px);
+  line-height: 1.05;
+  margin-bottom: clamp(24px, 4vw, 56px);
+}
+
+body > .become-a-client-modal label {
+  font-size: clamp(15px, 1.5vw, 22px);
+  margin-bottom: 0;
+  margin-top: clamp(20px, 3vw, 40px);
+}
+
+/* Boxes around type this size read as containers rather than fields; a rule
+   under each one is enough to say where to write. */
+body > .become-a-client-modal :is(input, select, textarea) {
+  background-color: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 0;
+  font-size: clamp(24px, 3.2vw, 46px);
+  line-height: 1.25;
+  min-height: 0;
+  padding: 0.35em 0;
+  transition: border-color 200ms ease;
+}
+
+body > .become-a-client-modal :is(input, select, textarea):focus {
+  background-color: transparent;
+  border-bottom-color: #fff;
+}
+
+/* `appearance: none` takes the native arrow with it, and at this size its
+   absence reads as a disabled field. */
+body > .become-a-client-modal select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.5'%3E%3Cpath d='m5 9 7 7 7-7'/%3E%3C/svg%3E");
+  background-position: right 0 center;
+  background-repeat: no-repeat;
+  background-size: clamp(20px, 2.4vw, 34px);
+  padding-right: clamp(28px, 3.4vw, 48px);
+}
+
+/* The list the browser opens is its own window and inherits none of this. */
+body > .become-a-client-modal option {
+  background-color: #000;
+  color: #fff;
+}
+
+body > .become-a-client-modal textarea {
+  height: clamp(120px, 20vh, 260px);
+  resize: none;
+}
+
+/* Carries the open class as well, only to outweigh the rule that holds every
+   button on the site at 20px — this one is the page. */
+body.show-client-modal > .become-a-client-modal .send-button {
+  border-radius: 100px;
+  font-size: clamp(22px, 2.6vw, 40px) !important;
+  gap: 0.3em;
+  line-height: 1.2 !important;
+  margin-top: clamp(32px, 5vw, 64px);
+  padding: 0.4em 0.9em 0.4em 0.7em !important;
+}
+
+body > .become-a-client-modal .send-button .button-arrow {
+  height: 0.85em;
+  width: 0.85em;
+}
+
+body > .become-a-client-modal .close {
+  padding: clamp(16px, 2.5vw, 40px);
+}
+
+body > .become-a-client-modal .close svg {
+  height: clamp(26px, 2.8vw, 44px);
+  width: clamp(26px, 2.8vw, 44px);
+}
+
+body > .become-a-client-modal .thankyou {
+  font-size: clamp(28px, 4vw, 60px);
+  line-height: 1.15;
+  margin-top: 0 !important;
+}

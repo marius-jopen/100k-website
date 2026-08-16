@@ -2678,6 +2678,9 @@ body.show-client-modal > .become-a-client-modal > :not(.contact-curtain) {
 .contact-select__list {
   background-color: #000;
   border: 1px solid rgba(255, 255, 255, 0.25);
+  /* The radius the project cards are cut to. It scrolls, so the corner also
+     has to take the highlight off the first and last option. */
+  border-radius: clamp(10px, 1.2vw, 18px);
   left: 0;
   list-style: none;
   margin: 0;

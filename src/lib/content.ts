@@ -112,7 +112,8 @@ export const siteContent: SiteContent = {
     svg: client.svg.trim(),
     image: imageAsset(client.image),
     aspectRatio: svgAspectRatio(client.svg),
-    opticalSize: client.opticalSize,
+    // The field can be cleared in the CMS, which is the same as leaving it be.
+    opticalSize: client.opticalSize ?? 100,
   })),
   servicesIntro: siteEntry.servicesIntro,
   services: siteEntry.services.map((service) => ({

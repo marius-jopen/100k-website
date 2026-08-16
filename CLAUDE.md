@@ -75,6 +75,10 @@ Keystatic in local mode — it edits JSON on disk, no login. `keystatic.config.t
 `src/lib/content.ts` reads it through `@keystatic/core/reader` at build time and maps it onto
 the interfaces in `src/lib/schema.ts`.
 
+**The dev server does not pick up content edits.** That read happens once, at module load, and
+`content/*.json` is data rather than an import, so nothing invalidates it — `npm run dev` will
+keep serving the content it started with until it is restarted. A build always reads fresh.
+
 - `content/site.json` — homepage copy, services, footer, and `projectOrder`. That array is both
   the running order **and** the selection: a project missing from it does not appear on the site.
 - `content/projects/*.json` — one file per project. Each carries a `tag` (category).

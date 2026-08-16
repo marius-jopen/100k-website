@@ -64,6 +64,8 @@ export interface ClientLogo {
   /** Inline SVG markup; empty when the logo only exists as an image. */
   svg: string;
   image: Asset | null;
+  /** Width ÷ height of the logo's own box; `null` when it declares none. */
+  aspectRatio: number | null;
 }
 
 export interface ServiceCard {

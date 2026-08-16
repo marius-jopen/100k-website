@@ -1259,11 +1259,17 @@ footer > .contact-us {
   padding: 20px;
 }
 
-/* The SVGs carry a viewBox and no width, so they are sized here exactly as the
-   images are — held inside the cell whichever way round the logo is, and well
-   clear of its edges. */
-.clients-grid img,
+/* The height comes from the cell, which works it out per logo so they all
+   cover the same area (see SiteShell); the width follows from the viewBox.
+   The cap is the backstop for the widest wordmarks. */
 .clients-grid svg {
+  display: block;
+  height: var(--client-logo-height, 56px);
+  max-width: 80%;
+  width: auto;
+}
+
+.clients-grid img {
   display: block;
   height: auto;
   max-height: 56px;
@@ -1281,8 +1287,13 @@ footer > .contact-us {
     padding: 15px;
   }
 
-  .clients-grid img,
+  /* The cells are shorter and half as wide below the breakpoint, so every
+     logo comes down by the same fraction and keeps the balance. */
   .clients-grid svg {
+    height: calc(var(--client-logo-height, 44px) * 0.78);
+  }
+
+  .clients-grid img {
     max-height: 44px;
   }
 }

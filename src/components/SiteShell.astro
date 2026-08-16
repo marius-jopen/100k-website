@@ -39,6 +39,27 @@ const orientationClass = (asset: Asset) => {
   if (aspectRatio < 1.5) return "near-square";
   return "landscape";
 };
+/*
+ * Logos are given equal weight rather than equal height: a wordmark eight
+ * times as wide as it is tall would otherwise tower over a shield, and capping
+ * the width instead only moved the problem to the other end. Each one is drawn
+ * to cover the same area, which is what the eye actually compares — with a
+ * floor under the height, because the widest wordmarks would come out as a
+ * thin line if area were all that counted.
+ */
+const CLIENT_LOGO_AREA = 3600;
+const CLIENT_LOGO_MIN_HEIGHT = 26;
+const CLIENT_LOGO_MAX_HEIGHT = 60;
+
+const clientLogoHeight = (aspectRatio: number | null) => {
+  if (!aspectRatio) return CLIENT_LOGO_MAX_HEIGHT;
+
+  const height = Math.sqrt(CLIENT_LOGO_AREA / aspectRatio);
+  return Math.round(
+    Math.min(Math.max(height, CLIENT_LOGO_MIN_HEIGHT), CLIENT_LOGO_MAX_HEIGHT),
+  );
+};
+
 const clients = siteContent.clients;
 const projectSpotlightSources = new Set([
   ...siteContent.webglBackgrounds.map((asset) => asset.path),
@@ -240,7 +261,12 @@ const serviceWebglTimings = [
               still come through as an image. */}
           {clients.map((client) => (
             client.svg
-              ? <span role="img" aria-label={client.name} set:html={client.svg}></span>
+              ? <span
+                  role="img"
+                  aria-label={client.name}
+                  style={`--client-logo-height:${clientLogoHeight(client.aspectRatio)}px`}
+                  set:html={client.svg}
+                ></span>
               : client.image && (
                 <span><img src={client.image.src} sizes="(max-width: 700px) 50vw, 25vw" alt={client.name} /></span>
               )

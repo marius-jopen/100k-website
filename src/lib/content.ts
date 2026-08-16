@@ -83,6 +83,20 @@ function resolveMedia(
   return imageAsset(field.value as string | null);
 }
 
+/**
+ * How wide a logo is against its own height, read off the `viewBox` — which
+ * every one of them carries and which is pulled in to the artwork, so this is
+ * the shape of the logo itself rather than of the file it arrived in. The
+ * client wall sizes each logo from it.
+ */
+function svgAspectRatio(svg: string | null | undefined): number | null {
+  const viewBox = svg?.match(/viewBox="([^"]+)"/)?.[1];
+  const [, , width, height] = viewBox?.trim().split(/[\s,]+/).map(Number) ?? [];
+
+  if (!width || !height) return null;
+  return width / height;
+}
+
 /* ------------------------------------------------------------------- site */
 
 const siteEntry = await reader.singletons.site.read();
@@ -97,6 +111,7 @@ export const siteContent: SiteContent = {
     name: client.name,
     svg: client.svg.trim(),
     image: imageAsset(client.image),
+    aspectRatio: svgAspectRatio(client.svg),
   })),
   servicesIntro: siteEntry.servicesIntro,
   services: siteEntry.services.map((service) => ({

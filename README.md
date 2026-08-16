@@ -143,14 +143,19 @@ name alone silently pairs them with the wrong video.
 
 ## Contact form
 
-Unchanged: `public/contact.php` posts to SendGrid server-side. On the production
-server set:
+The form posts to `/api/contact` — a Vercel function, which Vercel picks up from
+`api/` whatever the build produces. It exists to hold the key: the browser posts
+to it, it posts on to [Static Forms](https://www.staticforms.dev) with
+`STATIC_FORM_API_KEY` attached. Set that in the Vercel project; without it the
+endpoint answers "not configured yet" and nothing is sent.
 
-```
-SENDGRID_API_KEY=...
-SENDGRID_FROM_EMAIL=verified-sender@100k.studio
-SENDGRID_TO_EMAIL=contact@100k.studio    # optional
-```
+The endpoint itself is a CMS field (`Homepage & footer → Contact form`), so it
+can be pointed elsewhere without a deploy.
+
+`public/contact.php` is the old SendGrid endpoint, kept for a plain PHP host.
+Nothing posts to it on Vercel — PHP does not run there — and it needs
+`SENDGRID_API_KEY`, `SENDGRID_FROM_EMAIL` and optionally `SENDGRID_TO_EMAIL` if
+it is ever used again.
 
 ## Known quirk carried over
 

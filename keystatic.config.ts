@@ -253,7 +253,7 @@ export default config({
         ),
         contact: fields.object(
           {
-            endpoint: fields.text({ label: "Form endpoint", defaultValue: "/contact.php" }),
+            endpoint: fields.text({ label: "Form endpoint", defaultValue: "/api/contact" }),
           },
           { label: "Contact form" },
         ),

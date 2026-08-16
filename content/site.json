@@ -163,7 +163,7 @@
     "legal": "100k Studio GmbH\nMühlenstr. 8a\n14167 Berlin\nGermany\n\nDE342632737\n\nExecutives:\nArmin Unruh\nMarius Jopen"
   },
   "contact": {
-    "endpoint": "/contact.php"
+    "endpoint": "/api/contact"
   },
   "mobileLogo": null
 }

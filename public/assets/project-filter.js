@@ -13,6 +13,9 @@
   if (!filter || !list) return;
 
   const toggle = filter.querySelector(".project-filter__toggle");
+  // The funnel in front of the heading. It says the same thing the heading says
+  // on hover — that this opens — for readers who have no pointer to hover with.
+  const iconToggle = filter.querySelector(".project-filter__icon");
   const menu = filter.querySelector(".project-filter__menu");
   const options = Array.from(filter.querySelectorAll(".project-filter__option"));
   const rows = Array.from(list.children).filter((row) => row instanceof HTMLElement);
@@ -92,11 +95,38 @@
     showPhoneBackground(Number(link.dataset.ix));
   };
 
+  /*
+   * The same rule over the categories, for the phone.
+   *
+   * With the menu down there is no list to read and no pointer to hover the
+   * options with — so the menu is scrolled the way the list is: whichever
+   * option is level with the activation line takes the black pill, and the
+   * corner shows one of that category's projects. It is the touch answer to
+   * the `mouseenter` preview the options carry for the desktop.
+   *
+   * Returns whether it took the frame, so the list's own sync can sit it out.
+   */
+  const syncHighlightedOption = () => {
+    if (window.innerWidth > 700 || !isMenuOpen) return false;
+
+    const line = activationLine();
+    let current = options[0];
+    options.forEach((option) => {
+      if (option.getBoundingClientRect().top < line) current = option;
+    });
+
+    setHighlightedOption(current);
+    const index = previewIndexFor(current.dataset.tag || "");
+    if (index >= 0) showPhoneBackground(index);
+    return true;
+  };
+
   let syncFrame = 0;
   const requestHighlightSync = () => {
     if (syncFrame) return;
     syncFrame = window.requestAnimationFrame(() => {
       syncFrame = 0;
+      if (syncHighlightedOption()) return;
       syncHighlightedRow();
     });
   };
@@ -227,11 +257,21 @@
     }
     filter.classList.toggle("is-filter-open", open);
     toggle.setAttribute("aria-expanded", String(open));
+    iconToggle?.setAttribute("aria-expanded", String(open));
+
+    // On a phone the menu takes the corner preview over while it is down; both
+    // handing it over and giving it back happen here, because neither has a
+    // scroll of its own to wait for.
+    if (window.innerWidth > 700) return;
+    if (open) syncHighlightedOption();
+    else syncHighlightedRow(true);
   }
 
-  toggle.addEventListener("click", (event) => {
-    event.preventDefault();
-    setMenuOpen(!isMenuOpen);
+  [toggle, iconToggle].forEach((control) => {
+    control?.addEventListener("click", (event) => {
+      event.preventDefault();
+      setMenuOpen(!isMenuOpen);
+    });
   });
 
   menu.addEventListener("click", (event) => {

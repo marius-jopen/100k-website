@@ -10,6 +10,7 @@ import {
   projectTagUrl,
 } from "../lib/tags";
 import ArrowRight from "./ArrowRight.astro";
+import FilterLines from "./FilterLines.astro";
 import XMark from "./XMark.astro";
 
 interface Props {
@@ -215,15 +216,31 @@ const contactFields = [
             <div class="project-spotlight-frame" aria-hidden="true"></div>
             <div class="_bigtext project-spotlight-caption short-description" aria-hidden="true"></div>
           </div>
-          <div class="background-images-phone">
-            {projects.map((project, index) => (
-              <a href={`/${project.slug}/`} data-ix={index}>
-                {project.mobileBackground?.isVideo
-                  ? <video playsinline loop muted data-hls={project.mobileBackground.hls} data-mp4={project.mobileBackground.mp4} data-hls-defer="phone"></video>
-                  : project.mobileBackground && <img class={orientationClass(project.mobileBackground)} data-src={project.mobileBackground.src} data-sizes="200px" alt="" />}
-              </a>
-            ))}
-          </div>
+        </div>
+        {/* Outside `.sticky` on purpose. `.sticky` is a stacking context, and
+            the blurred slideshow it holds is only 20% opaque — with the corner
+            preview inside it too, the list could not be lifted above the wash
+            without also going over the preview. Its own layer, above both.
+            The phone slides stream through phone-background-media.js, so their
+            videos carry `data-hls-manual` the way the desktop ones do. */}
+        <div class="background-images-phone">
+          {projects.map((project, index) => (
+            <a href={`/${project.slug}/`} data-ix={index}>
+              {/* The span is what keeps the video out of legacy app.js's
+                  `.background-images-phone > a > *` sweep, which copies
+                  `data-src` onto `src`: a video has none, so it was writing the
+                  string "undefined" and the browser went and 404'd it, once per
+                  clip. The desktop slides are wrapped for their own reasons and
+                  never had the problem. */}
+              {/* The poster is what the corner shows until the clip has enough
+                  to paint — a single small still from Bunny. Without it a slide
+                  reached before its player is ready is an empty box, which on a
+                  fast scroll over a phone connection is most of them. */}
+              {project.mobileBackground?.isVideo
+                ? <span class="phone-background-media"><video playsinline loop muted preload="none" poster={project.mobileBackground.poster} data-hls={project.mobileBackground.hls} data-mp4={project.mobileBackground.mp4} data-hls-defer="phone" data-hls-manual></video></span>
+                : project.mobileBackground && <img class={orientationClass(project.mobileBackground)} data-src={project.mobileBackground.src} data-sizes="200px" alt="" />}
+            </a>
+          ))}
         </div>
 
         <div class="plist-wrap-2">
@@ -233,30 +250,42 @@ const contactFields = [
               to 25px past 1500px wide, and the menu has to grow with the
               project list it stands in for. */}
           <div class="_bigtext project-filter" data-active-tag={activeTag ?? ""}>
-            <h2 class="_bigtext selected-projects-headline project-filter__heading">{
-              /* Nothing between the tag and the button: it is inline-block, and
-                 a whitespace text node in front of it would indent it. */
-            }<button
-              class="project-filter__toggle"
-              type="button"
-              data-lay-button-effect-text-slide="1"
-              aria-haspopup="true"
-              aria-expanded="false"
-              aria-controls="project-filter-menu"
-            >
-              <span class="lay-button-effect__content lay-button-effect__content--text-slide">
-                {/* Both labels sit in the sizer so the button is as wide as the
-                    longer of the two and neither ever gets clipped. */}
-                <span class="lay-button-effect__text-sizer" aria-hidden="true">
-                  <span class="project-filter__sizer-text">{filterHeadline}</span>
-                  <span>{PROJECT_FILTER_PROMPT}</span>
+            <h2 class="_bigtext selected-projects-headline project-filter__heading">
+              {/* The heading only becomes a pill under the pointer, which says
+                  nothing on a touch screen — so the funnel stands in front of
+                  it, drawn as a pill from the start, and opens the same menu.
+                  It leads whatever the heading currently reads: "Selected
+                  Projects" or the category the list is filtered to. */}
+              <button
+                class="project-filter__icon"
+                type="button"
+                aria-label="Filter projects by category"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-controls="project-filter-menu"
+              ><FilterLines /></button>
+              <button
+                class="project-filter__toggle"
+                type="button"
+                data-lay-button-effect-text-slide="1"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-controls="project-filter-menu"
+              >
+                <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+                  {/* Both labels sit in the sizer so the button is as wide as the
+                      longer of the two and neither ever gets clipped. */}
+                  <span class="lay-button-effect__text-sizer" aria-hidden="true">
+                    <span class="project-filter__sizer-text">{filterHeadline}</span>
+                    <span>{PROJECT_FILTER_PROMPT}</span>
+                  </span>
+                  <span class="lay-button-effect__text-clip">
+                    <span class="lay-button-effect__text lay-button-effect__text--current">{filterHeadline}</span>
+                    <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">{PROJECT_FILTER_PROMPT}</span>
+                  </span>
                 </span>
-                <span class="lay-button-effect__text-clip">
-                  <span class="lay-button-effect__text lay-button-effect__text--current">{filterHeadline}</span>
-                  <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">{PROJECT_FILTER_PROMPT}</span>
-                </span>
-              </span>
-            </button></h2>
+              </button>
+            </h2>
             <div class="project-filter__menu" id="project-filter-menu">
               {/* `is-highlighted` is the black pill and moves with the
                   pointer; it starts on the category the list is showing. */}
@@ -973,8 +1002,35 @@ const contactFields = [
   const enhanceVisitWebsiteButton = (root = postContainer) => {
     // All matches, not just the first: the info modal gets moved between the
     // project flow and the carousel's flip face, so more than one copy of the
-    // wrapper can be in the tree at once.
+    // wrapper can be in the tree at once. Run before the button is moved
+    // below the media — after that it is no longer under `.url-button-wrap`.
     root?.querySelectorAll(".url-button-wrap .url-button").forEach(enhanceUrlButton);
+    placeVisitWebsiteButton(root);
+  };
+
+  /*
+   * Below the breakpoint the project's text is the page's first screen, and
+   * the button ended up stranded under the credits with the whole gallery
+   * still to come. It belongs at the other end — in the tail the grid already
+   * leaves above the rounded corner, where it reads as the way out of the
+   * project rather than a footnote to the table.
+   *
+   * A move rather than a second copy, so there is only ever one of it; the
+   * else branch puts it back, which is what makes a resize across the
+   * breakpoint safe. `.right-descr` is where the legacy template has it, and
+   * it is the last thing in there either way.
+   */
+  const placeVisitWebsiteButton = (root = postContainer) => {
+    if (!(root instanceof Element)) return;
+
+    const button = root.querySelector(".url-button");
+    const grid = root.querySelector(".static-project-grid");
+    const descr = root.querySelector(".url-button-wrap .right-descr");
+    if (!(button instanceof HTMLElement) || !grid || !descr) return;
+
+    const target = window.innerWidth <= 700 ? grid : descr;
+    if (button.parentElement !== target) target.appendChild(button);
+    button.classList.toggle("url-button--below-media", target === grid);
   };
 
   const enhanceUrlButton = (button) => {
@@ -1094,6 +1150,9 @@ const contactFields = [
       subtree: true,
     });
     updateProjectEnhancements();
+    // Which end of the project the Visit Website button belongs at is decided
+    // by the width, so it has to be asked again when the width changes.
+    window.addEventListener("resize", () => placeVisitWebsiteButton());
   }
 
   // Background videos carry data-hls instead of data-src and are attached by
@@ -1112,11 +1171,9 @@ const contactFields = [
 
     const updateFooterOpacity = () => {
       footerFrame = 0;
-      if (window.innerWidth >= 700) {
-        frontpage?.style.setProperty("--footer-height", `${footer.offsetHeight}px`);
-      } else {
-        frontpage?.style.removeProperty("--footer-height");
-      }
+      // Every width now: the footer is pinned behind the page below the
+      // breakpoint too, so the page has to reserve its height there as well.
+      frontpage?.style.setProperty("--footer-height", `${footer.offsetHeight}px`);
 
       const maxScrollY = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
       const revealDistance = Math.min(footer.offsetHeight, maxScrollY);
@@ -1140,6 +1197,54 @@ const contactFields = [
     document.fonts?.ready.then(requestFooterUpdate);
     updateFooterOpacity();
   }
+
+  /*
+   * How tall the phone's pinned stage — the wash and the corner preview — is
+   * allowed to be (see static.css, `--phone-stage-height`).
+   *
+   * A screen, unless the list itself is shorter than that: filtered to a small
+   * category it is, and a stage taller than the section it lives in hangs out
+   * of the bottom over the logo wall. Measured off `.plist-wrap-2`, whose own
+   * height is the list plus its padding and owes nothing to the stage, so
+   * there is no loop between the two.
+   */
+  const projectListWrap = document.querySelector(".plist-wrap");
+  const projectListSection = document.querySelector(".plist-wrap-2");
+
+  if (projectListWrap && projectListSection) {
+    const updatePhoneStageHeight = () => {
+      if (window.innerWidth > 700) {
+        projectListWrap.style.removeProperty("--phone-stage-height");
+        return;
+      }
+
+      const height = Math.min(window.innerHeight, projectListSection.offsetHeight);
+      projectListWrap.style.setProperty("--phone-stage-height", `${Math.round(height)}px`);
+    };
+
+    // The section changes height whenever rows are hidden or shown, which the
+    // filter does without telling anyone in particular.
+    new ResizeObserver(updatePhoneStageHeight).observe(projectListSection);
+    window.addEventListener("resize", updatePhoneStageHeight);
+    updatePhoneStageHeight();
+  }
+
+  /*
+   * The caption under a project is the same project. It reads as a second
+   * pill in the same stack — on a phone especially, where it sits directly
+   * below the black one — so a tap on it goes where the pill goes rather than
+   * doing nothing. The click is forwarded rather than handled: the page
+   * transition and the legacy router both listen on the link itself.
+   */
+  document.querySelector(".projects-list")?.addEventListener("click", (event) => {
+    const caption = event.target instanceof Element
+      ? event.target.closest(".short-description")
+      : null;
+    if (!caption) return;
+
+    const link = caption.parentElement?.querySelector(".project-list-item");
+    if (link instanceof HTMLElement) link.click();
+  });
 
   const serviceGallery = document.querySelector(".our-services-gallery-region .gallery-view");
   const serviceCards = serviceGallery
@@ -1173,6 +1278,7 @@ const contactFields = [
 <script is:inline src="/assets/service-webgl-slideshow.js"></script>
 <script is:inline src="/assets/project-filter.js"></script>
 <script is:inline src="/assets/project-spotlight.js"></script>
+<script is:inline src="/assets/phone-background-media.js"></script>
 <script is:inline src="/assets/project-page-transition.js"></script>
 
 <div class="become-a-client _bigtext" data-lay-button-effect-text-slide="1">
@@ -1187,8 +1293,17 @@ const contactFields = [
 <div class="become-a-client-bg"></div>
 <div class="become-a-client-modal fields-not-filled">
   <div class="_bigtext">{contactHeadline}</div>
-  <button class="close" type="button" aria-label="Close contact form">
-    <XMark />
+  {/* A named button rather than a bare ✕: this fills the screen, and the way
+      out of it should read like the toolbar's Back does. Same pill, same
+      slide-on-hover, top right. */}
+  <button class="close contact-close _bigtext" type="button" data-lay-button-effect-text-slide="1" aria-label="Close contact form">
+    <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+      <span class="lay-button-effect__text-sizer" aria-hidden="true">Close</span>
+      <span class="lay-button-effect__text-clip">
+        <span class="lay-button-effect__text lay-button-effect__text--current">Close</span>
+        <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">Close</span>
+      </span>
+    </span>
   </button>
   <form action={siteContent.contact.endpoint} method="post">
     {contactFields.map((field) => (

@@ -261,6 +261,16 @@ body.show-project-info-modal .project-toolbar {
   width: 24px;
 }
 
+/* A named pill rather than a ✕, so the way out of the form reads the way the
+   toolbar's Back does. `.close` sets `line-height: 0` for the glyph it used to
+   hold, which would collapse a line of text. */
+.contact-close {
+  border: 0;
+  border-radius: 100px;
+  line-height: 1.3;
+  padding: 5px 20px 4px;
+}
+
 .become-a-client-modal label {
   font-size: 18px;
   margin-bottom: 3px;
@@ -812,7 +822,7 @@ footer .become-a-client {
   color: #111 !important;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] {
   overflow: hidden;
 }
 
@@ -828,15 +838,15 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   position: fixed;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__content--text-slide {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__content--text-slide {
   position: static;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-sizer {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-sizer {
   visibility: hidden;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-clip {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-clip {
   border-radius: inherit;
   inset: 0;
   overflow: hidden;
@@ -845,7 +855,7 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   z-index: 1;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
   align-items: center;
   box-sizing: border-box;
   display: flex;
@@ -856,32 +866,32 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   transition: transform 350ms cubic-bezier(.4, .2, .2, 1);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--current {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--current {
   transform: translate(0, 0);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--next {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--next {
   transform: translateY(-100%);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--current,
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--current {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--current,
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--current {
   transform: translateY(100%);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--next,
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--next {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--next,
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--next {
   transform: translate(0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
     transition-duration: .01ms;
   }
 }
 
 @media (max-width: 699px) {
-  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
     padding: 5px 10px;
   }
 
@@ -1955,12 +1965,13 @@ body.show-project-info-modal > .become-a-client {
 
   /* The ✕ is the way out here, so it stays — unlike the info card, which is
      closed by the Back button or the backdrop. */
-  .project-media-carousel__back .become-a-client-modal .close {
-    padding: 20px;
-  }
-
-  .project-media-carousel__back .become-a-client-modal .close svg {
-    color: #111;
+  /* The card is white, so the pill inverts with it — the same dark button the
+     page uses everywhere else. */
+  .project-media-carousel__back .become-a-client-modal .contact-close {
+    background-color: #111;
+    color: #fff;
+    right: 20px;
+    top: 20px;
   }
 
   /* Hide the body-level backdrop: the flip is the modal now. */
@@ -1994,7 +2005,8 @@ body.show-project-info-modal > .become-a-client {
   .become-a-client,
   .url-button,
   .send-button,
-  .gallery-view .descr span.service
+  .gallery-view .descr span.service,
+  .contact-close
 ) {
   font-size: 20px !important;
   line-height: 1.3 !important;
@@ -2007,7 +2019,8 @@ body.show-project-info-modal > .become-a-client {
   .become-a-client,
   .url-button,
   .send-button,
-  .gallery-view .descr span.service
+  .gallery-view .descr span.service,
+  .contact-close
 )[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
   font-size: 20px;
   line-height: 1.3;
@@ -2021,7 +2034,8 @@ body.show-project-info-modal > .become-a-client {
     .become-a-client,
     .url-button,
     .send-button,
-    .gallery-view .descr span.service
+    .gallery-view .descr span.service,
+    .contact-close
   ) {
     padding: 5px 10px 4px !important;
   }
@@ -2032,7 +2046,8 @@ body.show-project-info-modal > .become-a-client {
     .become-a-client,
     .url-button,
     .send-button,
-    .gallery-view .descr span.service
+    .gallery-view .descr span.service,
+    .contact-close
   )[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
     padding: 5px 10px 4px;
   }
@@ -2130,9 +2145,73 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
 }
 
 /* The heading's own spacing lives on the wrapper, which is what the menu is
-   positioned against. */
+   positioned against. Flex so the funnel and the heading share a baseline —
+   and so the whitespace between the two buttons stops counting as text. */
 .project-filter__heading {
+  align-items: center;
+  display: flex;
+  gap: 8px;
   margin: 0;
+}
+
+/* Drawn as a project pill from the start — white fill, the same grey ring —
+   because it is the only thing on a touch screen saying the heading opens. */
+.project-filter__icon {
+  align-items: center;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  border: 1px solid #c5c5c5;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  justify-content: center;
+  line-height: 1.3;
+  margin: 0;
+  outline: none;
+  /* Square, and the size of a project pill: the height is the list's own
+     (`.projects-list a` is `calc(1.3em + 11px)` too), and the width is told to
+     match rather than being left to the glyph and its padding, which came out
+     five pixels wider. */
+  height: calc(1.3em + 11px);
+  padding: 0;
+  pointer-events: auto;
+  width: calc(1.3em + 11px);
+  transition: background-color 350ms ease, border-color 350ms ease, color 350ms ease;
+}
+
+.project-filter__icon .filter-lines {
+  display: block;
+  height: 1em;
+  width: 1em;
+}
+
+/* The list's own black pill, so the funnel reads as pressed for as long as the
+   categories are down. */
+.project-filter__icon:focus-visible,
+.project-filter.is-filter-open .project-filter__icon {
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+/* Either half answers for the whole: pointing at the heading inverts the
+   funnel, exactly as pointing at the funnel turns the heading into its pill
+   (further down).
+
+   Hover is asked for rather than assumed: a tap leaves `:hover` behind on a
+   touch screen, and the funnel would have stayed black after the menu it
+   opened had already closed again — reading as still open. */
+@media (hover: hover) {
+  .project-filter__icon:hover,
+  .project-filter:has(.project-filter__toggle:hover) .project-filter__icon {
+    background-color: #000;
+    border-color: #000;
+    color: #fff;
+  }
 }
 
 /* Deliberately not in the shared button sizing further up: those hold every
@@ -2172,9 +2251,25 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   padding-left: 20px;
 }
 
-/* Both labels are laid on top of each other in the hidden sizer, so the button
-   is as wide as the longer of the two: neither the category the list is
-   showing nor the invitation ever gets clipped as they slide past. */
+/*
+ * The funnel and the heading are one control, so pointing at either answers
+ * for both — hovering the funnel turns the heading into its pill and slides it
+ * to the invitation, exactly as hovering the heading does.
+ *
+ * Behind `(hover: hover)` because `:hover` sticks to whatever was last tapped
+ * on a touch screen: without it the heading would have stayed a pill after the
+ * menu it opened had closed again.
+ */
+@media (hover: hover) {
+  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle {
+    background-color: #fff;
+    border-color: #c5c5c5;
+    padding-left: 20px;
+  }
+}
+
+/* Both labels are laid on top of each other in the hidden sizer, in one grid
+   area, so the button can be measured against either of them. */
 .project-filter__toggle .lay-button-effect__text-sizer {
   display: grid;
 }
@@ -2182,6 +2277,40 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
 .project-filter__toggle .lay-button-effect__text-sizer > span {
   grid-area: 1 / 1;
   white-space: nowrap;
+}
+
+/*
+ * Only the label actually on screen is measured. Sized to the longer of the
+ * two — which is what holding both in the area does — the pill kept
+ * "Selected Projects"'s width while reading "Filter Projects", and the 34px
+ * left over sat after the word as a gap wider than the pill's own inset.
+ *
+ * `min-width` as well as `width`: a grid item's automatic minimum is its
+ * min-content size, so zero width alone would still have held the track open
+ * at the full length of the text.
+ */
+.project-filter__toggle .lay-button-effect__text-sizer > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  width: 0;
+}
+
+.project-filter:has(.project-filter__icon:hover) .project-filter__toggle .lay-button-effect__text-sizer > span:first-child,
+.project-filter__toggle:hover .lay-button-effect__text-sizer > span:first-child,
+.project-filter__toggle:focus-visible .lay-button-effect__text-sizer > span:first-child,
+.project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text-sizer > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  width: 0;
+}
+
+.project-filter:has(.project-filter__icon:hover) .project-filter__toggle .lay-button-effect__text-sizer > span:last-child,
+.project-filter__toggle:hover .lay-button-effect__text-sizer > span:last-child,
+.project-filter__toggle:focus-visible .lay-button-effect__text-sizer > span:last-child,
+.project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text-sizer > span:last-child {
+  min-width: auto;
+  overflow: visible;
+  width: auto;
 }
 
 /* Left aligned rather than centred: the two labels are different lengths, and
@@ -2207,6 +2336,39 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
 .project-filter__toggle:focus-visible .lay-button-effect__text,
 .project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text {
   padding-left: 20px !important;
+}
+
+@media (hover: hover) {
+  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle .lay-button-effect__text {
+    padding-left: 20px !important;
+  }
+}
+
+/* The open menu holds the label on the invitation, the way it holds the pill
+   and its indent. Until now only `:hover` slid the two labels past each other,
+   so the heading read "Filter Projects" while the pointer was on it and fell
+   back to the category the moment it moved — and on a touch screen, where the
+   funnel is what opens the menu, it never slid at all.
+   The `span` is there to carry the weight: the shared slide rules qualify the
+   text with the effect's own attribute, and a class-only selector loses. */
+.project-filter.is-filter-open .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current {
+  transform: translateY(100%);
+}
+
+.project-filter.is-filter-open .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next {
+  transform: translate(0, 0);
+}
+
+/* And the funnel answers for the heading: hovering it slides the labels the
+   same way hovering the heading does. */
+@media (hover: hover) {
+  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current {
+    transform: translateY(100%);
+  }
+
+  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next {
+    transform: translate(0, 0);
+  }
 }
 
 /* Set to the list's own measurements, so the menu lands exactly where the
@@ -2306,6 +2468,14 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
   display: none;
 }
 
+/* The caption opens the project too (see SiteShell). `.projects-list` is
+   click-through so the wash behind it stays reachable, and only the pills opt
+   back in — this is the second thing that has to. */
+.projects-list .short-description {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
 @media (max-width: 699px) {
   /* Still flush with the list, which sits at 10px below the breakpoint — and
      the pill's padding shrinks with the list's, so the text travels 10px. */
@@ -2363,19 +2533,30 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
  * laid out.
  */
 body > .become-a-client-modal {
+  /* The curtain's ghost copy is measured off these too (further down). It has
+     to land on exactly the same grid as the real form, or the handover between
+     the two shows up as the whole page stepping down — so the geometry lives
+     in one place and both read it. The vertical inset is what keeps a tall
+     form off the two corner buttons. */
+  --contact-inset-x: clamp(20px, 5vw, 80px);
+  --contact-inset-y: clamp(76px, 10vh, 110px);
   background-color: #000;
   border-radius: 0;
   box-shadow: none;
   clip-path: none;
   display: grid;
   grid-template-columns: min(100%, 54rem);
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  /* Every row its own height, and the stack centred in what is left: the
+     buttons have moved to the corners, so there is nothing left that has to
+     reach the bottom of the screen. */
+  align-content: center;
+  grid-template-rows: auto;
   height: 100dvh !important;
   inset: 0 !important;
   justify-content: center;
   max-height: none;
   overflow: hidden;
-  padding: clamp(28px, 6vh, 72px) clamp(20px, 5vw, 80px);
+  padding: var(--contact-inset-y) var(--contact-inset-x);
   transform: none !important;
   width: 100vw !important;
 }
@@ -2384,11 +2565,12 @@ body.show-client-modal {
   overflow: hidden;
 }
 
-/* Label, field, label, field, label, select, label, message, button — the
-   message row is the one that gives. */
+/* Every row its own height now. The message row used to be the one that gave,
+   because the form had to fill the screen down to the button; the block is
+   centred and the button has left it. */
 body > .become-a-client-modal form {
   display: grid;
-  grid-template-rows: repeat(7, auto) minmax(0, 1fr) auto;
+  grid-template-rows: auto;
   min-height: 0;
 }
 
@@ -2416,7 +2598,13 @@ body > .become-a-client-modal .contact-select__button,
   border-radius: 0;
   font-size: clamp(18px, min(2.8vw, 3.8vh), 40px);
   line-height: 1.25;
-  min-height: 0;
+  /* `1.85em + 1px` is the line box plus the padding and the rule under it —
+     what a field of this size comes to. Stated rather than left to the box,
+     because an `<input>` sizes its content off the font's own metrics and not
+     off `line-height`: past a certain size it came out shorter than the div
+     the curtain's copy stands it in for, and the two forms stopped lining up.
+     One number, both of them. */
+  min-height: calc(1.85em + 1px);
   padding: 0.3em 0;
   transition: border-color 200ms ease;
 }
@@ -2446,15 +2634,21 @@ body > .become-a-client-modal option {
   font-size: 17px;
 }
 
+/* A height of its own rather than whatever was left over, now that the block
+   it sits in is centred instead of stretched. */
 body > .become-a-client-modal textarea,
 .contact-curtain__field--textarea {
-  height: 100%;
-  min-height: clamp(48px, 8vh, 120px);
+  height: auto;
+  min-height: clamp(120px, 20vh, 180px);
   resize: none;
 }
 
 /* Carries the open class as well, only to outweigh the rule that holds every
    button on the site at 20px — this one is the page. */
+/* The last thing in the form, under the message field's rule, on the left
+   edge the labels and fields share. Carries the open class as well, only to
+   outweigh the rule that holds every button on the site at 20px — this one is
+   the page. */
 body.show-client-modal > .become-a-client-modal .send-button {
   align-self: start;
   border-radius: 100px;
@@ -2471,13 +2665,45 @@ body > .become-a-client-modal .send-button .button-arrow {
   width: 0.85em;
 }
 
-body > .become-a-client-modal .close {
-  padding: clamp(14px, 2.5vw, 36px);
+/* Exactly where Contact Us sits on the page behind it, and fixed like it: it
+   is standing in for that button while the form is up, and an absolute box in
+   the modal's grid would have been part of what the form is laid out around.
+   White on black is the inverse of the pill that opened it. */
+body > .become-a-client-modal .contact-close {
+  background-color: #fff;
+  color: #000;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  z-index: 3;
 }
 
-body > .become-a-client-modal .close svg {
-  height: clamp(22px, 2.4vw, 38px);
-  width: clamp(22px, 2.4vw, 38px);
+/* The panels are still closing when it would otherwise appear. It arrives with
+   them instead — the same 620ms the rest of the form waits for. */
+body > .become-a-client-modal .contact-close {
+  opacity: 0;
+  transition: opacity 260ms ease 620ms;
+}
+
+body.show-client-modal > .become-a-client-modal .contact-close {
+  opacity: 1;
+}
+
+/* On a phone it is the toolbar's twin: the same pill Back and Contact Us are
+   drawn at, in the corner Contact Us itself sits in — it is standing in for
+   that button while the form is up. */
+/* The page's own corners below the breakpoint: Contact Us sits at 10/10 here,
+   not 20/20, and Close takes its place exactly. */
+@media (max-width: 699px) {
+  body > .become-a-client-modal .contact-close {
+    line-height: 1.3;
+    min-height: calc(1.3em + 9px);
+    right: 10px;
+    top: 10px;
+    /* The legacy stylesheet shrinks every `.close` to 0.8 down here — it was
+       sizing a ✕ glyph, and it was holding this pill 7px under the toolbar's. */
+    transform: none;
+  }
 }
 
 /* `._bigtext` gives it 20px underneath, which centres it 10px high. */
@@ -2536,14 +2762,19 @@ body.show-client-modal .contact-curtain__panel {
 }
 
 /* A full-screen copy of the form, pinned to the edge its panel is anchored to,
-   so that with the panel home it lands exactly where the real one is. */
+   so that with the panel home it lands exactly where the real one is. Every
+   line of geometry here has a twin on `body > .become-a-client-modal`: the
+   padding is read from the same two properties, and the centring and the row
+   sizing are repeated verbatim. Let one drift and the handover between the
+   two shows up as the whole page stepping. */
 .contact-curtain__ghost {
+  align-content: center;
   display: grid;
   grid-template-columns: min(100%, 54rem);
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto;
   height: 100dvh;
   justify-content: center;
-  padding: clamp(28px, 6vh, 72px) clamp(20px, 5vw, 80px);
+  padding: var(--contact-inset-y) var(--contact-inset-x);
   position: absolute;
   top: 0;
   width: 100vw;
@@ -2559,7 +2790,7 @@ body.show-client-modal .contact-curtain__panel {
 
 .contact-curtain__form {
   display: grid;
-  grid-template-rows: repeat(7, auto) minmax(0, 1fr) auto;
+  grid-template-rows: auto;
   min-height: 0;
 }
 
@@ -2570,13 +2801,21 @@ body.show-client-modal .contact-curtain__panel {
   min-height: calc(1.85em + 1px);
 }
 
+/* Re-stated after `.contact-curtain__field` above, which is the same weight
+   and would otherwise hold the message placeholder at one line while the real
+   field is six — and a copy a hundred pixels shorter than the form it stands
+   in for centres a hundred pixels off it. */
 .contact-curtain__field--textarea {
-  height: 100%;
+  height: auto;
+  min-height: clamp(120px, 20vh, 180px);
 }
 
 .contact-curtain__button {
   align-self: start;
   justify-self: start;
+  /* The real one's `margin-top`, so the silhouette sits on it exactly. */
+  margin-top: clamp(14px, 2.5vh, 32px);
+  min-height: calc(1.2em + 0.8em);
   pointer-events: none;
 }
 
@@ -2788,4 +3027,323 @@ body > .become-a-client-modal .thankyou__note {
   line-height: 1.3;
   margin-top: clamp(10px, 1.8vh, 22px);
   opacity: 0.6;
+}
+
+/* ============================================================
+   Phone background media
+   ============================================================ */
+
+@media (max-width: 699px) {
+  /* The blurred slideshow sits in `.sticky` at z-index 1 and is only 20%
+     opaque, and the legacy stylesheet leaves the list below it at 0 — so the
+     wash went over the pills and every white one read as translucent. The list
+     goes above it, at the same 2 desktop already uses. */
+  .plist-wrap-2 {
+    z-index: 2;
+  }
+
+  /*
+   * With the categories down, the list they stand in for stops taking up room.
+   * Hidden with `opacity` alone it still measured its full length, so the
+   * section stayed as tall as all 37 projects and the menu was followed by two
+   * screens of empty wash to scroll through.
+   *
+   * Out of flow rather than `display: none`, so it can still fade; and the
+   * menu comes into the flow in its place, so the section is exactly the menu
+   * plus its margins — the height `--phone-stage-height` then measures.
+   */
+  .plist-wrap-2:has(.project-filter.is-filter-open) .projects-list {
+    position: absolute;
+  }
+
+  .project-filter.is-filter-open .project-filter__menu {
+    position: static;
+  }
+
+  /* Was a child of `.sticky` and inherits its geometry: pinned to the top for
+     the length of `.plist-wrap`, and as tall as the stage so the corner
+     offsets below resolve against its bottom edge. Its height and the negative
+     margin that takes that height back out of the flow are set further down,
+     with `.sticky`'s. */
+  .background-images-phone {
+    /* A full-screen box in front of the list: only the preview itself may
+       take a click. */
+    pointer-events: none;
+    position: sticky;
+    top: 0;
+    z-index: 3;
+  }
+
+  .background-images-phone a {
+    pointer-events: auto;
+  }
+
+  /* The legacy stylesheet parks it 100px above the bottom edge, which reads as
+     floating. 20px is the inset it already keeps from the right, so matching it
+     puts the thing in the corner. */
+  .background-images-phone img,
+  .background-images-phone video {
+    bottom: 20px;
+  }
+}
+
+/*
+ * The pinned stage — the wash, and the corner preview beside it — is a screen
+ * tall, while `.plist-wrap` is only as tall as the list: `.plist-wrap-2` is
+ * pulled back over the stage by exactly that screen. Filter to a small
+ * category and the container ends up shorter than the thing pinned inside it,
+ * and the stage hangs out of the bottom — the wash ended in a hard line across
+ * the logo wall with the preview floating over it.
+ *
+ * So the stage is measured down to the list instead of the list being padded
+ * out to the stage: `--phone-stage-height` is `min(100vh, the list's own
+ * height)`, set in SiteShell. Holding the container at a screen would have
+ * left one under a four-item list, which is the same glitch with white space
+ * instead of a seam. The pull-back has to travel with it, or a shortened stage
+ * would drag the list up past the top of the page.
+ */
+@media (max-width: 699px) {
+  .sticky,
+  .background-images-phone {
+    height: var(--phone-stage-height, 100vh);
+  }
+
+  .background-images-phone,
+  .plist-wrap-2 {
+    margin-top: calc(-1 * var(--phone-stage-height, 100vh)) !important;
+  }
+}
+
+/* ============================================================
+   The phone's white sheet — corners and the services on it
+   ============================================================ */
+
+@media (max-width: 699px) {
+  /* The legacy 20px reads as a square edge at this width. 60px is the corner
+     the desktop panel has, at the scale a phone is held at; the 50px tail below
+     the last card was most of a blank screen and comes back to the 20px the
+     page uses everywhere else.
+
+     Positioned and raised because the footer is pinned behind it now (below):
+     without a layer of its own the fixed footer painted straight over it. */
+  .main {
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    padding-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* The reveal the desktop has: the footer is pinned to the bottom of the
+     window, the page reserves exactly its height above it (`--footer-height`,
+     measured in SiteShell), and the last stretch of scrolling slides the white
+     sheet off it — uncovered through the corners above, with its own text
+     fading up as it goes. */
+  #frontpage {
+    padding-bottom: var(--footer-height, 600px);
+  }
+
+  #frontpage > footer {
+    position: fixed;
+    z-index: 1;
+  }
+
+  /* Bigger, and broken over two lines: one 16px line across the full width
+     read as a caption to the wall rather than its heading. The measure is what
+     breaks it — "Worked for or worked as" then "subcontractor for". */
+  .our-clients > h2 {
+    font-size: 28px;
+    line-height: 1.15;
+    max-width: 300px;
+    text-align: left;
+  }
+
+  /* Fourteen pills at the button size overran the 4:3 card in every direction —
+     out of the top of it and off its right edge. They are labels on a photo,
+     not buttons to hit, so they come down to a caption size and the card is
+     given the height back as portrait. */
+  .gallery-view .gallery-item-view {
+    aspect-ratio: 4 / 5;
+  }
+
+  /* Centred rather than stacked against the left edge: at this size the pills
+     are a caption block on a photo, and a ragged right against a card this
+     narrow read as unset text. The card's own title is centred with them —
+     left in its corner it would have looked like it had been missed. */
+  .gallery-view .descr {
+    gap: 6px;
+    justify-content: center;
+  }
+
+  /* `translateX`, not `left: 0; right: 0` — it is a pill, and it has to keep
+     shrinking to its text rather than stretching across the card. */
+  .gallery-view .descr span.service-big {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* `!important` and the attribute selector to clear the shared button sizing,
+     which reaches these through an `:is()` list no plain selector outweighs. */
+  .gallery-view .descr span.service[data-lay-button-effect-text-slide="1"] {
+    font-size: 13px !important;
+    padding: 4px 9px 3px !important;
+  }
+
+  .gallery-view .descr span.service[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+    font-size: 13px;
+    padding: 4px 9px 3px;
+  }
+
+  /* The caption belongs to the black pill above it and reads as one object
+     with it — the blue was the legacy theme's, and it broke that pairing. The
+     white ring went with it: it was there to hold the blue off the page, and
+     black needs no help. */
+  .short-description {
+    background: #000;
+    border-color: #000;
+    color: #fff;
+  }
+}
+
+/* ============================================================
+   A project on the phone: its own first page, then the media
+   ============================================================ */
+
+@media (max-width: 699px) {
+  /* The info was behind a button floating over the media. On a phone the
+     project simply starts with what it is — title, description, credits — and
+     the images follow, so the modal is unwrapped and left where it was built:
+     in the flow, ahead of the grid. */
+  body.show-post .project-toolbar .info-button {
+    display: none;
+  }
+
+  .project-info-modal {
+    background-color: #fff;
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+    position: static;
+    transform: none;
+    visibility: visible;
+    z-index: auto;
+  }
+
+  .project-info-modal__panel {
+    max-height: none;
+    width: 100%;
+  }
+
+  /* Nothing to close. */
+  .project-info-modal__close {
+    display: none;
+  }
+
+  /* Stripped back to plain text on the page: the card treatment was there to
+     lift it off the media it was floating over, and it is not floating now.
+     The top padding clears Back and Contact Us, which float over all of this
+     and would otherwise sit on the project's own title. */
+  .project-info-modal .url-button-wrap {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    max-height: none;
+    overflow: visible;
+    padding: 100px 20px 30px !important;
+  }
+
+  /* Moved to the end of the grid by SiteShell, into the tail the media already
+     leaves above the rounded corner. Centred on the page, and given the room
+     the last row would otherwise have kept to itself. */
+  .url-button--below-media {
+    display: block;
+    margin: 30px auto 10px;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+
+  /* Closer together: 5vw was set for a desktop column and leaves the phone
+     scrolling through gaps rather than through the work. Set on the row, not
+     on `--row-gap` — that one is written inline by `renderProjectGrid`, and an
+     inline custom property outranks a stylesheet. */
+  #post .static-grid-row {
+    margin-bottom: 3vw;
+  }
+
+  /* The same sheet the home page is: white, with the corner turned before the
+     dark Next Project below it. The info block above it is white too, so the
+     two read as one page — which is also why there is no shadow here. It would
+     draw a line across that join, and the section under the corner is black
+     anyway, so there is nothing for it to fall on. */
+  #post .grid {
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  /* The home page's reveal, in the project scroller: Next Project is pinned to
+     the bottom and the page above slides off it, its text fading up over the
+     same stretch (`--footer-content-opacity`, set in SiteShell — it was
+     already being measured here, only nothing was reading it). */
+  #post .next-project {
+    bottom: 0;
+    position: sticky;
+    z-index: 1;
+  }
+
+  #post .next-project .next-project-text-wrap {
+    opacity: var(--footer-content-opacity, 0.1);
+  }
+
+  /* The 60px corners cut a notch out of the white page, and `#post` paints
+     nothing — through it you saw the home page still sitting underneath, which
+     is the pale edge beside the curve. The footer's own ground is carried up
+     behind them instead: a band of its black, with the blurred still stretched
+     to match, both only ever seen through the notch. */
+  #post .next-project::before {
+    background-color: #000;
+    content: "";
+    height: 60px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: -60px;
+  }
+
+  #post .next-project img {
+    height: calc(100% + 60px);
+    /* 0.7 let the next project's own colours through as a wash — the desktop
+       reads it at 0.3, as ground for the text rather than a picture. */
+    opacity: 0.3;
+    top: -60px;
+  }
+
+  /* Centred both ways. Right-aligned, the two lines hung off the edge of a
+     screen this narrow with the whole left half empty. */
+  .next-project {
+    text-align: center;
+  }
+
+  .next-project .next-title,
+  .next-project .next-project-text {
+    text-align: center;
+  }
+
+  /* The legacy 0.1em is a hairline at this size, and the title wraps to two
+     lines here — stacked centred, the name and the invitation read as one
+     block of four lines rather than two things. `.next-title` exists only
+     inside `.next-project`, so this reaches nothing else. */
+  .next-project .next-title {
+    margin-bottom: 10px;
+  }
+
+  .next-project .next-project-text-wrap {
+    left: 5%;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }

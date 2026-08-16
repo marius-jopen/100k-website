@@ -83,6 +83,20 @@ function resolveMedia(
   return imageAsset(field.value as string | null);
 }
 
+/**
+ * How wide a logo is against its own height, read off the `viewBox` — which
+ * every one of them carries and which is pulled in to the artwork, so this is
+ * the shape of the logo itself rather than of the file it arrived in. The
+ * client wall sizes each logo from it.
+ */
+function svgAspectRatio(svg: string | null | undefined): number | null {
+  const viewBox = svg?.match(/viewBox="([^"]+)"/)?.[1];
+  const [, , width, height] = viewBox?.trim().split(/[\s,]+/).map(Number) ?? [];
+
+  if (!width || !height) return null;
+  return width / height;
+}
+
 /* ------------------------------------------------------------------- site */
 
 const siteEntry = await reader.singletons.site.read();
@@ -93,7 +107,14 @@ if (!siteEntry) {
 
 export const siteContent: SiteContent = {
   name: siteEntry.name,
-  clients: siteEntry.clients.map(imageAsset).filter((asset): asset is Asset => Boolean(asset)),
+  clients: siteEntry.clients.map((client) => ({
+    name: client.name,
+    svg: client.svg.trim(),
+    image: imageAsset(client.image),
+    aspectRatio: svgAspectRatio(client.svg),
+    // The field can be cleared in the CMS, which is the same as leaving it be.
+    opticalSize: client.opticalSize ?? 100,
+  })),
   servicesIntro: siteEntry.servicesIntro,
   services: siteEntry.services.map((service) => ({
     title: service.title,
@@ -148,6 +169,7 @@ export const projects: Project[] = projectEntries
       title: entry.title,
       displayTitle: entry.displayTitle,
       shortDescription: entry.shortDescription,
+      tag: entry.tag,
       description: entry.description,
       externalUrl: entry.externalUrl,
       featuredImage: imageAsset(entry.featuredImage),

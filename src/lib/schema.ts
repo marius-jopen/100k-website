@@ -48,6 +48,8 @@ export interface Project {
   title: string;
   displayTitle: string;
   shortDescription: string;
+  /** Category slug from `PROJECT_TAGS`; drives the homepage filter. */
+  tag: string;
   description: string;
   externalUrl: string;
   featuredImage: Asset | null;
@@ -55,6 +57,17 @@ export interface Project {
   mobileBackground: Asset | null;
   credits: Credit[];
   layout: ProjectLayout;
+}
+
+export interface ClientLogo {
+  name: string;
+  /** Inline SVG markup; empty when the logo only exists as an image. */
+  svg: string;
+  image: Asset | null;
+  /** Width ÷ height of the logo's own box; `null` when it declares none. */
+  aspectRatio: number | null;
+  /** Per-logo nudge, in percent, on the size the wall works out for it. */
+  opticalSize: number;
 }
 
 export interface ServiceCard {
@@ -65,7 +78,7 @@ export interface ServiceCard {
 
 export interface SiteContent {
   name: string;
-  clients: Asset[];
+  clients: ClientLogo[];
   servicesIntro: string;
   services: ServiceCard[];
   webglBackgrounds: Asset[];

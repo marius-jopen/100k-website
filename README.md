@@ -60,6 +60,28 @@ defined once and reused everywhere.
 
 The schema lives in `keystatic.config.ts`.
 
+### Categories
+
+Every project carries one **Category**. The six of them are defined in
+`src/lib/tags.ts` — the only place they are written down. Keystatic builds its
+select from that list, the homepage builds the filter menu behind the "Selected
+Projects" heading from it, and `src/pages/tag/[tag].astro` prerenders one
+already-filtered copy of the homepage per category:
+
+| URL                  | Shows                                                  |
+| -------------------- | ------------------------------------------------------ |
+| `/`                  | Every project, heading reads "Selected Projects"        |
+| `/tag/culture/`      | Art, music, magazines, labels, institutions of culture  |
+| `/tag/crypto/`       | Web3, wallets, tokens, NFT platforms                    |
+| `/tag/portfolio/`    | Studios, agencies, architects, photographers, directors |
+| `/tag/brand/`        | Campaigns, takeovers and shops for brands               |
+| `/tag/product/`      | Apps, plugins, tools and the sites that sell them       |
+| `/tag/business/`     | Companies, agencies of the state, research, services    |
+
+Choosing a category in the menu never reloads the page: `project-filter.js`
+hides the other rows and pushes the matching URL, so the address is always one
+that can be opened cold. Adding a category is one entry in `src/lib/tags.ts`.
+
 ## Media
 
 ### Images
@@ -121,14 +143,26 @@ name alone silently pairs them with the wrong video.
 
 ## Contact form
 
-Unchanged: `public/contact.php` posts to SendGrid server-side. On the production
-server set:
+The form posts straight from the page to [Static Forms](https://www.staticforms.dev),
+carrying `PUBLIC_STATIC_FORM_API_KEY` in a hidden field. Set that in the Vercel
+project; it is baked into the pages at build time.
 
-```
-SENDGRID_API_KEY=...
-SENDGRID_FROM_EMAIL=verified-sender@100k.studio
-SENDGRID_TO_EMAIL=contact@100k.studio    # optional
-```
+That key is public, which is how Static Forms is built — their own snippet puts
+it in a hidden input — and it was tried the other way first. A Vercel function
+held the key and posted on behalf of the browser, which worked in the sense that
+every submission was accepted, and failed in the sense that every one of them
+was filed as spam and no email was sent: posted from a server, submissions
+arrive from a datacenter address. Sent from the page they land in the inbox.
+The two were run side by side to be sure.
+
+The endpoint is a CMS field (`Homepage & footer → Contact form`), so it can be
+pointed elsewhere without a deploy. Where submissions are delivered is a form
+setting in the Static Forms dashboard, not something the site says.
+
+`public/contact.php` is the old SendGrid endpoint, kept for a plain PHP host.
+Nothing posts to it on Vercel — PHP does not run there — and it needs
+`SENDGRID_API_KEY`, `SENDGRID_FROM_EMAIL` and optionally `SENDGRID_TO_EMAIL` if
+it is ever used again.
 
 ## Known quirk carried over
 

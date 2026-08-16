@@ -95,6 +95,7 @@ strong {
 .info-button,
 .become-a-client,
 .become-a-client-modal > ._bigtext,
+.contact-curtain__ghost > ._bigtext,
 .become-a-client-modal .thankyou,
 .gallery-view .descr span,
 .introtext,
@@ -811,7 +812,7 @@ footer .become-a-client {
   color: #111 !important;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] {
   overflow: hidden;
 }
 
@@ -827,15 +828,15 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   position: fixed;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__content--text-slide {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__content--text-slide {
   position: static;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-sizer {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-sizer {
   visibility: hidden;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-clip {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text-clip {
   border-radius: inherit;
   inset: 0;
   overflow: hidden;
@@ -844,7 +845,7 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   z-index: 1;
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
   align-items: center;
   box-sizing: border-box;
   display: flex;
@@ -855,32 +856,32 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   transition: transform 350ms cubic-bezier(.4, .2, .2, 1);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--current {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--current {
   transform: translate(0, 0);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--next {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text--next {
   transform: translateY(-100%);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--current,
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--current {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--current,
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--current {
   transform: translateY(100%);
 }
 
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--next,
-:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--next {
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:hover .lay-button-effect__text--next,
+:is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"]:focus-visible .lay-button-effect__text--next {
   transform: translate(0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
     transition-duration: .01ms;
   }
 }
 
 @media (max-width: 699px) {
-  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+  :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle)[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
     padding: 5px 10px;
   }
 
@@ -1241,11 +1242,16 @@ footer > .contact-us {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+/* Every logo is drawn in two colours it takes from here: `currentColor` for
+   the ink, `--client-logo-knockout` for the holes in it — the letters inside
+   Marvel's box, the details on Warner's shield. */
 .clients-grid span {
+  --client-logo-knockout: #fff;
   align-items: center;
   background: #fff;
   border-right: 0;
   box-sizing: border-box;
+  color: #000;
   display: flex;
   justify-content: center;
   min-height: 140px;
@@ -1254,11 +1260,21 @@ footer > .contact-us {
   padding: 20px;
 }
 
+/* The height comes from the cell, which works it out per logo so they all
+   cover the same area (see SiteShell); the width follows from the viewBox.
+   The cap is the backstop for the widest wordmarks. */
+.clients-grid svg {
+  display: block;
+  height: var(--client-logo-height, 56px);
+  max-width: 80%;
+  width: auto;
+}
+
 .clients-grid img {
   display: block;
   height: auto;
-  max-height: 100px;
-  max-width: 100%;
+  max-height: 56px;
+  max-width: 70%;
   width: auto;
 }
 
@@ -1272,8 +1288,14 @@ footer > .contact-us {
     padding: 15px;
   }
 
+  /* The cells are shorter and half as wide below the breakpoint, so every
+     logo comes down by the same fraction and keeps the balance. */
+  .clients-grid svg {
+    height: calc(var(--client-logo-height, 44px) * 0.78);
+  }
+
   .clients-grid img {
-    max-height: 80px;
+    max-height: 44px;
   }
 }
 
@@ -2083,4 +2105,687 @@ body.show-project-contact-flip .project-toolbar .back-button {
 body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .back-button {
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+/* ============================================================
+   Project categories — the list's heading is its filter
+   ============================================================ */
+
+/* The heading reads as a title, slides to the invitation on hover, and drops
+   the categories underneath on click. Its own box stays transparent and
+   click-through so nothing changes until the pointer is actually on it. */
+.project-filter {
+  /* Flush with the list it filters: `.projects-list a` carries the same 20px,
+     so the heading's pill and the project pills share one left edge — and
+     their text, 20px further in, shares another. */
+  margin: 0 0 20px 20px;
+  padding: 0;
+  pointer-events: none;
+  position: relative;
+  width: -moz-fit-content;
+  width: fit-content;
+  /* Above `.projects-list-region`, which is raised to 3 below the breakpoint —
+     the open menu hangs over the first rows of the list it is filtering. */
+  z-index: 5;
+}
+
+/* The heading's own spacing lives on the wrapper, which is what the menu is
+   positioned against. */
+.project-filter__heading {
+  margin: 0;
+}
+
+/* Deliberately not in the shared button sizing further up: those hold every
+   button at 20px, while this one has to stay the size of the project list it
+   heads — which grows to 25px past 1500px wide. Left padding is missing on
+   purpose; see the hover rule below. */
+.project-filter__toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+  font: inherit;
+  line-height: 1.3;
+  margin: 0;
+  outline: none;
+  padding: 5px 20px 4px 0;
+  pointer-events: auto;
+  position: relative;
+  text-align: left;
+  transition: background-color 350ms ease, border-color 350ms ease, padding-left 350ms ease;
+}
+
+/* The same pill the projects below it are drawn as, down to the grey of its
+   outline — it only takes that shape once it is being used. At rest the
+   heading sits on the list's left edge, where a project pill starts; the pill
+   it becomes needs its 20px of padding, so the text travels those 20px inwards
+   as the fill arrives and lands on the project titles. */
+.project-filter__toggle:hover,
+.project-filter__toggle:focus-visible,
+.project-filter.is-filter-open .project-filter__toggle {
+  background-color: #fff;
+  border-color: #c5c5c5;
+  padding-left: 20px;
+}
+
+/* Both labels are laid on top of each other in the hidden sizer, so the button
+   is as wide as the longer of the two: neither the category the list is
+   showing nor the invitation ever gets clipped as they slide past. */
+.project-filter__toggle .lay-button-effect__text-sizer {
+  display: grid;
+}
+
+.project-filter__toggle .lay-button-effect__text-sizer > span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+/* Left aligned rather than centred: the two labels are different lengths, and
+   centring them in a box sized to the longer one made the text step sideways
+   as it slid. The padding travels with the button's own (see above), so the
+   label and the pill around it arrive together.
+   `!important` throughout because the shared rule above sets all of this from
+   inside an `:is()` that no plain selector here can outweigh. */
+.project-filter__toggle[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
+  font-size: inherit !important;
+  justify-content: flex-start !important;
+  line-height: inherit !important;
+  padding-left: 0 !important;
+  transition:
+    padding-left 350ms ease,
+    transform 350ms cubic-bezier(.4, .2, .2, 1) !important;
+  white-space: nowrap;
+}
+
+/* After the rule above, not with the button's own hover block: same weight,
+   so it only wins by coming later. */
+.project-filter__toggle:hover .lay-button-effect__text,
+.project-filter__toggle:focus-visible .lay-button-effect__text,
+.project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text {
+  padding-left: 20px !important;
+}
+
+/* Set to the list's own measurements, so the menu lands exactly where the
+   projects are: 24px below the heading is where the first project sits (the
+   heading's 20px margin plus the row's own 4px), and the 8px gap plus the pill
+   height repeats the list's 45px rhythm. The two cross-fade in place. */
+.project-filter__menu {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  left: 0;
+  opacity: 0;
+  padding-top: 24px;
+  position: absolute;
+  top: 100%;
+  transition: opacity 220ms ease, visibility 0s linear 220ms;
+  visibility: hidden;
+  z-index: 12;
+}
+
+/* `:focus-within` is the keyboard way in when the script never arrives; once
+   it has, the class it adds takes the menu over so a click that closes the
+   menu is not undone by the focus the same click leaves on the button. */
+.project-filter.is-filter-open .project-filter__menu,
+.project-filter:not(.is-filter-enhanced):focus-within .project-filter__menu {
+  opacity: 1;
+  transition-delay: 0s;
+  visibility: visible;
+}
+
+/* A project pill in every respect — same weight, same grey outline, same
+   radius — so the menu reads as the list it is about to become. */
+.project-filter__option {
+  background-color: #fff;
+  border: 1px solid #c5c5c5;
+  border-radius: 100px;
+  color: #000;
+  cursor: pointer;
+  display: inline-block;
+  /* `._bigtext` off the wrapper — the same 20px/25px the projects are set in. */
+  font-size: inherit;
+  font-weight: 600;
+  line-height: 1.3;
+  outline: none;
+  padding: 5px 20px 4px;
+  pointer-events: auto;
+  text-decoration: none;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  white-space: nowrap;
+}
+
+/* Exactly the list's own highlighted pill (`.projects-list a.hover`), arrow
+   and all: it takes the place of the left padding and the text steps aside.
+   Driven by a class rather than `:hover`, because — again as in the list —
+   only one pill is ever black, and it stays on the one last pointed at. */
+.project-filter__option.is-highlighted {
+  align-items: center;
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
+  display: inline-flex;
+  gap: 0.25em;
+  padding-left: 0.25em;
+}
+
+.project-filter__option .button-arrow {
+  display: none;
+}
+
+.project-filter__option.is-highlighted .button-arrow {
+  display: block;
+}
+
+/* Clickable: it takes the reader back to the unfiltered list at the top. */
+body.show-frontpage :is(.introtext, .mobile-logo) {
+  cursor: pointer;
+}
+
+/* The menu stands in for the list while it is open — same pills, same place —
+   so the list goes out as the menu comes in, on the same fade. */
+.plist-wrap-2 .projects-list {
+  transition: opacity 220ms ease;
+}
+
+.plist-wrap-2:has(.project-filter.is-filter-open) .projects-list {
+  opacity: 0;
+}
+
+.plist-wrap-2:has(.project-filter.is-filter-open) .projects-list a {
+  pointer-events: none;
+}
+
+/* Filtered out of the list. The slides keep their place — a project is
+   addressed by its position in the full list everywhere else on the page. */
+.projects-list > div.is-filtered-out {
+  display: none;
+}
+
+@media (max-width: 699px) {
+  /* Still flush with the list, which sits at 10px below the breakpoint — and
+     the pill's padding shrinks with the list's, so the text travels 10px. */
+  .project-filter {
+    margin-left: 10px;
+  }
+
+  .project-filter__toggle {
+    padding: 5px 10px 4px 0;
+  }
+
+  .project-filter__toggle:hover,
+  .project-filter__toggle:focus-visible,
+  .project-filter.is-filter-open .project-filter__toggle {
+    padding-left: 10px;
+  }
+
+  .project-filter__toggle:hover .lay-button-effect__text,
+  .project-filter__toggle:focus-visible .lay-button-effect__text,
+  .project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text {
+    padding-left: 10px !important;
+  }
+
+  .project-filter__option {
+    padding: 5px 10px 4px;
+  }
+
+  /* Re-stated after the shorthand above, which would otherwise put the
+     arrow's own left padding back to 10px. */
+  .project-filter__option.is-highlighted {
+    padding-left: 0.25em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-filter__toggle,
+  .project-filter__menu,
+  .project-filter__option {
+    transition-duration: 1ms;
+  }
+}
+
+/* ============================================================
+   Contact form: the whole screen and nothing else
+   ============================================================ */
+
+/*
+ * Only the standalone form. Inside a project the same element is moved onto
+ * the back of the media card (see SiteShell) and stays the card it is there,
+ * so everything here hangs off `body >`.
+ *
+ * It never scrolls. The type is set against both dimensions — `min(vw, vh)` —
+ * so a short window makes it smaller rather than taller than the screen, and
+ * the message field takes whatever height is left over once the rest has been
+ * laid out.
+ */
+body > .become-a-client-modal {
+  background-color: #000;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: none;
+  display: grid;
+  grid-template-columns: min(100%, 54rem);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100dvh !important;
+  inset: 0 !important;
+  justify-content: center;
+  max-height: none;
+  overflow: hidden;
+  padding: clamp(28px, 6vh, 72px) clamp(20px, 5vw, 80px);
+  transform: none !important;
+  width: 100vw !important;
+}
+
+body.show-client-modal {
+  overflow: hidden;
+}
+
+/* Label, field, label, field, label, select, label, message, button — the
+   message row is the one that gives. */
+body > .become-a-client-modal form {
+  display: grid;
+  grid-template-rows: repeat(7, auto) minmax(0, 1fr) auto;
+  min-height: 0;
+}
+
+body > .become-a-client-modal > ._bigtext,
+.contact-curtain__ghost > ._bigtext {
+  font-size: clamp(28px, min(5vw, 7vh), 72px);
+  line-height: 1.05;
+  margin-bottom: clamp(12px, 2.5vh, 32px);
+}
+
+body > .become-a-client-modal label,
+.contact-curtain__label {
+  font-size: clamp(13px, min(1.4vw, 2vh), 20px);
+  margin-bottom: 0;
+  margin-top: clamp(10px, 1.8vh, 24px);
+}
+
+/* Boxes around type this size read as containers rather than fields; a rule
+   under each one is enough to say where to write. */
+body > .become-a-client-modal :is(input, select, textarea),
+body > .become-a-client-modal .contact-select__button,
+.contact-curtain__field {
+  background-color: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 0;
+  font-size: clamp(18px, min(2.8vw, 3.8vh), 40px);
+  line-height: 1.25;
+  min-height: 0;
+  padding: 0.3em 0;
+  transition: border-color 200ms ease;
+}
+
+body > .become-a-client-modal :is(input, select, textarea):focus,
+body > .become-a-client-modal .contact-select.is-open .contact-select__button {
+  background-color: transparent;
+  border-bottom-color: #fff;
+}
+
+/* `appearance: none` takes the native arrow with it, and at this size its
+   absence reads as a disabled field. */
+body > .become-a-client-modal .contact-select__button,
+.contact-curtain__field--select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.5'%3E%3Cpath d='m5 9 7 7 7-7'/%3E%3C/svg%3E");
+  background-position: right 0 center;
+  background-repeat: no-repeat;
+  background-size: clamp(18px, 2.2vw, 30px);
+  padding-right: clamp(26px, 3vw, 44px);
+}
+
+/* The list the browser opens is drawn at the field's size unless it is told
+   otherwise, which at 40px is a menu the height of the window. */
+body > .become-a-client-modal option {
+  background-color: #111;
+  color: #fff;
+  font-size: 17px;
+}
+
+body > .become-a-client-modal textarea,
+.contact-curtain__field--textarea {
+  height: 100%;
+  min-height: clamp(48px, 8vh, 120px);
+  resize: none;
+}
+
+/* Carries the open class as well, only to outweigh the rule that holds every
+   button on the site at 20px — this one is the page. */
+body.show-client-modal > .become-a-client-modal .send-button {
+  align-self: start;
+  border-radius: 100px;
+  font-size: clamp(18px, min(2.2vw, 3vh), 34px) !important;
+  gap: 0.3em;
+  justify-self: start;
+  line-height: 1.2 !important;
+  margin-top: clamp(14px, 2.5vh, 32px);
+  padding: 0.4em 0.9em 0.4em 0.7em !important;
+}
+
+body > .become-a-client-modal .send-button .button-arrow {
+  height: 0.85em;
+  width: 0.85em;
+}
+
+body > .become-a-client-modal .close {
+  padding: clamp(14px, 2.5vw, 36px);
+}
+
+body > .become-a-client-modal .close svg {
+  height: clamp(22px, 2.4vw, 38px);
+  width: clamp(22px, 2.4vw, 38px);
+}
+
+/* `._bigtext` gives it 20px underneath, which centres it 10px high. */
+body > .become-a-client-modal .thankyou {
+  line-height: 1.15;
+  margin: 0 !important;
+}
+
+/* ------------------------------------------------------------ the curtain */
+
+/*
+ * The intro splits its logo down the middle and parts the two halves with the
+ * panels they sit on. This is that, closing instead of opening and sideways
+ * instead of up and down: each panel carries a full-width copy of the form and
+ * shows only the half that falls inside it, so the two halves fly in and meet
+ * as one. The real form is put in place the moment they do — it is the same
+ * layout at the same size, so the handover is not visible.
+ */
+body > .become-a-client-modal {
+  background-color: transparent;
+  filter: none !important;
+  opacity: 1 !important;
+  transition: visibility 0s linear 620ms !important;
+}
+
+.contact-curtain {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.contact-curtain__panel {
+  background-color: #000;
+  bottom: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  transition: transform 620ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Half the screen each and a hair over, so no seam shows where they meet. */
+  width: 50.2%;
+}
+
+.contact-curtain__panel--left {
+  left: 0;
+  transform: translateX(-100%);
+}
+
+.contact-curtain__panel--right {
+  right: 0;
+  transform: translateX(100%);
+}
+
+body.show-client-modal .contact-curtain__panel {
+  transform: translateX(0);
+}
+
+/* A full-screen copy of the form, pinned to the edge its panel is anchored to,
+   so that with the panel home it lands exactly where the real one is. */
+.contact-curtain__ghost {
+  display: grid;
+  grid-template-columns: min(100%, 54rem);
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+  justify-content: center;
+  padding: clamp(28px, 6vh, 72px) clamp(20px, 5vw, 80px);
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
+.contact-curtain__panel--left .contact-curtain__ghost {
+  left: 0;
+}
+
+.contact-curtain__panel--right .contact-curtain__ghost {
+  right: 0;
+}
+
+.contact-curtain__form {
+  display: grid;
+  grid-template-rows: repeat(7, auto) minmax(0, 1fr) auto;
+  min-height: 0;
+}
+
+/* Empty divs have no line to give them height; the fields they stand in for
+   are one line tall. Everything here is border-box, so the padding and the
+   rule under it are part of that measurement. */
+.contact-curtain__field {
+  min-height: calc(1.85em + 1px);
+}
+
+.contact-curtain__field--textarea {
+  height: 100%;
+}
+
+.contact-curtain__button {
+  align-self: start;
+  justify-self: start;
+  pointer-events: none;
+}
+
+/* The handover: the copies hold the screen until the panels are home, then the
+   real form takes over. Neither fades — one is simply swapped for the other. */
+.contact-curtain__ghost,
+body > .become-a-client-modal > :not(.contact-curtain) {
+  transition: visibility 0s linear 0s;
+}
+
+/* Stated rather than inherited: a hidden modal would otherwise pass its own
+   hidden down, and the copies would have nothing to switch away from when the
+   panels start moving. Off screen inside a panel that has not arrived, they
+   are out of sight regardless. */
+.contact-curtain__ghost {
+  visibility: visible;
+}
+
+body.show-client-modal .contact-curtain__ghost {
+  transition-delay: 620ms;
+  visibility: hidden;
+}
+
+/* Above the panels, which are positioned and would otherwise paint over it —
+   the copies inside them hold the screen until this takes over, and then it
+   has to be the thing in front. */
+body > .become-a-client-modal > :not(.contact-curtain) {
+  visibility: hidden;
+  z-index: 1;
+}
+
+/* The ✕ is positioned into the corner already; the rest need to be positioned
+   at all for the line above to lift them. */
+body > .become-a-client-modal > :not(.contact-curtain):not(.close) {
+  position: relative;
+}
+
+body.show-client-modal > .become-a-client-modal > :not(.contact-curtain) {
+  transition-delay: 620ms;
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-curtain__panel,
+  .contact-curtain__ghost,
+  body > .become-a-client-modal,
+  body > .become-a-client-modal > :not(.contact-curtain) {
+    transition-delay: 0s !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+/* What the copies inherit from the legacy stylesheet through being real form
+   controls, they are given here instead. */
+.contact-curtain__label {
+  color: #fff;
+  display: block;
+  opacity: 0.5;
+}
+
+.contact-curtain__field {
+  color: #fff;
+  width: 100%;
+}
+
+/* ---------------------------------------------------- the budget's own menu */
+
+.contact-select {
+  position: relative;
+}
+
+/* Kept for the answer it holds and for the form that sends it, out of the way
+   of both the eye and the tab order. */
+.contact-select select {
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+}
+
+.contact-select__button {
+  appearance: none;
+  -webkit-appearance: none;
+  /* A button arrives with a border on all four sides; the field rule it shares
+     only replaces the one underneath. */
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  margin: 0;
+  outline: none;
+  text-align: left;
+  width: 100%;
+}
+
+.contact-select__list {
+  background-color: #000;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  /* The radius the project cards are cut to. It scrolls, so the corner also
+     has to take the highlight off the first and last option. */
+  border-radius: clamp(10px, 1.2vw, 18px);
+  left: 0;
+  list-style: none;
+  margin: 0;
+  max-height: min(40vh, 380px);
+  opacity: 0;
+  overflow-y: auto;
+  padding: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  transform: translateY(-4px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 0s linear 160ms;
+  visibility: hidden;
+  z-index: 3;
+}
+
+.contact-select.is-open .contact-select__list {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition-delay: 0s;
+  visibility: visible;
+}
+
+/* Set below the field itself: seven of these at the field's size would be a
+   list the height of the window, which is what the native one was. */
+.contact-select__option {
+  color: #fff;
+  cursor: pointer;
+  font-size: clamp(15px, min(1.6vw, 2.2vh), 24px);
+  line-height: 1.3;
+  padding: 0.5em 0.7em;
+  transition: background-color 140ms ease;
+}
+
+.contact-select__option.is-active {
+  background-color: #fff;
+  color: #000;
+}
+
+.contact-select__option[aria-selected="true"]::after {
+  content: " ✓";
+}
+
+/* Out of sight, but fillable — which is the point: a bot fills it, a reader
+   cannot, and Static Forms drops whatever arrives with it filled. */
+.contact-honeypot {
+  height: 0 !important;
+  left: -9999px;
+  opacity: 0;
+  padding: 0 !important;
+  pointer-events: none;
+  position: absolute;
+  width: 0 !important;
+}
+
+/* Only ever holds a sentence when something went wrong. */
+body > .become-a-client-modal .contact-status:empty {
+  display: none;
+}
+
+body > .become-a-client-modal .contact-status {
+  color: #fff;
+  font-size: clamp(13px, min(1.4vw, 2vh), 20px);
+  line-height: 1.3;
+  margin: clamp(10px, 1.8vh, 20px) 0 0;
+  opacity: 0.7;
+}
+
+body > .become-a-client-modal.is-sending .send-button {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------ once it is sent */
+
+/* The legacy stylesheet hides the fields one element type at a time, which
+   leaves the budget — a div with a button in it since the menu became ours —
+   standing on an otherwise empty screen. The form goes as a whole, and what
+   is left sits in the middle of the screen. */
+body > .become-a-client-modal.message-sent form {
+  display: none;
+}
+
+body > .become-a-client-modal.message-sent {
+  align-content: center;
+  grid-template-rows: auto;
+}
+
+body > .become-a-client-modal .thankyou {
+  text-align: center;
+}
+
+body > .become-a-client-modal .thankyou__headline {
+  display: block;
+  font-size: clamp(34px, min(6vw, 9vh), 90px);
+  line-height: 1.05;
+}
+
+body > .become-a-client-modal .thankyou__note {
+  display: block;
+  font-size: clamp(15px, min(1.8vw, 2.6vh), 26px);
+  font-weight: 400;
+  line-height: 1.3;
+  margin-top: clamp(10px, 1.8vh, 22px);
+  opacity: 0.6;
 }

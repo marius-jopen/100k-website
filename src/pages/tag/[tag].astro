@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteShell from "../../components/SiteShell.astro";
+import { siteContent } from "../../lib/content";
+import { PROJECT_TAGS } from "../../lib/tags";
+import type { ProjectTag } from "../../lib/tags";
+
+/**
+ * The home page, filtered. One prerendered page per category, so a filtered
+ * list is a real URL that can be shared, bookmarked and crawled — and so the
+ * filter menu keeps working with JavaScript off.
+ */
+export function getStaticPaths() {
+  return PROJECT_TAGS.map((tag) => ({ params: { tag: tag.value }, props: { tag } }));
+}
+
+const { tag } = Astro.props as { tag: ProjectTag };
+---
+
+<BaseLayout
+  title={`${tag.headline} — ${siteContent.name}`}
+  description={`${siteContent.name}: ${tag.headline.toLowerCase()} — ${tag.description}.`}
+  bodyType="frontpage"
+>
+  <SiteShell activeTag={tag.value} />
+</BaseLayout>

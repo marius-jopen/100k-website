@@ -1,4 +1,5 @@
 import { config, collection, singleton, fields } from "@keystatic/core";
+import { PROJECT_TAGS } from "./src/lib/tags";
 
 /**
  * Images and videos are handled differently on purpose.
@@ -105,6 +106,16 @@ export default config({
           label: "Short description",
           defaultValue: "",
         }),
+        // Exactly one category per project — it is what the homepage filter
+        // sorts the list by, and a project in two places would show up twice.
+        tag: fields.select({
+          label: "Category",
+          description: `Which filter the project shows up under. ${PROJECT_TAGS.map(
+            (tag) => `${tag.label}: ${tag.description}`,
+          ).join(" · ")}`,
+          options: PROJECT_TAGS.map((tag) => ({ label: tag.label, value: tag.value })),
+          defaultValue: PROJECT_TAGS[0].value,
+        }),
         description: fields.text({
           label: "Description",
           description:
@@ -166,10 +177,39 @@ export default config({
             itemLabel: (props) => props.value ?? "Project",
           },
         ),
-        clients: fields.array(imageField("Client logo"), {
-          label: "Client logos",
-          itemLabel: (props) => props.value?.filename ?? "Logo",
-        }),
+        // Logos are pasted in as SVG code rather than uploaded: inline in the
+        // page they stay sharp at any size and cost no request. The image is
+        // the fallback for the ones no vector exists for.
+        clients: fields.array(
+          fields.object(
+            {
+              name: fields.text({
+                label: "Name",
+                validation: { isRequired: true },
+              }),
+              svg: fields.text({
+                label: "SVG code",
+                description:
+                  "Paste the whole <svg> element. Give every id a name of its own — ten of these end up in one page and identical ids overwrite each other.",
+                multiline: true,
+                defaultValue: "",
+              }),
+              opticalSize: fields.integer({
+                label: "Optical size",
+                description:
+                  "Percent. The wall draws every logo to the same area, which is right for most of them — a lockup made of fine print can be given a nudge here.",
+                defaultValue: 100,
+                validation: { min: 50, max: 200 },
+              }),
+              image: imageField("Image", "Only used when there is no SVG code."),
+            },
+            { label: "Client logo" },
+          ),
+          {
+            label: "Client logos",
+            itemLabel: (props) => props.fields.name.value || "Logo",
+          },
+        ),
         servicesIntro: fields.text({
           label: "Services intro",
           multiline: true,
@@ -213,7 +253,7 @@ export default config({
         ),
         contact: fields.object(
           {
-            endpoint: fields.text({ label: "Form endpoint", defaultValue: "/contact.php" }),
+            endpoint: fields.text({ label: "Form endpoint", defaultValue: "https://api.staticforms.dev/submit" }),
           },
           { label: "Contact form" },
         ),

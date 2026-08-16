@@ -1,8 +1,36 @@
 ---
 import { projects, siteContent } from "../lib/content";
 import type { Asset } from "../lib/schema";
+import {
+  ALL_PROJECTS_LABEL,
+  PROJECT_FILTER_PROMPT,
+  PROJECT_TAGS,
+  findProjectTag,
+  projectTagHeadline,
+  projectTagUrl,
+} from "../lib/tags";
 import ArrowRight from "./ArrowRight.astro";
 import XMark from "./XMark.astro";
+
+interface Props {
+  /** Category the list starts filtered to; `/tag/<value>/` sets it. */
+  activeTag?: string | null;
+}
+
+// The shell is also what a project page renders behind its own content, and
+// that one is never filtered.
+const activeTag = findProjectTag(Astro.props.activeTag)?.value ?? null;
+const filterHeadline = projectTagHeadline(activeTag);
+// The list highlights whatever is level with the top of the screen, which
+// before any scrolling is its first row — the first one the filter left.
+const highlightedIndex = projects.findIndex((project) => !activeTag || project.tag === activeTag);
+// Every category is prerendered, so each menu entry is a real link: without
+// JavaScript it navigates to a page that is already filtered, and with it the
+// click is intercepted and the list is filtered where it stands.
+const filterOptions = [
+  { value: "", label: ALL_PROJECTS_LABEL, headline: projectTagHeadline(null) },
+  ...PROJECT_TAGS.map((tag) => ({ value: tag.value, label: tag.headline, headline: tag.headline })),
+];
 
 const orientationClass = (asset: Asset) => {
   if (!asset.width || !asset.height) return undefined;
@@ -11,6 +39,29 @@ const orientationClass = (asset: Asset) => {
   if (aspectRatio < 1.5) return "near-square";
   return "landscape";
 };
+/*
+ * Logos are given equal weight rather than equal height: a wordmark eight
+ * times as wide as it is tall would otherwise tower over a shield, and capping
+ * the width instead only moved the problem to the other end. Each one is drawn
+ * to cover the same area, which is what the eye actually compares — with a
+ * floor under the height, because the widest wordmarks would come out as a
+ * thin line if area were all that counted.
+ */
+const CLIENT_LOGO_AREA = 3600;
+const CLIENT_LOGO_MIN_HEIGHT = 26;
+const CLIENT_LOGO_MAX_HEIGHT = 60;
+
+const clientLogoHeight = (aspectRatio: number | null, opticalSize: number) => {
+  if (!aspectRatio) return CLIENT_LOGO_MAX_HEIGHT;
+
+  // The nudge is on the size, so it goes into the area squared.
+  const area = CLIENT_LOGO_AREA * (opticalSize / 100) ** 2;
+  const height = Math.sqrt(area / aspectRatio);
+  return Math.round(
+    Math.min(Math.max(height, CLIENT_LOGO_MIN_HEIGHT), CLIENT_LOGO_MAX_HEIGHT),
+  );
+};
+
 const clients = siteContent.clients;
 const projectSpotlightSources = new Set([
   ...siteContent.webglBackgrounds.map((asset) => asset.path),
@@ -60,6 +111,34 @@ const serviceWebglTimings = [
   { autoplayDelay: 500, autoplaySpeed: 1800 },
   { autoplayDelay: 2600, autoplaySpeed: 2700 },
 ];
+
+/*
+ * The contact form is written out three times: once for real, and once inside
+ * each of the two panels that fly it in (see the curtain below). The three are
+ * built from this one list so they cannot drift apart — and the copies are
+ * plain divs, because the legacy script counts the form's fields to decide
+ * whether the send button is live and would never see three sets of them
+ * filled in.
+ */
+// Baked into the page at build time; see `.env.example`.
+const contactApiKey = import.meta.env.PUBLIC_STATIC_FORM_API_KEY ?? "";
+const contactHeadline = "Become a Client";
+const contactSendLabel = "Send Message";
+const contactBudgets = [
+  { value: "none", label: "Please select" },
+  { value: "100k-plus", label: "100.000€+" },
+  { value: "50k-100k", label: "50.000€-100.000€" },
+  { value: "20k-50k", label: "20.000€-50.000€" },
+  { value: "15k-20k", label: "15-20.000€" },
+  { value: "10k-15k", label: "10-15.000€" },
+  { value: "5k", label: "5.000€" },
+];
+const contactFields = [
+  { label: "My Email:", name: "email", kind: "input", type: "email" },
+  { label: "Name / Company Name:", name: "name", kind: "input", type: "text" },
+  { label: "Budget:", name: "budget", kind: "select" },
+  { label: "Message:", name: "message", kind: "textarea" },
+] as const;
 ---
 
 <div id="app">
@@ -148,12 +227,54 @@ const serviceWebglTimings = [
         </div>
 
         <div class="plist-wrap-2">
-          <h2 class="_bigtext left-padding selected-projects-headline">Selected Projects</h2>
+          {/* The heading is the control: it reads as the list's title, slides
+              to the invitation on hover, and opens the category menu on click. */}
+          {/* `_bigtext` on the wrapper, not just the heading: it is what grows
+              to 25px past 1500px wide, and the menu has to grow with the
+              project list it stands in for. */}
+          <div class="_bigtext project-filter" data-active-tag={activeTag ?? ""}>
+            <h2 class="_bigtext selected-projects-headline project-filter__heading">{
+              /* Nothing between the tag and the button: it is inline-block, and
+                 a whitespace text node in front of it would indent it. */
+            }<button
+              class="project-filter__toggle"
+              type="button"
+              data-lay-button-effect-text-slide="1"
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="project-filter-menu"
+            >
+              <span class="lay-button-effect__content lay-button-effect__content--text-slide">
+                {/* Both labels sit in the sizer so the button is as wide as the
+                    longer of the two and neither ever gets clipped. */}
+                <span class="lay-button-effect__text-sizer" aria-hidden="true">
+                  <span class="project-filter__sizer-text">{filterHeadline}</span>
+                  <span>{PROJECT_FILTER_PROMPT}</span>
+                </span>
+                <span class="lay-button-effect__text-clip">
+                  <span class="lay-button-effect__text lay-button-effect__text--current">{filterHeadline}</span>
+                  <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">{PROJECT_FILTER_PROMPT}</span>
+                </span>
+              </span>
+            </button></h2>
+            <div class="project-filter__menu" id="project-filter-menu">
+              {/* `is-highlighted` is the black pill and moves with the
+                  pointer; it starts on the category the list is showing. */}
+              {filterOptions.map((option) => (
+                <a
+                  class={`project-filter__option ${option.value === (activeTag ?? "") ? "is-active is-highlighted" : ""}`}
+                  href={projectTagUrl(option.value)}
+                  data-tag={option.value}
+                  data-headline={option.headline}
+                ><ArrowRight />{option.label}</a>
+              ))}
+            </div>
+          </div>
           <div class="_bigtext projects-list-region">
             <div class="projects-list">
               {projects.map((project, index) => (
-                <div>
-                  <a class={`project-list-item ${index === 0 ? "hover" : ""}`} href={`/${project.slug}/`} data-ix={index}><ArrowRight />{project.title}</a>
+                <div class={activeTag && project.tag !== activeTag ? "is-filtered-out" : undefined} data-tag={project.tag}>
+                  <a class={`project-list-item ${index === highlightedIndex ? "hover" : ""}`} href={`/${project.slug}/`} data-ix={index}><ArrowRight />{project.title}</a>
                   {project.shortDescription && <div class="short-description">{project.shortDescription}</div>}
                 </div>
               ))}
@@ -165,8 +286,20 @@ const serviceWebglTimings = [
       <div class="_bigtext2 our-clients">
         <h2 class="_bigtext2 left-padding">Worked for or worked as subcontractor for</h2>
         <div class="clients-region clients-grid">
+          {/* The logos are inline SVG: sharp at any size, no request of their
+              own, and the colour is the file's. The ones no vector exists for
+              still come through as an image. */}
           {clients.map((client) => (
-            <span><img src={client.src} sizes="(max-width: 700px) 50vw, 25vw" alt={client.alt} /></span>
+            client.svg
+              ? <span
+                  role="img"
+                  aria-label={client.name}
+                  style={`--client-logo-height:${clientLogoHeight(client.aspectRatio, client.opticalSize)}px`}
+                  set:html={client.svg}
+                ></span>
+              : client.image && (
+                <span><img src={client.image.src} sizes="(max-width: 700px) 50vw, 25vw" alt={client.name} /></span>
+              )
           ))}
         </div>
       </div>
@@ -1038,6 +1171,7 @@ const serviceWebglTimings = [
 </script>
 
 <script is:inline src="/assets/service-webgl-slideshow.js"></script>
+<script is:inline src="/assets/project-filter.js"></script>
 <script is:inline src="/assets/project-spotlight.js"></script>
 <script is:inline src="/assets/project-page-transition.js"></script>
 
@@ -1052,28 +1186,96 @@ const serviceWebglTimings = [
 </div>
 <div class="become-a-client-bg"></div>
 <div class="become-a-client-modal fields-not-filled">
-  <div class="_bigtext">Become a Client</div>
+  <div class="_bigtext">{contactHeadline}</div>
   <button class="close" type="button" aria-label="Close contact form">
     <XMark />
   </button>
   <form action={siteContent.contact.endpoint} method="post">
-    <label>My Email:</label>
-    <input name="email" type="email" spellcheck="false" required />
-    <label>Name / Company Name:</label>
-    <input name="name" type="text" spellcheck="false" required />
-    <label>Budget:</label>
-    <select name="budget" required>
-      <option value="none">Please select</option>
-      <option value="100k-plus">100.000€+</option>
-      <option value="50k-100k">50.000€-100.000€</option>
-      <option value="20k-50k">20.000€-50.000€</option>
-      <option value="15k-20k">15-20.000€</option>
-      <option value="10k-15k">10-15.000€</option>
-      <option value="5k">5.000€</option>
-    </select>
-    <label>Message:</label>
-    <textarea name="message" spellcheck="false" required></textarea>
-    <button class="send-button" type="button"><ArrowRight />Send Message</button>
+    {contactFields.map((field) => (
+      <>
+        <label>{field.label}</label>
+        {field.kind === "input" && (
+          <input name={field.name} type={field.type} spellcheck="false" required />
+        )}
+        {field.kind === "select" && (
+          /* The browser draws a native menu at the field's own size, which at
+             this one's size is a menu the height of the window. The select
+             stays as the thing that holds the answer and is submitted; what
+             the reader sees and operates is below it. */
+          <div class="contact-select" data-contact-select>
+            <select name={field.name} tabindex="-1" required>
+              {contactBudgets.map((budget) => <option value={budget.value}>{budget.label}</option>)}
+            </select>
+            <button
+              class="contact-select__button"
+              type="button"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+            >{contactBudgets[0].label}</button>
+            <ul class="contact-select__list" role="listbox" aria-label={field.label}>
+              {contactBudgets.map((budget, index) => (
+                <li
+                  class="contact-select__option"
+                  role="option"
+                  aria-selected={index === 0 ? "true" : "false"}
+                  data-value={budget.value}
+                >{budget.label}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {field.kind === "textarea" && (
+          <textarea name={field.name} spellcheck="false" required></textarea>
+        )}
+      </>
+    ))}
+    <button class="send-button" type="button"><ArrowRight />{contactSendLabel}</button>
+    {/* Left empty and out of sight. Static Forms drops anything that arrives
+        with a field named honeypot filled in, which is what a bot does and a
+        reader cannot. It sits after the real fields on purpose: the legacy
+        script finds the name field with `input[type="text"]`, which means the
+        first one in the document. */}
+    {/* Static Forms takes the key from the form itself. It is meant to be
+        public — their own snippet puts it in a hidden input — and posting from
+        a server instead cost us delivery: submissions then arrive from a
+        datacenter address and are filed as spam. */}
+    <input type="hidden" name="apiKey" value={contactApiKey} />
+    <input type="hidden" name="subject" value="" />
+    <input class="contact-honeypot" type="text" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <p class="contact-status" role="status" aria-live="polite"></p>
   </form>
-  <div class="thankyou _bigtext">Thank you for your message.<br />We will get back to you soon!</div>
+  <div class="thankyou _bigtext">
+    <span class="thankyou__headline">Thank you</span>
+    <span class="thankyou__note">We will get back to you soon.</span>
+  </div>
+  {/* Last in the modal on purpose: the legacy script binds sending to the
+      first `.send-button` in the document, and the copies carry that class
+      for their looks. Which of them paints on top is settled by the
+      stylesheet, not by this order. */}
+  {/* The two panels that close in from the sides, each carrying its own half
+      of the form — the same half-and-half the intro splits its logo into.
+      Each holds a full-width copy and shows only the part that falls inside
+      it; the real form takes over the moment they meet. */}
+  <div class="contact-curtain" aria-hidden="true">
+    {["left", "right"].map((side) => (
+      <div class={`contact-curtain__panel contact-curtain__panel--${side}`}>
+        <div class="contact-curtain__ghost">
+          <div class="_bigtext">{contactHeadline}</div>
+          <div class="contact-curtain__form">
+            {contactFields.map((field) => (
+              <>
+                <div class="contact-curtain__label">{field.label}</div>
+                <div class={`contact-curtain__field contact-curtain__field--${field.kind}`}>
+                  {field.kind === "select" ? contactBudgets[0].label : ""}
+                </div>
+              </>
+            ))}
+            <div class="contact-curtain__button send-button"><ArrowRight />{contactSendLabel}</div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
 </div>
+<script is:inline src="/assets/contact-select.js"></script>
+<script is:inline src="/assets/contact-send.js"></script>

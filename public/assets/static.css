@@ -2597,8 +2597,18 @@ body.show-client-modal .contact-curtain__ghost {
   visibility: hidden;
 }
 
+/* Above the panels, which are positioned and would otherwise paint over it —
+   the copies inside them hold the screen until this takes over, and then it
+   has to be the thing in front. */
 body > .become-a-client-modal > :not(.contact-curtain) {
   visibility: hidden;
+  z-index: 1;
+}
+
+/* The ✕ is positioned into the corner already; the rest need to be positioned
+   at all for the line above to lift them. */
+body > .become-a-client-modal > :not(.contact-curtain):not(.close) {
+  position: relative;
 }
 
 body.show-client-modal > .become-a-client-modal > :not(.contact-curtain) {

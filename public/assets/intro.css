@@ -87,3 +87,26 @@
     font-size: clamp(2.75rem, 13vw, 5rem);
   }
 }
+
+/* "Web Development" is half a screen wider than a phone at this size, and the
+   phase is centred on the viewport — so it ran off both edges at once. Letting
+   it wrap is not enough on its own: the phase is `left: 50%` and shrink to fit,
+   which leaves it only the half screen to its right to wrap inside. It takes
+   the full width here, and the break lands where the text wants it — after
+   "Web". "Web Design" still fits on one line and keeps it. */
+@media (max-width: 699px) {
+  .intro-text-phase {
+    box-sizing: border-box;
+    left: 0;
+    padding: 0 20px;
+    right: 0;
+    transform: translateY(-50%);
+    width: 100%;
+  }
+
+  .phase-text {
+    line-height: 1.05;
+    text-align: center;
+    white-space: normal;
+  }
+}

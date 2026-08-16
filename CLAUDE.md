@@ -75,6 +75,11 @@ Keystatic in local mode — it edits JSON on disk, no login. `keystatic.config.t
 `src/lib/content.ts` reads it through `@keystatic/core/reader` at build time and maps it onto
 the interfaces in `src/lib/schema.ts`.
 
+**The contact form cannot be sent from `npm run dev`.** It posts to
+`/api/contact`, a Vercel function out of `api/`, which the Astro dev server does
+not run — locally it answers 404 and the form says so. Test it on a deployment,
+or run `npx vercel dev`.
+
 **The dev server does not pick up content edits.** That read happens once, at module load, and
 `content/*.json` is data rather than an import, so nothing invalidates it — `npm run dev` will
 keep serving the content it started with until it is restarted. A build always reads fresh.

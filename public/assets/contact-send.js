@@ -47,7 +47,15 @@
       const payload = await response.json().catch(() => null);
 
       if (!response.ok) {
-        setStatus(payload?.message || "That did not go through. Please try again.");
+        // The endpoint is a Vercel function. `npm run dev` serves the site but
+        // not `api/`, so locally there is nothing there to answer — worth
+        // saying, rather than leaving it looking like a broken form.
+        const isLocal = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
+        setStatus(
+          response.status === 404 && isLocal
+            ? "No endpoint here: the form is sent by a Vercel function, which the dev server does not run. Try it on a deployment."
+            : payload?.message || "That did not go through. Please try again.",
+        );
         return;
       }
 

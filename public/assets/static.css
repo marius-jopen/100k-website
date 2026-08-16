@@ -2356,24 +2356,25 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
  * the back of the media card (see SiteShell) and stays the card it is there,
  * so everything here hangs off `body >`.
  *
- * The type is set in `vw` between a floor and a ceiling: the form is meant to
- * be the only thing on the screen, so it should fill whatever screen it lands
- * on rather than sit at one size in the middle of it.
+ * It never scrolls. The type is set against both dimensions — `min(vw, vh)` —
+ * so a short window makes it smaller rather than taller than the screen, and
+ * the message field takes whatever height is left over once the rest has been
+ * laid out.
  */
 body > .become-a-client-modal {
-  align-content: safe center;
   background-color: #000;
   border-radius: 0;
   box-shadow: none;
   clip-path: none;
   display: grid;
-  gap: 0;
   grid-template-columns: min(100%, 54rem);
+  grid-template-rows: auto minmax(0, 1fr) auto;
   height: 100dvh !important;
   inset: 0 !important;
   justify-content: center;
   max-height: none;
-  padding: clamp(72px, 12vh, 160px) clamp(20px, 5vw, 80px);
+  overflow: hidden;
+  padding: clamp(28px, 6vh, 72px) clamp(20px, 5vw, 80px);
   transform: none !important;
   width: 100vw !important;
 }
@@ -2382,16 +2383,24 @@ body.show-client-modal {
   overflow: hidden;
 }
 
+/* Label, field, label, field, label, select, label, message, button — the
+   message row is the one that gives. */
+body > .become-a-client-modal form {
+  display: grid;
+  grid-template-rows: repeat(7, auto) minmax(0, 1fr) auto;
+  min-height: 0;
+}
+
 body > .become-a-client-modal > ._bigtext {
-  font-size: clamp(34px, 5.5vw, 80px);
+  font-size: clamp(28px, min(5vw, 7vh), 72px);
   line-height: 1.05;
-  margin-bottom: clamp(24px, 4vw, 56px);
+  margin-bottom: clamp(12px, 2.5vh, 32px);
 }
 
 body > .become-a-client-modal label {
-  font-size: clamp(15px, 1.5vw, 22px);
+  font-size: clamp(13px, min(1.4vw, 2vh), 20px);
   margin-bottom: 0;
-  margin-top: clamp(20px, 3vw, 40px);
+  margin-top: clamp(10px, 1.8vh, 24px);
 }
 
 /* Boxes around type this size read as containers rather than fields; a rule
@@ -2400,10 +2409,10 @@ body > .become-a-client-modal :is(input, select, textarea) {
   background-color: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 0;
-  font-size: clamp(24px, 3.2vw, 46px);
+  font-size: clamp(18px, min(2.8vw, 3.8vh), 40px);
   line-height: 1.25;
   min-height: 0;
-  padding: 0.35em 0;
+  padding: 0.3em 0;
   transition: border-color 200ms ease;
 }
 
@@ -2418,29 +2427,34 @@ body > .become-a-client-modal select {
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.5'%3E%3Cpath d='m5 9 7 7 7-7'/%3E%3C/svg%3E");
   background-position: right 0 center;
   background-repeat: no-repeat;
-  background-size: clamp(20px, 2.4vw, 34px);
-  padding-right: clamp(28px, 3.4vw, 48px);
+  background-size: clamp(18px, 2.2vw, 30px);
+  padding-right: clamp(26px, 3vw, 44px);
 }
 
-/* The list the browser opens is its own window and inherits none of this. */
+/* The list the browser opens is drawn at the field's size unless it is told
+   otherwise, which at 40px is a menu the height of the window. */
 body > .become-a-client-modal option {
-  background-color: #000;
+  background-color: #111;
   color: #fff;
+  font-size: 17px;
 }
 
 body > .become-a-client-modal textarea {
-  height: clamp(120px, 20vh, 260px);
+  height: 100%;
+  min-height: clamp(48px, 8vh, 120px);
   resize: none;
 }
 
 /* Carries the open class as well, only to outweigh the rule that holds every
    button on the site at 20px — this one is the page. */
 body.show-client-modal > .become-a-client-modal .send-button {
+  align-self: start;
   border-radius: 100px;
-  font-size: clamp(22px, 2.6vw, 40px) !important;
+  font-size: clamp(18px, min(2.2vw, 3vh), 34px) !important;
   gap: 0.3em;
+  justify-self: start;
   line-height: 1.2 !important;
-  margin-top: clamp(32px, 5vw, 64px);
+  margin-top: clamp(14px, 2.5vh, 32px);
   padding: 0.4em 0.9em 0.4em 0.7em !important;
 }
 
@@ -2450,16 +2464,16 @@ body > .become-a-client-modal .send-button .button-arrow {
 }
 
 body > .become-a-client-modal .close {
-  padding: clamp(16px, 2.5vw, 40px);
+  padding: clamp(14px, 2.5vw, 36px);
 }
 
 body > .become-a-client-modal .close svg {
-  height: clamp(26px, 2.8vw, 44px);
-  width: clamp(26px, 2.8vw, 44px);
+  height: clamp(22px, 2.4vw, 38px);
+  width: clamp(22px, 2.4vw, 38px);
 }
 
 body > .become-a-client-modal .thankyou {
-  font-size: clamp(28px, 4vw, 60px);
+  font-size: clamp(24px, min(3.4vw, 5vh), 52px);
   line-height: 1.15;
   margin-top: 0 !important;
 }

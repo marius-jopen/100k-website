@@ -1471,7 +1471,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
   .project-media-carousel__indicator {
     background: #fff;
     border: 0;
-    border-radius: 0;
+    border-radius: 4px;
     box-sizing: border-box;
     display: block;
     filter: brightness(0.9) contrast(0.8) saturate(0.5);

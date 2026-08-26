@@ -417,7 +417,7 @@ body.show-post #post {
 .projects-list a {
   align-items: center;
   background-color: #fff;
-  border: 1px solid #c5c5c5;
+  border: 0;
   display: inline-flex;
 }
 
@@ -2153,14 +2153,14 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   margin: 0;
 }
 
-/* Drawn as a project pill from the start — white fill, the same grey ring —
-   because it is the only thing on a touch screen saying the heading opens. */
+/* Drawn as a project pill from the start because it is the only thing on a
+   touch screen saying the heading opens. */
 .project-filter__icon {
   align-items: center;
   appearance: none;
   -webkit-appearance: none;
   background-color: #fff;
-  border: 1px solid #c5c5c5;
+  border: 0;
   border-radius: 100px;
   box-sizing: border-box;
   color: inherit;
@@ -2356,11 +2356,11 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   visibility: visible;
 }
 
-/* A project pill in every respect — same weight, same grey outline, same
-   radius — so the menu reads as the list it is about to become. */
+/* A project pill in every respect — same weight and radius — so the menu reads
+   as the list it is about to become. */
 .project-filter__option {
   background-color: #fff;
-  border: 1px solid #c5c5c5;
+  border: 0;
   border-radius: 100px;
   color: #000;
   cursor: pointer;

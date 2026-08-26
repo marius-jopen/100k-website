@@ -61,7 +61,7 @@ export const PROJECT_TAGS: ProjectTag[] = [
 export const ALL_PROJECTS_HEADLINE = "Selected Projects";
 export const ALL_PROJECTS_LABEL = "All Projects";
 
-/** What the filter heading fades to on hover — the invitation to open it. */
+/** What the filter heading switches to on hover — the invitation to open it. */
 export const PROJECT_FILTER_PROMPT = "Filter Projects";
 
 export const findProjectTag = (value: string | null | undefined): ProjectTag | null =>

@@ -1479,7 +1479,6 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     opacity: 1;
     overflow: hidden;
     position: relative;
-    transition: filter 180ms ease, opacity 180ms ease;
     width: auto;
   }
 

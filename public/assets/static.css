@@ -1472,7 +1472,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     border-radius: 0;
     box-sizing: border-box;
     display: block;
-    filter: brightness(0.9) contrast(0.8) saturate(0.5);
+    filter: brightness(0.9) contrast(0.2) saturate(0.5);
     flex: 0 0 auto;
     height: 40px;
     opacity: 1;

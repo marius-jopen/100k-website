@@ -95,7 +95,6 @@ strong {
 .info-button,
 .become-a-client,
 .become-a-client-modal > ._bigtext,
-.contact-curtain__ghost > ._bigtext,
 .become-a-client-modal .thankyou,
 .gallery-view .descr span,
 .introtext,
@@ -418,7 +417,7 @@ body.show-post #post {
 .projects-list a {
   align-items: center;
   background-color: #fff;
-  border: 1px solid #c5c5c5;
+  border: 0;
   display: inline-flex;
 }
 
@@ -1454,11 +1453,15 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
   }
 
   .project-media-carousel__indicators {
+    background: #fff;
+    border-radius: 100px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 0;
     left: 50%;
     opacity: 0;
+    overflow: hidden;
     pointer-events: none;
     position: absolute;
     top: 50%;
@@ -1469,33 +1472,40 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
 
   .project-media-carousel__indicators.is-visible {
     opacity: 1;
+    pointer-events: auto;
   }
 
   .project-media-carousel__indicator {
-    border: 1px solid #adadad;
-    border-radius: 999px;
+    background: #fff;
+    border: 0;
+    border-radius: 0;
     box-sizing: border-box;
     display: block;
+    filter: brightness(0.9) contrast(0.8) saturate(0.5);
     flex: 0 0 auto;
-    height: 10px;
+    height: 40px;
+    margin: 0;
+    opacity: 0.5;
     overflow: hidden;
+    padding: 0;
     position: relative;
-    transition: width 300ms ease;
-    width: 10px;
+    width: 60px;
   }
 
-  .project-media-carousel__indicator::after {
-    background: #adadad;
-    border-radius: inherit;
-    content: "";
-    inset: 0;
-    position: absolute;
-    transform: translateX(var(--project-media-indicator-fill, -100%));
-    will-change: transform;
+  .project-media-carousel__indicator:hover {
+    cursor: pointer;
   }
 
-  .project-media-carousel__indicator.is-active.is-progressing {
-    width: 20px;
+  .project-media-carousel__indicator.is-active {
+    filter: brightness(1) saturate(1);
+    opacity: 1;
+  }
+
+  .project-media-carousel__indicator > :is(img, video) {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
   }
 
   .project-media-carousel .static-project-grid {
@@ -1873,11 +1883,6 @@ body.show-project-info-modal > .become-a-client {
 }
 
 @media (min-width: 701px) {
-  /* Wider active bullet. */
-  .project-media-carousel__indicator.is-active.is-progressing {
-    width: 34px;
-  }
-
   /* No ✕ on the flip: the Info button is relabelled "Back" and closes it.
      The overlay modal keeps its close button. */
   .project-media-carousel__back .project-info-modal__close {
@@ -2180,14 +2185,14 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   margin: 0;
 }
 
-/* Drawn as a project pill from the start — white fill, the same grey ring —
-   because it is the only thing on a touch screen saying the heading opens. */
+/* Drawn as a project pill from the start because it is the only thing on a
+   touch screen saying the heading opens. */
 .project-filter__icon {
   align-items: center;
   appearance: none;
   -webkit-appearance: none;
   background-color: #fff;
-  border: 1px solid #c5c5c5;
+  border: 0;
   border-radius: 100px;
   box-sizing: border-box;
   color: inherit;
@@ -2374,11 +2379,11 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   visibility: visible;
 }
 
-/* A project pill in every respect — same weight, same grey outline, same
-   radius — so the menu reads as the list it is about to become. */
+/* A project pill in every respect — same weight and radius — so the menu reads
+   as the list it is about to become. */
 .project-filter__option {
   background-color: #fff;
-  border: 1px solid #c5c5c5;
+  border: 0;
   border-radius: 100px;
   color: #000;
   cursor: pointer;
@@ -2494,11 +2499,7 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
  * laid out.
  */
 body > .become-a-client-modal {
-  /* The curtain's ghost copy is measured off these too (further down). It has
-     to land on exactly the same grid as the real form, or the handover between
-     the two shows up as the whole page stepping down — so the geometry lives
-     in one place and both read it. The vertical inset is what keeps a tall
-     form off the two corner buttons. */
+  /* The vertical inset keeps a tall form off the two corner buttons. */
   --contact-inset-x: clamp(20px, 5vw, 80px);
   --contact-inset-y: clamp(76px, 10vh, 110px);
   background-color: #000;
@@ -2506,6 +2507,7 @@ body > .become-a-client-modal {
   box-shadow: none;
   clip-path: none;
   display: grid;
+  filter: none;
   grid-template-columns: min(100%, 54rem);
   /* Every row its own height, and the stack centred in what is left: the
      buttons have moved to the corners, so there is nothing left that has to
@@ -2519,7 +2521,9 @@ body > .become-a-client-modal {
   overflow: hidden;
   padding: var(--contact-inset-y) var(--contact-inset-x);
   transform: none !important;
+  transition: opacity 400ms ease, visibility 0s linear 400ms !important;
   width: 100vw !important;
+  will-change: opacity;
 }
 
 body.show-client-modal {
@@ -2535,15 +2539,13 @@ body > .become-a-client-modal form {
   min-height: 0;
 }
 
-body > .become-a-client-modal > ._bigtext,
-.contact-curtain__ghost > ._bigtext {
+body > .become-a-client-modal > ._bigtext {
   font-size: clamp(28px, min(5vw, 7vh), 72px);
   line-height: 1.05;
   margin-bottom: clamp(12px, 2.5vh, 32px);
 }
 
-body > .become-a-client-modal label,
-.contact-curtain__label {
+body > .become-a-client-modal label {
   font-size: clamp(13px, min(1.4vw, 2vh), 20px);
   margin-bottom: 0;
   margin-top: clamp(10px, 1.8vh, 24px);
@@ -2552,19 +2554,15 @@ body > .become-a-client-modal label,
 /* Boxes around type this size read as containers rather than fields; a rule
    under each one is enough to say where to write. */
 body > .become-a-client-modal :is(input, select, textarea),
-body > .become-a-client-modal .contact-select__button,
-.contact-curtain__field {
+body > .become-a-client-modal .contact-select__button {
   background-color: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 0;
   font-size: clamp(18px, min(2.8vw, 3.8vh), 40px);
   line-height: 1.25;
-  /* `1.85em + 1px` is the line box plus the padding and the rule under it —
-     what a field of this size comes to. Stated rather than left to the box,
-     because an `<input>` sizes its content off the font's own metrics and not
-     off `line-height`: past a certain size it came out shorter than the div
-     the curtain's copy stands it in for, and the two forms stopped lining up.
-     One number, both of them. */
+  /* `1.85em + 1px` is the line box plus the padding and the rule under it.
+     Stated rather than left to the box because an `<input>` sizes its content
+     off the font's own metrics instead of `line-height`. */
   min-height: calc(1.85em + 1px);
   padding: 0.3em 0;
   transition: border-color 200ms ease;
@@ -2578,8 +2576,7 @@ body > .become-a-client-modal .contact-select.is-open .contact-select__button {
 
 /* `appearance: none` takes the native arrow with it, and at this size its
    absence reads as a disabled field. */
-body > .become-a-client-modal .contact-select__button,
-.contact-curtain__field--select {
+body > .become-a-client-modal .contact-select__button {
   background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='1.5'%3E%3Cpath d='m5 9 7 7 7-7'/%3E%3C/svg%3E");
   background-position: right 0 center;
   background-repeat: no-repeat;
@@ -2597,8 +2594,7 @@ body > .become-a-client-modal option {
 
 /* A height of its own rather than whatever was left over, now that the block
    it sits in is centred instead of stretched. */
-body > .become-a-client-modal textarea,
-.contact-curtain__field--textarea {
+body > .become-a-client-modal textarea {
   height: auto;
   min-height: clamp(120px, 20vh, 180px);
   resize: none;
@@ -2639,17 +2635,6 @@ body > .become-a-client-modal .contact-close {
   z-index: 3;
 }
 
-/* The panels are still closing when it would otherwise appear. It arrives with
-   them instead — the same 620ms the rest of the form waits for. */
-body > .become-a-client-modal .contact-close {
-  opacity: 0;
-  transition: opacity 260ms ease 620ms;
-}
-
-body.show-client-modal > .become-a-client-modal .contact-close {
-  opacity: 1;
-}
-
 /* On a phone it is the toolbar's twin: the same pill Back and Contact Us are
    drawn at, in the corner Contact Us itself sits in — it is standing in for
    that button while the form is up. */
@@ -2673,173 +2658,11 @@ body > .become-a-client-modal .thankyou {
   margin: 0 !important;
 }
 
-/* ------------------------------------------------------------ the curtain */
-
-/*
- * The intro splits its logo down the middle and parts the two halves with the
- * panels they sit on. This is that, closing instead of opening and sideways
- * instead of up and down: each panel carries a full-width copy of the form and
- * shows only the half that falls inside it, so the two halves fly in and meet
- * as one. The real form is put in place the moment they do — it is the same
- * layout at the same size, so the handover is not visible.
- */
-body > .become-a-client-modal {
-  background-color: transparent;
-  filter: none !important;
-  opacity: 1 !important;
-  transition: visibility 0s linear 620ms !important;
-}
-
-.contact-curtain {
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
-  z-index: 0;
-}
-
-.contact-curtain__panel {
-  background-color: #000;
-  bottom: 0;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  transition: transform 620ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  /* Half the screen each and a hair over, so no seam shows where they meet. */
-  width: 50.2%;
-}
-
-.contact-curtain__panel--left {
-  left: 0;
-  transform: translateX(-100%);
-}
-
-.contact-curtain__panel--right {
-  right: 0;
-  transform: translateX(100%);
-}
-
-body.show-client-modal .contact-curtain__panel {
-  transform: translateX(0);
-}
-
-/* A full-screen copy of the form, pinned to the edge its panel is anchored to,
-   so that with the panel home it lands exactly where the real one is. Every
-   line of geometry here has a twin on `body > .become-a-client-modal`: the
-   padding is read from the same two properties, and the centring and the row
-   sizing are repeated verbatim. Let one drift and the handover between the
-   two shows up as the whole page stepping. */
-.contact-curtain__ghost {
-  align-content: center;
-  display: grid;
-  grid-template-columns: min(100%, 54rem);
-  grid-template-rows: auto;
-  height: 100dvh;
-  justify-content: center;
-  padding: var(--contact-inset-y) var(--contact-inset-x);
-  position: absolute;
-  top: 0;
-  width: 100vw;
-}
-
-.contact-curtain__panel--left .contact-curtain__ghost {
-  left: 0;
-}
-
-.contact-curtain__panel--right .contact-curtain__ghost {
-  right: 0;
-}
-
-.contact-curtain__form {
-  display: grid;
-  grid-template-rows: auto;
-  min-height: 0;
-}
-
-/* Empty divs have no line to give them height; the fields they stand in for
-   are one line tall. Everything here is border-box, so the padding and the
-   rule under it are part of that measurement. */
-.contact-curtain__field {
-  min-height: calc(1.85em + 1px);
-}
-
-/* Re-stated after `.contact-curtain__field` above, which is the same weight
-   and would otherwise hold the message placeholder at one line while the real
-   field is six — and a copy a hundred pixels shorter than the form it stands
-   in for centres a hundred pixels off it. */
-.contact-curtain__field--textarea {
-  height: auto;
-  min-height: clamp(120px, 20vh, 180px);
-}
-
-.contact-curtain__button {
-  align-self: start;
-  justify-self: start;
-  /* The real one's `margin-top`, so the silhouette sits on it exactly. */
-  margin-top: clamp(14px, 2.5vh, 32px);
-  min-height: calc(1.2em + 0.8em);
-  pointer-events: none;
-}
-
-/* The handover: the copies hold the screen until the panels are home, then the
-   real form takes over. Neither fades — one is simply swapped for the other. */
-.contact-curtain__ghost,
-body > .become-a-client-modal > :not(.contact-curtain) {
-  transition: visibility 0s linear 0s;
-}
-
-/* Stated rather than inherited: a hidden modal would otherwise pass its own
-   hidden down, and the copies would have nothing to switch away from when the
-   panels start moving. Off screen inside a panel that has not arrived, they
-   are out of sight regardless. */
-.contact-curtain__ghost {
-  visibility: visible;
-}
-
-body.show-client-modal .contact-curtain__ghost {
-  transition-delay: 620ms;
-  visibility: hidden;
-}
-
-/* Above the panels, which are positioned and would otherwise paint over it —
-   the copies inside them hold the screen until this takes over, and then it
-   has to be the thing in front. */
-body > .become-a-client-modal > :not(.contact-curtain) {
-  visibility: hidden;
-  z-index: 1;
-}
-
-/* The ✕ is positioned into the corner already; the rest need to be positioned
-   at all for the line above to lift them. */
-body > .become-a-client-modal > :not(.contact-curtain):not(.close) {
-  position: relative;
-}
-
-body.show-client-modal > .become-a-client-modal > :not(.contact-curtain) {
-  transition-delay: 620ms;
-  visibility: visible;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .contact-curtain__panel,
-  .contact-curtain__ghost,
-  body > .become-a-client-modal,
-  body > .become-a-client-modal > :not(.contact-curtain) {
+  body > .become-a-client-modal {
     transition-delay: 0s !important;
     transition-duration: 1ms !important;
   }
-}
-
-/* What the copies inherit from the legacy stylesheet through being real form
-   controls, they are given here instead. */
-.contact-curtain__label {
-  color: #fff;
-  display: block;
-  opacity: 0.5;
-}
-
-.contact-curtain__field {
-  color: #fff;
-  width: 100%;
 }
 
 /* ---------------------------------------------------- the budget's own menu */
@@ -3003,6 +2826,13 @@ body > .become-a-client-modal .thankyou__note {
     z-index: 2;
   }
 
+  /* The corner preview normally sits over the project list. While the filter
+     menu replaces that list, its pills need to remain clickable and paint in
+     front wherever a short viewport makes the two overlap. */
+  .plist-wrap-2:has(.project-filter.is-filter-open) {
+    z-index: 4;
+  }
+
   /*
    * With the categories down, the list they stand in for stops taking up room.
    * Hidden with `opacity` alone it still measured its full length, so the
@@ -3107,16 +2937,6 @@ body > .become-a-client-modal .thankyou__note {
   #frontpage > footer {
     position: fixed;
     z-index: 1;
-  }
-
-  /* Bigger, and broken over two lines: one 16px line across the full width
-     read as a caption to the wall rather than its heading. The measure is what
-     breaks it — "Worked for or worked as" then "subcontractor for". */
-  .our-clients > h2 {
-    font-size: 28px;
-    line-height: 1.15;
-    max-width: 300px;
-    text-align: left;
   }
 
   /* Fourteen pills at the button size overran the 4:3 card in every direction —

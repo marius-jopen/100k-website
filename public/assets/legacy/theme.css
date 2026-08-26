@@ -203,7 +203,7 @@ canvas#background {
   .our-clients {
     z-index: 29;
     position: relative;
-    padding-top: 20px !important;
+    padding-top: 50px !important;
     background-color: white; }
   .padding-right {
     padding-right: 100px; }

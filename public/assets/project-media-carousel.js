@@ -132,9 +132,7 @@
   const setMediaIndicators = (
     carousel,
     activeIndex,
-    activeProgress,
     isVisible,
-    hasMediaProgress,
   ) => {
     const indicators = Array.from(
       carousel.querySelectorAll(".project-media-carousel__indicator"),
@@ -142,20 +140,29 @@
 
     indicators.forEach((indicator, index) => {
       const isActive = index === activeIndex;
-      const progress = isActive ? Math.min(Math.max(activeProgress, 0), 1) : 0;
+      const thumbnailVideo = indicator.querySelector("video");
 
       indicator.classList.toggle("is-active", isActive);
-      indicator.classList.toggle("is-progressing", isActive && hasMediaProgress);
       indicator.setAttribute("aria-current", isActive ? "true" : "false");
-      indicator.style.setProperty(
-        "--project-media-indicator-fill",
-        `${(progress - 1) * 100}%`,
-      );
+      indicator.tabIndex = isVisible ? 0 : -1;
+
+      if (!(thumbnailVideo instanceof HTMLVideoElement)) return;
+
+      if (isActive && isVisible) {
+        const source = thumbnailVideo.dataset.thumbnailSrc;
+        if (source && !thumbnailVideo.getAttribute("src")) thumbnailVideo.src = source;
+        if (thumbnailVideo.getAttribute("src") && thumbnailVideo.paused) {
+          thumbnailVideo.play().catch(() => {});
+        }
+      } else {
+        thumbnailVideo.pause();
+      }
     });
 
     const indicatorList = carousel.querySelector(".project-media-carousel__indicators");
     if (indicatorList instanceof HTMLElement) {
       indicatorList.classList.toggle("is-visible", isVisible);
+      indicatorList.setAttribute("aria-hidden", String(!isVisible));
     }
   };
 
@@ -318,8 +325,6 @@
     const scrollPosition = Math.max((scroller.scrollTop - carouselTop) / stepDistance, 0);
     const mediaPosition = scrollPosition;
     const activeIndex = Math.min(Math.floor(mediaPosition + 0.0001), figures.length - 1);
-    const activeProgress = Math.min(Math.max(mediaPosition - activeIndex, 0), 1);
-    const hasMediaProgress = mediaPosition > 0.0001;
     const stickyStage = carousel.querySelector(".project-media-carousel__sticky");
     const stickyRect = stickyStage?.getBoundingClientRect();
     const scrollerRect = scroller.getBoundingClientRect();
@@ -333,9 +338,7 @@
     setMediaIndicators(
       carousel,
       activeIndex,
-      activeProgress,
       isVisible,
-      hasMediaProgress,
     );
     positionMediaIndicators(carousel, activeIndex);
   };
@@ -365,18 +368,43 @@
     carousel.className = "project-media-carousel";
     stickyStage.className = "project-media-carousel__sticky";
     indicatorList.className = "project-media-carousel__indicators";
-    indicatorList.setAttribute("aria-hidden", "true");
+    indicatorList.setAttribute("aria-label", "Project media");
     flipper.className = "project-media-carousel__flip";
     backFace.className = "project-media-carousel__back";
 
     figures.forEach((figure, index) => {
-      const indicator = document.createElement("span");
+      const indicator = document.createElement("button");
       const label = figure.querySelector("figcaption")?.textContent?.trim();
+      const sourceMedia = figure.querySelector("img, video");
 
       indicator.className = "project-media-carousel__indicator";
+      indicator.type = "button";
+      indicator.tabIndex = -1;
       indicator.setAttribute("aria-label", label || `Media ${index + 1}`);
       indicator.setAttribute("aria-current", index === 0 ? "true" : "false");
-      indicator.style.setProperty("--project-media-indicator-fill", "-100%");
+      indicator.addEventListener("click", () => scrollToMedia(carousel, index));
+
+      if (sourceMedia instanceof HTMLImageElement) {
+        const thumbnail = document.createElement("img");
+        const source = sourceMedia.currentSrc || sourceMedia.getAttribute("src");
+        if (source) thumbnail.src = source;
+        thumbnail.alt = "";
+        thumbnail.decoding = "async";
+        indicator.appendChild(thumbnail);
+      } else if (sourceMedia instanceof HTMLVideoElement) {
+        const thumbnail = document.createElement("video");
+        const poster = sourceMedia.getAttribute("poster");
+        const source = sourceMedia.dataset.mp4;
+
+        thumbnail.muted = true;
+        thumbnail.loop = true;
+        thumbnail.playsInline = true;
+        thumbnail.preload = "metadata";
+        if (poster) thumbnail.poster = poster;
+        if (source) thumbnail.dataset.thumbnailSrc = source;
+        indicator.appendChild(thumbnail);
+      }
+
       indicatorList.appendChild(indicator);
     });
 

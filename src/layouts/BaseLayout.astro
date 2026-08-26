@@ -11,7 +11,7 @@ interface Props {
 
 const { title, description = "100k Studio – Web Development and Design", bodyType, bodyId = "" } = Astro.props;
 const serializedData = JSON.stringify(passedData).replaceAll("<", "\\u003c");
-const ENABLE_INTRO = true;
+const ENABLE_INTRO = false;
 ---
 
 <!doctype html>

@@ -1472,7 +1472,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     border-radius: 0;
     box-sizing: border-box;
     display: block;
-    filter: brightness(0.35);
+    filter: brightness(0.9);
     flex: 0 0 auto;
     height: 40px;
     opacity: 1;
@@ -1482,7 +1482,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
   }
 
   .project-media-carousel__indicator.is-active {
-    filter: none;
+    filter: brightness(1);
     opacity: 1;
     outline: 1px solid #000;
     outline-offset: -1px;

@@ -2126,7 +2126,7 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
    Project categories — the list's heading is its filter
    ============================================================ */
 
-/* The heading reads as a title, slides to the invitation on hover, and drops
+/* The heading reads as a title, fades to the invitation on hover, and drops
    the categories underneath on click. Its own box stays transparent and
    click-through so nothing changes until the pointer is actually on it. */
 .project-filter {
@@ -2216,8 +2216,9 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
 
 /* Deliberately not in the shared button sizing further up: those hold every
    button at 20px, while this one has to stay the size of the project list it
-   heads — which grows to 25px past 1500px wide. Left padding is missing on
-   purpose; see the hover rule below. */
+   heads — which grows to 25px past 1500px wide. Stays a heading throughout: no
+   fill, no outline, no indent, so the funnel in front of it is the only thing
+   drawn as a pill and the label just changes what it reads. */
 .project-filter__toggle {
   appearance: none;
   -webkit-appearance: none;
@@ -2235,41 +2236,14 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   pointer-events: auto;
   position: relative;
   text-align: left;
-  transition: background-color 350ms ease, border-color 350ms ease, padding-left 350ms ease;
-}
-
-/* The same pill the projects below it are drawn as, down to the grey of its
-   outline — it only takes that shape once it is being used. At rest the
-   heading sits on the list's left edge, where a project pill starts; the pill
-   it becomes needs its 20px of padding, so the text travels those 20px inwards
-   as the fill arrives and lands on the project titles. */
-.project-filter__toggle:hover,
-.project-filter__toggle:focus-visible,
-.project-filter.is-filter-open .project-filter__toggle {
-  background-color: #fff;
-  border-color: #c5c5c5;
-  padding-left: 20px;
-}
-
-/*
- * The funnel and the heading are one control, so pointing at either answers
- * for both — hovering the funnel turns the heading into its pill and slides it
- * to the invitation, exactly as hovering the heading does.
- *
- * Behind `(hover: hover)` because `:hover` sticks to whatever was last tapped
- * on a touch screen: without it the heading would have stayed a pill after the
- * menu it opened had closed again.
- */
-@media (hover: hover) {
-  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle {
-    background-color: #fff;
-    border-color: #c5c5c5;
-    padding-left: 20px;
-  }
 }
 
 /* Both labels are laid on top of each other in the hidden sizer, in one grid
-   area, so the button can be measured against either of them. */
+   area, so the button is as wide as the longer of the two. Neither label is
+   measured out of the way as it was while the heading became a pill: the two
+   now cross-fade in place, and a box that resized under them would have
+   clipped whichever one was still on its way out. Nothing is drawn behind the
+   text, so the slack after the shorter label is invisible. */
 .project-filter__toggle .lay-button-effect__text-sizer {
   display: grid;
 }
@@ -2279,44 +2253,9 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   white-space: nowrap;
 }
 
-/*
- * Only the label actually on screen is measured. Sized to the longer of the
- * two — which is what holding both in the area does — the pill kept
- * "Selected Projects"'s width while reading "Filter Projects", and the 34px
- * left over sat after the word as a gap wider than the pill's own inset.
- *
- * `min-width` as well as `width`: a grid item's automatic minimum is its
- * min-content size, so zero width alone would still have held the track open
- * at the full length of the text.
- */
-.project-filter__toggle .lay-button-effect__text-sizer > span:last-child {
-  min-width: 0;
-  overflow: hidden;
-  width: 0;
-}
-
-.project-filter:has(.project-filter__icon:hover) .project-filter__toggle .lay-button-effect__text-sizer > span:first-child,
-.project-filter__toggle:hover .lay-button-effect__text-sizer > span:first-child,
-.project-filter__toggle:focus-visible .lay-button-effect__text-sizer > span:first-child,
-.project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text-sizer > span:first-child {
-  min-width: 0;
-  overflow: hidden;
-  width: 0;
-}
-
-.project-filter:has(.project-filter__icon:hover) .project-filter__toggle .lay-button-effect__text-sizer > span:last-child,
-.project-filter__toggle:hover .lay-button-effect__text-sizer > span:last-child,
-.project-filter__toggle:focus-visible .lay-button-effect__text-sizer > span:last-child,
-.project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text-sizer > span:last-child {
-  min-width: auto;
-  overflow: visible;
-  width: auto;
-}
-
 /* Left aligned rather than centred: the two labels are different lengths, and
-   centring them in a box sized to the longer one made the text step sideways
-   as it slid. The padding travels with the button's own (see above), so the
-   label and the pill around it arrive together.
+   centring them in a box sized to the longer one would have stepped the text
+   sideways as it changed.
    `!important` throughout because the shared rule above sets all of this from
    inside an `:is()` that no plain selector here can outweigh. */
 .project-filter__toggle[data-lay-button-effect-text-slide="1"] .lay-button-effect__text {
@@ -2324,50 +2263,68 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   justify-content: flex-start !important;
   line-height: inherit !important;
   padding-left: 0 !important;
-  transition:
-    padding-left 350ms ease,
-    transform 350ms cubic-bezier(.4, .2, .2, 1) !important;
+  /* No travel: the shared effect rolls one label up as the other arrives, and
+     the heading is asked to stay put and simply change what it says. The
+     `transform: none` has to be stated because the shared rules park the
+     incoming label a full line above its box. */
+  transform: none !important;
   white-space: nowrap;
 }
 
-/* After the rule above, not with the button's own hover block: same weight,
-   so it only wins by coming later. */
-.project-filter__toggle:hover .lay-button-effect__text,
-.project-filter__toggle:focus-visible .lay-button-effect__text,
-.project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text {
-  padding-left: 20px !important;
+/*
+ * The two labels fade past each other rather than overlapping in the middle:
+ * the one leaving is gone before the one arriving starts. Both are the same
+ * weight and start on the same left edge, so a plain cross-fade left the tail
+ * of the longer one showing through the shorter for a third of a second.
+ *
+ * Stated on both directions, so the fade is as staggered going back to the
+ * heading as it is coming off it. Together the two halves come to the 350ms the
+ * rest of the page moves in.
+ */
+.project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current {
+  opacity: 1;
+  transition: opacity 190ms ease 160ms !important;
 }
 
-@media (hover: hover) {
-  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle .lay-button-effect__text {
-    padding-left: 20px !important;
-  }
+.project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next {
+  opacity: 0;
+  transition: opacity 160ms ease !important;
 }
 
-/* The open menu holds the label on the invitation, the way it holds the pill
-   and its indent. Until now only `:hover` slid the two labels past each other,
-   so the heading read "Filter Projects" while the pointer was on it and fell
-   back to the category the moment it moved — and on a touch screen, where the
-   funnel is what opens the menu, it never slid at all.
+/* The open menu holds the label on the invitation, the way it holds the funnel
+   on its black pill. Until now only `:hover` swapped the two labels, so the
+   heading read "Filter Projects" while the pointer was on it and fell back to
+   the category the moment it moved — and on a touch screen, where the funnel is
+   what opens the menu, it never swapped at all.
    The `span` is there to carry the weight: the shared slide rules qualify the
    text with the effect's own attribute, and a class-only selector loses. */
+.project-filter__toggle[data-lay-button-effect-text-slide="1"]:focus-visible span.lay-button-effect__text--current,
 .project-filter.is-filter-open .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current {
-  transform: translateY(100%);
+  opacity: 0;
+  transition: opacity 160ms ease !important;
 }
 
+.project-filter__toggle[data-lay-button-effect-text-slide="1"]:focus-visible span.lay-button-effect__text--next,
 .project-filter.is-filter-open .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next {
-  transform: translate(0, 0);
+  opacity: 1;
+  transition: opacity 190ms ease 160ms !important;
 }
 
-/* And the funnel answers for the heading: hovering it slides the labels the
-   same way hovering the heading does. */
+/* The funnel and the heading are one control, so pointing at either answers for
+   both — and `:hover` is asked for rather than assumed, because it sticks to
+   whatever was last tapped on a touch screen: without this the heading would
+   have kept reading "Filter Projects" after the menu it opened had closed. */
 @media (hover: hover) {
-  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current {
-    transform: translateY(100%);
+  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current,
+  .project-filter__toggle[data-lay-button-effect-text-slide="1"]:hover span.lay-button-effect__text--current {
+    opacity: 0;
+    transition: opacity 160ms ease !important;
   }
 
-  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next {
-    transform: translate(0, 0);
+  .project-filter:has(.project-filter__icon:hover) .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next,
+  .project-filter__toggle[data-lay-button-effect-text-slide="1"]:hover span.lay-button-effect__text--next {
+    opacity: 1;
+    transition: opacity 190ms ease 160ms !important;
   }
 }
 
@@ -2477,26 +2434,13 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
 }
 
 @media (max-width: 699px) {
-  /* Still flush with the list, which sits at 10px below the breakpoint — and
-     the pill's padding shrinks with the list's, so the text travels 10px. */
+  /* Still flush with the list, which sits at 10px below the breakpoint. */
   .project-filter {
     margin-left: 10px;
   }
 
   .project-filter__toggle {
     padding: 5px 10px 4px 0;
-  }
-
-  .project-filter__toggle:hover,
-  .project-filter__toggle:focus-visible,
-  .project-filter.is-filter-open .project-filter__toggle {
-    padding-left: 10px;
-  }
-
-  .project-filter__toggle:hover .lay-button-effect__text,
-  .project-filter__toggle:focus-visible .lay-button-effect__text,
-  .project-filter.is-filter-open .project-filter__toggle .lay-button-effect__text {
-    padding-left: 10px !important;
   }
 
   .project-filter__option {
@@ -2515,6 +2459,15 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
   .project-filter__menu,
   .project-filter__option {
     transition-duration: 1ms;
+  }
+
+  /* The shared reduced-motion rule cannot reach the fade: the transitions it
+     shortens are set with `!important` on the labels themselves, so they are
+     restated here — the stagger's delay included, or the incoming label would
+     still arrive a sixth of a second late. */
+  .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text {
+    transition-delay: 0s !important;
+    transition-duration: 1ms !important;
   }
 }
 

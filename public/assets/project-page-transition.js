@@ -17,16 +17,9 @@
   let preparedPostNodes = null;
   let preparedPostMediaReady = Promise.resolve();
   let projectContentStartScale = null;
-  let visibleProjectId = document.body.dataset.type === "post"
-    ? document.body.dataset.id
-    : null;
   const rectangleMotionDuration = 400;
   const projectMotionDuration = 460;
   const projectEntryDelay = 100;
-  const reverseRectangleDelay = Math.max(
-    0,
-    projectEntryDelay + projectMotionDuration - rectangleMotionDuration,
-  );
   const transitionClasses = [
     "is-entering",
     "is-expanding",
@@ -152,27 +145,6 @@
     return Promise.resolve();
   };
 
-  const waitForVisibleProjectMedia = (root) => {
-    const media = Array.from(root?.querySelectorAll("img, video") || [])
-      .filter((item) => {
-        const rect = item.getBoundingClientRect();
-        const figure = item.closest(".static-grid-block");
-        const figureOpacity = figure ? Number.parseFloat(getComputedStyle(figure).opacity) : 1;
-
-        return rect.right > 0
-          && rect.bottom > 0
-          && rect.left < window.innerWidth
-          && rect.top < window.innerHeight
-          && figureOpacity > 0;
-      });
-
-    return Promise.all(media.map((item) => {
-      if (item instanceof HTMLImageElement) return waitForImageReady(item);
-      if (item instanceof HTMLVideoElement) return waitForVideoReady(item);
-      return Promise.resolve();
-    }));
-  };
-
   const waitForTransition = (element, propertyName, fallbackDuration) => new Promise((resolve) => {
     let completed = false;
     const complete = () => {
@@ -293,12 +265,11 @@
     overlay.style.setProperty("--project-content-start-scale", String(projectContentStartScale));
   };
 
-  const showPreparedProject = (projectId = null) => {
+  const showPreparedProject = () => {
     commitPreparedPost();
     prepareProjectEnhancements(document.querySelector("#post"));
     document.body.classList.remove("show-frontpage", "show-frontpage-animation", "show-post-animation");
     document.body.classList.add("show-post");
-    visibleProjectId = projectId == null ? visibleProjectId : String(projectId);
   };
 
   const setInitialRectangle = () => {
@@ -334,11 +305,6 @@
   const startTransition = async (link) => {
     const isProjectToProjectTransition = document.body.classList.contains("show-post")
       && link.matches(".next-project");
-    const projectIndex = Number(link.dataset.ix);
-    const project = Number.isInteger(projectIndex)
-      ? window.passedData?.everything?.projects?.[projectIndex]
-      : null;
-
     overlay.classList.remove(...transitionClasses);
     const initialRectangle = setInitialRectangle();
     setScrollInputLocked(true);
@@ -372,7 +338,7 @@
       overlay.classList.add("is-project-switch-expanding");
       await Promise.all([projectTransition, preparedPostMediaReady]);
 
-      showPreparedProject(project?.id);
+      showPreparedProject();
       await waitForNextPaint();
       resetOverlay();
       return;
@@ -404,66 +370,17 @@
     await Promise.all([expandTransition, projectTransition]);
     await preparedPostMediaReady;
 
-    showPreparedProject(project?.id);
+    showPreparedProject();
     await waitForNextPaint();
     resetOverlay();
   };
 
-  const getProjectById = (projectId) => {
-    const projects = window.passedData?.everything?.projects || [];
-
-    return projects.find((project) => String(project.id) === String(projectId));
-  };
-
-  const getCurrentProject = () => {
-    return getProjectById(window.history.state?.id);
-  };
-
-  const getCurrentProjectIndex = () => {
-    const projects = window.passedData?.everything?.projects || [];
-    const currentId = window.history.state?.id;
-
-    return projects.findIndex((project) => String(project.id) === String(currentId));
-  };
-
-  const startReverseTransition = async (backButton, options = {}) => {
-    const {
-      currentProject: currentProjectOverride = null,
-      historyAlreadyChanged = false,
-    } = options;
+  const closeProjectImmediately = async (backButton, options = {}) => {
+    const { historyAlreadyChanged = false } = options;
     const post = document.querySelector("#post");
     const postShadow = document.querySelector("#post-shadow");
-    const currentProject = currentProjectOverride || getCurrentProject();
-
-    if (!post) {
-      isReplayingClick = true;
-      backButton.click();
-      isReplayingClick = false;
-      resetOverlay();
-      return;
-    }
-
-    const outgoingScrollTop = post.scrollTop;
 
     overlay.classList.remove(...transitionClasses);
-    const currentProjectIndex = currentProject
-      ? (window.passedData?.everything?.projects || []).findIndex(
-        (project) => String(project.id) === String(currentProject.id),
-      )
-      : getCurrentProjectIndex();
-    post.scrollTop = outgoingScrollTop;
-    cloneProjectIntoPreview(post, outgoingScrollTop);
-    setScrollInputLocked(true);
-    overlay.classList.add("is-closing");
-    overlay.getBoundingClientRect();
-
-    await waitForVisibleProjectMedia(projectPreview);
-    await waitForNextPaint();
-
-    document.documentElement.classList.add("is-project-page-transitioning");
-    document.body.classList.add("is-project-page-transitioning");
-    overlay.classList.add("is-preview-ready");
-    overlay.getBoundingClientRect();
 
     if (!historyAlreadyChanged) {
       isReplayingClick = true;
@@ -473,45 +390,13 @@
     document.body.classList.remove("show-post", "show-post-animation", "show-frontpage-animation");
     document.body.classList.add("show-frontpage");
 
-    // The body scrollbar returns with the front page. Measure the Spotlight only
-    // after that layout change has painted, otherwise the target can be shifted
-    // by the scrollbar gutter or the restored front-page scroll position.
-    await waitForNextPaint();
-    if (currentProjectIndex >= 0) window.alignProjectSpotlightToIndex?.(currentProjectIndex);
-    await waitForNextPaint();
-
-    const initialRectangle = setInitialRectangle();
-    const fallbackMidpointScale = Math.min(
-      ((initialRectangle.width + window.innerWidth) / 2) * 0.88 / window.innerWidth,
-      ((initialRectangle.height + window.innerHeight) / 2) * 0.88 / window.innerHeight,
-    );
-
-    overlay.style.setProperty(
-      "--project-content-start-scale",
-      String(projectContentStartScale ?? fallbackMidpointScale),
-    );
-    overlay.getBoundingClientRect();
-
-    const projectTransition = waitForTransition(projectPreview, "transform", projectMotionDuration + 100);
-    overlay.classList.add("is-project-leaving");
-    await wait(reverseRectangleDelay);
-
-    // Re-read the exact rendered frame immediately before the rectangle starts
-    // collapsing, so late scrollbar/layout settling cannot leave an offset.
-    setInitialRectangle();
-    overlay.getBoundingClientRect();
-    const collapseTransition = waitForTransition(overlay, "width", rectangleMotionDuration + 110);
-    overlay.classList.add("is-collapsing");
-    await Promise.all([projectTransition, collapseTransition]);
-
     if (historyAlreadyChanged) {
-      post.replaceChildren();
-      post.scrollTo(0, 0);
+      post?.replaceChildren();
+      post?.scrollTo(0, 0);
       document.title = window.passedData?.title || document.title;
     } else {
       postShadow?.dispatchEvent(new Event("transitionend"));
     }
-    visibleProjectId = null;
     resetOverlay();
   };
 
@@ -528,7 +413,7 @@
 
       if (isTransitioning) return;
       isTransitioning = true;
-      startReverseTransition(backButton).catch(resetOverlay);
+      closeProjectImmediately(backButton).catch(resetOverlay);
       return;
     }
 
@@ -578,10 +463,7 @@
 
     event.stopImmediatePropagation();
     isTransitioning = true;
-    startReverseTransition(backButton, {
-      currentProject: getProjectById(visibleProjectId),
-      historyAlreadyChanged: true,
-    }).catch(resetOverlay);
+    closeProjectImmediately(backButton, { historyAlreadyChanged: true }).catch(resetOverlay);
   }, true);
 
   window.addEventListener("pageshow", resetOverlay);

@@ -144,6 +144,7 @@
 
       indicator.classList.toggle("is-active", isActive);
       indicator.setAttribute("aria-current", isActive ? "true" : "false");
+      indicator.tabIndex = isVisible ? 0 : -1;
 
       if (!(thumbnailVideo instanceof HTMLVideoElement)) return;
 
@@ -161,6 +162,7 @@
     const indicatorList = carousel.querySelector(".project-media-carousel__indicators");
     if (indicatorList instanceof HTMLElement) {
       indicatorList.classList.toggle("is-visible", isVisible);
+      indicatorList.setAttribute("aria-hidden", String(!isVisible));
     }
   };
 
@@ -366,18 +368,21 @@
     carousel.className = "project-media-carousel";
     stickyStage.className = "project-media-carousel__sticky";
     indicatorList.className = "project-media-carousel__indicators";
-    indicatorList.setAttribute("aria-hidden", "true");
+    indicatorList.setAttribute("aria-label", "Project media");
     flipper.className = "project-media-carousel__flip";
     backFace.className = "project-media-carousel__back";
 
     figures.forEach((figure, index) => {
-      const indicator = document.createElement("span");
+      const indicator = document.createElement("button");
       const label = figure.querySelector("figcaption")?.textContent?.trim();
       const sourceMedia = figure.querySelector("img, video");
 
       indicator.className = "project-media-carousel__indicator";
+      indicator.type = "button";
+      indicator.tabIndex = -1;
       indicator.setAttribute("aria-label", label || `Media ${index + 1}`);
       indicator.setAttribute("aria-current", index === 0 ? "true" : "false");
+      indicator.addEventListener("click", () => scrollToMedia(carousel, index));
 
       if (sourceMedia instanceof HTMLImageElement) {
         const thumbnail = document.createElement("img");

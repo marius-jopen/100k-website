@@ -1465,6 +1465,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
 
   .project-media-carousel__indicators.is-visible {
     opacity: 1;
+    pointer-events: auto;
   }
 
   .project-media-carousel__indicator {
@@ -1476,10 +1477,16 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     filter: brightness(0.9) contrast(0.8) saturate(0.5);
     flex: 0 0 auto;
     height: 40px;
+    margin: 0;
     opacity: 0.5;
     overflow: hidden;
+    padding: 0;
     position: relative;
     width: 60px;
+  }
+
+  .project-media-carousel__indicator:hover {
+    cursor: pointer;
   }
 
   .project-media-carousel__indicator.is-active {

@@ -244,7 +244,7 @@ const contactFields = [
         </div>
 
         <div class="plist-wrap-2">
-          {/* The heading is the control: it reads as the list's title, fades
+          {/* The heading is the control: it reads as the list's title, switches
               to the invitation on hover, and opens the category menu on click. */}
           {/* `_bigtext` on the wrapper, not just the heading: it is what grows
               to 25px past 1500px wide, and the menu has to grow with the
@@ -254,7 +254,7 @@ const contactFields = [
               {/* The heading stays plain text, so nothing about it says it can
                   be opened — the funnel in front of it is what does, drawn as a
                   pill and carrying the whole affordance on a touch screen,
-                  where there is no hover to fade the label. It leads whatever
+                  where there is no hover to switch the label. It leads whatever
                   the heading currently reads: "Selected Projects" or the
                   category the list is filtered to. */}
               <button
@@ -1251,6 +1251,9 @@ const contactFields = [
   const serviceCards = serviceGallery
     ? Array.from(serviceGallery.querySelectorAll(".gallery-item-view"))
     : [];
+  // Read here rather than once at the top: this is the only thing in the file
+  // that asks, and it threw as an undeclared name — taking the reveal with it.
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (serviceGallery && serviceCards.length && !prefersReducedMotion) {
     serviceGallery.classList.add("is-service-reveal-ready");

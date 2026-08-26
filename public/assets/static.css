@@ -2126,7 +2126,7 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
    Project categories — the list's heading is its filter
    ============================================================ */
 
-/* The heading reads as a title, fades to the invitation on hover, and drops
+/* The heading reads as a title, switches to the invitation on hover, and drops
    the categories underneath on click. Its own box stays transparent and
    click-through so nothing changes until the pointer is actually on it. */
 .project-filter {
@@ -2180,7 +2180,10 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   padding: 0;
   pointer-events: auto;
   width: calc(1.3em + 11px);
-  transition: background-color 350ms ease, border-color 350ms ease, color 350ms ease;
+  /* No timing on the colours: the label beside it switches on the frame the
+     pointer arrives, and the funnel easing into black behind an instant swap
+     read as two separate answers to the same hover. */
+  transition: none;
 }
 
 .project-filter__icon .filter-lines {
@@ -2239,11 +2242,10 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
 }
 
 /* Both labels are laid on top of each other in the hidden sizer, in one grid
-   area, so the button is as wide as the longer of the two. Neither label is
-   measured out of the way as it was while the heading became a pill: the two
-   now cross-fade in place, and a box that resized under them would have
-   clipped whichever one was still on its way out. Nothing is drawn behind the
-   text, so the slack after the shorter label is invisible. */
+   area, so the button is as wide as the longer of the two. Neither is measured
+   out of the way as it was while the heading became a pill: nothing is drawn
+   behind the text any more, so the slack after the shorter label is invisible
+   and a box that resized under them would only have made the swap flinch. */
 .project-filter__toggle .lay-button-effect__text-sizer {
   display: grid;
 }
@@ -2263,32 +2265,25 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   justify-content: flex-start !important;
   line-height: inherit !important;
   padding-left: 0 !important;
-  /* No travel: the shared effect rolls one label up as the other arrives, and
-     the heading is asked to stay put and simply change what it says. The
-     `transform: none` has to be stated because the shared rules park the
-     incoming label a full line above its box. */
+  /* No travel and no timing: the shared effect rolls one label up as the other
+     arrives, and the heading is asked to stay put and simply change what it
+     says, on the frame it is asked to. The `transform: none` has to be stated
+     because the shared rules park the incoming label a full line above its
+     box. */
   transform: none !important;
+  transition: none !important;
   white-space: nowrap;
 }
 
-/*
- * The two labels fade past each other rather than overlapping in the middle:
- * the one leaving is gone before the one arriving starts. Both are the same
- * weight and start on the same left edge, so a plain cross-fade left the tail
- * of the longer one showing through the shorter for a third of a second.
- *
- * Stated on both directions, so the fade is as staggered going back to the
- * heading as it is coming off it. Together the two halves come to the 350ms the
- * rest of the page moves in.
- */
+/* Which of the two is on screen, and nothing else — the swap is instant, so
+   there is no moment where both are up and the tail of the longer one shows
+   through the shorter. */
 .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current {
   opacity: 1;
-  transition: opacity 190ms ease 160ms !important;
 }
 
 .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next {
   opacity: 0;
-  transition: opacity 160ms ease !important;
 }
 
 /* The open menu holds the label on the invitation, the way it holds the funnel
@@ -2301,13 +2296,11 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
 .project-filter__toggle[data-lay-button-effect-text-slide="1"]:focus-visible span.lay-button-effect__text--current,
 .project-filter.is-filter-open .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current {
   opacity: 0;
-  transition: opacity 160ms ease !important;
 }
 
 .project-filter__toggle[data-lay-button-effect-text-slide="1"]:focus-visible span.lay-button-effect__text--next,
 .project-filter.is-filter-open .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next {
   opacity: 1;
-  transition: opacity 190ms ease 160ms !important;
 }
 
 /* The funnel and the heading are one control, so pointing at either answers for
@@ -2318,13 +2311,11 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   .project-filter:has(.project-filter__icon:hover) .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--current,
   .project-filter__toggle[data-lay-button-effect-text-slide="1"]:hover span.lay-button-effect__text--current {
     opacity: 0;
-    transition: opacity 160ms ease !important;
   }
 
   .project-filter:has(.project-filter__icon:hover) .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text--next,
   .project-filter__toggle[data-lay-button-effect-text-slide="1"]:hover span.lay-button-effect__text--next {
     opacity: 1;
-    transition: opacity 190ms ease 160ms !important;
   }
 }
 
@@ -2459,15 +2450,6 @@ body.show-frontpage :is(.introtext, .mobile-logo) {
   .project-filter__menu,
   .project-filter__option {
     transition-duration: 1ms;
-  }
-
-  /* The shared reduced-motion rule cannot reach the fade: the transitions it
-     shortens are set with `!important` on the labels themselves, so they are
-     restated here — the stagger's delay included, or the incoming label would
-     still arrive a sixth of a second late. */
-  .project-filter__toggle[data-lay-button-effect-text-slide="1"] span.lay-button-effect__text {
-    transition-delay: 0s !important;
-    transition-duration: 1ms !important;
   }
 }
 

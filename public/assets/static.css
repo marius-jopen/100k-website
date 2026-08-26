@@ -3101,16 +3101,6 @@ body > .become-a-client-modal .thankyou__note {
     z-index: 1;
   }
 
-  /* Bigger, and broken over two lines: one 16px line across the full width
-     read as a caption to the wall rather than its heading. The measure is what
-     breaks it — "Worked for or worked as" then "subcontractor for". */
-  .our-clients > h2 {
-    font-size: 28px;
-    line-height: 1.15;
-    max-width: 300px;
-    text-align: left;
-  }
-
   /* Fourteen pills at the button size overran the 4:3 card in every direction —
      out of the top of it and off its right edge. They are labels on a photo,
      not buttons to hit, so they come down to a caption size and the card is

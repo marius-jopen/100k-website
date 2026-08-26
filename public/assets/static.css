@@ -2627,17 +2627,6 @@ body > .become-a-client-modal .contact-close {
   z-index: 3;
 }
 
-/* The panels are still closing when it would otherwise appear. It arrives with
-   them instead — the same 620ms the rest of the form waits for. */
-body > .become-a-client-modal .contact-close {
-  opacity: 0;
-  transition: opacity 260ms ease 620ms;
-}
-
-body.show-client-modal > .become-a-client-modal .contact-close {
-  opacity: 1;
-}
-
 /* On a phone it is the toolbar's twin: the same pill Back and Contact Us are
    drawn at, in the corner Contact Us itself sits in — it is standing in for
    that button while the form is up. */

@@ -1468,7 +1468,6 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
   }
 
   .project-media-carousel__indicator {
-    aspect-ratio: var(--project-media-thumbnail-ratio, 16 / 9);
     border: 0;
     border-radius: 0;
     box-sizing: border-box;
@@ -1479,7 +1478,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     opacity: 0.4;
     overflow: hidden;
     position: relative;
-    width: auto;
+    width: 60px;
   }
 
   .project-media-carousel__indicator.is-active {

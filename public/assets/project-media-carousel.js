@@ -400,13 +400,6 @@
         indicator.appendChild(thumbnail);
       }
 
-      const ratio = sourceMedia instanceof HTMLImageElement || sourceMedia instanceof HTMLVideoElement
-        ? getMediaAspectRatio(sourceMedia)
-        : 0;
-      indicator.style.setProperty(
-        "--project-media-thumbnail-ratio",
-        String(ratio || (16 / 9)),
-      );
       indicatorList.appendChild(indicator);
     });
 

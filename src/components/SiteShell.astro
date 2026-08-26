@@ -113,14 +113,7 @@ const serviceWebglTimings = [
   { autoplayDelay: 2600, autoplaySpeed: 2700 },
 ];
 
-/*
- * The contact form is written out three times: once for real, and once inside
- * each of the two panels that fly it in (see the curtain below). The three are
- * built from this one list so they cannot drift apart — and the copies are
- * plain divs, because the legacy script counts the form's fields to decide
- * whether the send button is live and would never see three sets of them
- * filled in.
- */
+/* The field definitions keep the form markup and its submitted names together. */
 // Baked into the page at build time; see `.env.example`.
 const contactApiKey = import.meta.env.PUBLIC_STATIC_FORM_API_KEY ?? "";
 const contactHeadline = "Become a Client";
@@ -1363,34 +1356,6 @@ const contactFields = [
   <div class="thankyou _bigtext">
     <span class="thankyou__headline">Thank you</span>
     <span class="thankyou__note">We will get back to you soon.</span>
-  </div>
-  {/* Last in the modal on purpose: the legacy script binds sending to the
-      first `.send-button` in the document, and the copies carry that class
-      for their looks. Which of them paints on top is settled by the
-      stylesheet, not by this order. */}
-  {/* The two panels that close in from the sides, each carrying its own half
-      of the form — the same half-and-half the intro splits its logo into.
-      Each holds a full-width copy and shows only the part that falls inside
-      it; the real form takes over the moment they meet. */}
-  <div class="contact-curtain" aria-hidden="true">
-    {["left", "right"].map((side) => (
-      <div class={`contact-curtain__panel contact-curtain__panel--${side}`}>
-        <div class="contact-curtain__ghost">
-          <div class="_bigtext">{contactHeadline}</div>
-          <div class="contact-curtain__form">
-            {contactFields.map((field) => (
-              <>
-                <div class="contact-curtain__label">{field.label}</div>
-                <div class={`contact-curtain__field contact-curtain__field--${field.kind}`}>
-                  {field.kind === "select" ? contactBudgets[0].label : ""}
-                </div>
-              </>
-            ))}
-            <div class="contact-curtain__button send-button"><ArrowRight />{contactSendLabel}</div>
-          </div>
-        </div>
-      </div>
-    ))}
   </div>
 </div>
 <script is:inline src="/assets/contact-select.js"></script>

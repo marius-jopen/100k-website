@@ -36,7 +36,13 @@ const BANDWIDTH_KEY = "bunnyHlsBandwidth";
 // first fragments climbing the ladder. Every player on the page reports what it
 // measured, so the next one starts at the quality the connection can actually
 // sustain — and sessionStorage carries that across navigations.
-const DEFAULT_BANDWIDTH_ESTIMATE = 1_500_000;
+//
+// The opening guess is deliberately generous rather than safe. These ladders are
+// tiny — the Stream library tops out at 480p, about 1.4 Mbps — so "optimistic"
+// only ever means opening on the best rung that exists instead of climbing to it
+// over the first few seconds of a clip that only runs for ten. A connection that
+// cannot hold it gets measured on the first fragment and dropped by ABR anyway.
+const DEFAULT_BANDWIDTH_ESTIMATE = 4_000_000;
 const MIN_BANDWIDTH_ESTIMATE = 250_000;
 const MAX_BANDWIDTH_ESTIMATE = 60_000_000;
 
@@ -71,8 +77,24 @@ function loadHls(): Promise<HlsConstructor> {
   return hlsModule;
 }
 
+/*
+ * `canPlayType` alone is not the question. Chrome answers "maybe" for the HLS
+ * MIME type on desktop and does play the playlist — but through a bare ABR that
+ * reopens on the lowest rung every time a clip loops, so a 10s decoration cycled
+ * 240p → 480p → 240p forever and none of the tuning below ever ran. hls.js is
+ * what buys a start level, a ceiling and `upgradeQuality`.
+ *
+ * So the native path is now for Safari only, where hls.js has nothing to add
+ * over the platform player and on iOS cannot run at all for want of MSE.
+ */
 function canPlayNatively(video: HTMLVideoElement): boolean {
-  return Boolean(video.canPlayType("application/vnd.apple.mpegurl"));
+  if (!video.canPlayType("application/vnd.apple.mpegurl")) return false;
+
+  const ua = navigator.userAgent;
+  // Every browser on iOS is WebKit underneath whatever its badge says, and none
+  // of them can run hls.js for want of MSE — so the platform player it is.
+  if (/iPhone|iPad|iPod/.test(ua)) return true;
+  return /Safari/.test(ua) && !/Chrome|Chromium|Edg|Firefox/.test(ua);
 }
 
 async function attach(video: ManagedVideo): Promise<void> {

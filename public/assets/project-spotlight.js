@@ -128,6 +128,21 @@
       ? media.readyState >= 2 /* HAVE_CURRENT_DATA */
       : media.complete && media.naturalWidth > 0;
 
+  /*
+   * The frame is sized from whatever it is showing, so a portrait clip gets a
+   * portrait box instead of being cropped into a landscape one. Only ever read
+   * off media that `isFrameMediaReady` has cleared — before that a video
+   * reports 0×0 — and only at swap time: an hls.js quality upgrade changes
+   * `videoWidth` mid-playback, and re-reading it there would twitch the box for
+   * the rounding difference between two renditions of the same source.
+   */
+  const frameMediaRatio = (media) => {
+    const width = media instanceof HTMLVideoElement ? media.videoWidth : media.naturalWidth;
+    const height = media instanceof HTMLVideoElement ? media.videoHeight : media.naturalHeight;
+
+    return width > 0 && height > 0 ? width / height : 0;
+  };
+
   const createFrameMedia = (index) => {
     const sourceMedia = slides[index]?.querySelector("img, video");
     if (!sourceMedia) return null;
@@ -250,6 +265,14 @@
     // Bail rather than hide every layer: a late `loadeddata` can arrive for an
     // element that has since been evicted, and unhiding nothing is a blank box.
     if (!media) return;
+
+    // Reshape the box in the same frame the new clip is revealed. Doing it any
+    // earlier would squash the outgoing clip, which is deliberately left on
+    // screen while the incoming one is still buffering.
+    const ratio = frameMediaRatio(media);
+    if (ratio) {
+      spotlight.style.setProperty("--project-spotlight-media-ratio", ratio.toFixed(4));
+    }
 
     frameMediaByIndex.forEach((other, otherIndex) => {
       const isCurrent = otherIndex === index;

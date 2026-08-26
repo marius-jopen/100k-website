@@ -1119,11 +1119,14 @@ footer > .contact-us {
     display: block;
   }
 
+  /* The ghost stack keeps the fixed 16:9 box the frame used to have. It is
+     never painted — `showGhostImages: false` forces every slide to
+     `opacity: 0` — and exists only to feed the stacking math in
+     project-spotlight.js, which measures one slide and assumes the rest match.
+     The frame below sizes itself per project, so it can no longer share these. */
   .background-images.project-spotlight {
-    --project-spotlight-frame-half-height: min(20.334375vw, 214.64px);
-    --project-spotlight-frame-half-width: min(36vw, 380px);
-    --project-spotlight-frame-width: min(72vw, 760px);
-    --project-spotlight-frame-ratio: 2560 / 1446;
+    --project-spotlight-slide-ratio: 2560 / 1446;
+    --project-spotlight-slide-width: 77vw;
   }
 
   .projects-list .short-description {
@@ -1132,7 +1135,7 @@ footer > .contact-us {
 
   .background-images.project-spotlight > a,
   .background-images.project-spotlight > a.active {
-    aspect-ratio: var(--project-spotlight-frame-ratio);
+    aspect-ratio: var(--project-spotlight-slide-ratio);
     border-radius: 0;
     display: block;
     height: auto;
@@ -1144,7 +1147,7 @@ footer > .contact-us {
     top: 50%;
     transform: translate3d(calc(-50% + var(--project-spotlight-translate-x, 0px)), -50%, 0) scale(var(--project-spotlight-scale, 1));
     transform-origin: center center;
-    width: var(--project-spotlight-frame-width);
+    width: var(--project-spotlight-slide-width);
     will-change: transform, opacity, filter;
   }
 
@@ -1189,10 +1192,10 @@ footer > .contact-us {
   }
 
   .project-spotlight-frame {
-    aspect-ratio: var(--project-spotlight-frame-ratio);
     border-radius: 0;
     box-shadow: 0 10px 21px rgba(0, 0, 0, 0.2);
     cursor: pointer;
+    height: var(--project-spotlight-frame-height);
     left: 50%;
     overflow: hidden;
     pointer-events: auto;
@@ -1682,21 +1685,46 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
 }
 
 /* ============================================================
-   Project spotlight frame: 70vw, rounded, right aligned
+   Project spotlight frame: rounded, centred in a 77vw band at the right
    ============================================================ */
 @media (min-width: 701px) {
   .background-images.project-spotlight {
     --project-spotlight-frame-gutter: 20px;
     --project-spotlight-frame-radius: 30px;
-    /* Width only — deliberately no `vh` term anywhere in this chain, so
-       resizing the window vertically never resizes the video. */
-    --project-spotlight-frame-width: 77vw;
+    /* The column the frame lives in — what the box itself used to span back
+       when width led. A 16:9 project still fills it edge to edge; anything
+       taller is centred inside it rather than pinned to the right gutter,
+       which had left the band lopsided with all the slack on one side. */
+    --project-spotlight-frame-band: 77vw;
+    /* Replaced per project by project-spotlight.js, which reads the media's
+       own `videoWidth`/`naturalWidth` at the moment it swaps it in. This 16:9
+       is what the frame falls back to until the first clip has painted. */
+    --project-spotlight-media-ratio: 1.7704;
+    /* Height leads and width follows the media, so a portrait clip gets a
+       portrait box instead of being cropped into a landscape one. Three
+       ceilings, whichever binds first:
+         - the band at 16:9, i.e. exactly the height the box had when width
+           led. Deliberately no `vh` term in this chain — resizing the window
+           vertically must never resize the video.
+         - 900px, so it stops growing on a large display.
+         - the band divided by the media's own ratio, which only bites for
+           something wider than 16:9. Without it such a project would compute
+           a width past the band and hang over the gutter. */
+    --project-spotlight-frame-height: min(
+      calc(var(--project-spotlight-frame-band) * 1446 / 2560),
+      900px,
+      calc(var(--project-spotlight-frame-band) / var(--project-spotlight-media-ratio))
+    );
+    --project-spotlight-frame-width: calc(
+      var(--project-spotlight-frame-height) * var(--project-spotlight-media-ratio)
+    );
     --project-spotlight-frame-half-width: calc(var(--project-spotlight-frame-width) / 2);
-    --project-spotlight-frame-half-height: calc(
-      var(--project-spotlight-frame-width) * 1446 / 2560 / 2
+    --project-spotlight-frame-half-height: calc(var(--project-spotlight-frame-height) / 2);
+    --project-spotlight-frame-center: calc(
+      100vw - var(--project-spotlight-frame-gutter) - var(--project-spotlight-frame-band) / 2
     );
     --project-spotlight-frame-left: calc(
-      100vw - var(--project-spotlight-frame-gutter) - var(--project-spotlight-frame-width)
+      var(--project-spotlight-frame-center) - var(--project-spotlight-frame-half-width)
     );
   }
 
@@ -1706,12 +1734,10 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     transform: translate3d(0, -50%, 0);
   }
 
-  /* Centred on the frame: the caption shrink-wraps its text, so pin its box to
-     the frame's horizontal centre and pull it back by half its own width. */
+  /* The caption shrink-wraps its text, so pin its box to the band's centre —
+     which is the frame's centre too — and pull it back by half its own width. */
   .project-spotlight-caption.short-description {
-    left: calc(
-      100vw - var(--project-spotlight-frame-gutter) - var(--project-spotlight-frame-half-width)
-    );
+    left: var(--project-spotlight-frame-center);
     right: auto;
     transform: translateX(-50%) !important;
   }

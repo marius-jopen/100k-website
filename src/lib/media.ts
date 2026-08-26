@@ -52,8 +52,15 @@ export function hlsUrl(videoId: string): string {
   return `https://${STREAM_HOST}/${videoId}/playlist.m3u8`;
 }
 
-/** Progressive MP4 rendition, used only if HLS cannot be attached at all. */
-export function mp4Url(videoId: string, resolution = 720): string {
+/**
+ * Progressive MP4 rendition, used only if HLS cannot be attached at all.
+ *
+ * 480p because that is the top rung the Stream library actually encodes —
+ * `play_720p.mp4` and `play_1080p.mp4` are 404 on every video, so the default
+ * this used to carry made the fallback a dead link exactly when it was needed.
+ * Raise it here once the library encodes higher.
+ */
+export function mp4Url(videoId: string, resolution = 480): string {
   return `https://${STREAM_HOST}/${videoId}/play_${resolution}p.mp4`;
 }
 

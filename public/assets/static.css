@@ -2823,6 +2823,13 @@ body > .become-a-client-modal .thankyou__note {
     z-index: 2;
   }
 
+  /* The corner preview normally sits over the project list. While the filter
+     menu replaces that list, its pills need to remain clickable and paint in
+     front wherever a short viewport makes the two overlap. */
+  .plist-wrap-2:has(.project-filter.is-filter-open) {
+    z-index: 4;
+  }
+
   /*
    * With the categories down, the list they stand in for stops taking up room.
    * Hidden with `opacity` alone it still measured its full length, so the

@@ -1452,7 +1452,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
   .project-media-carousel__indicators {
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 1px;
     left: 50%;
     opacity: 0;
     pointer-events: none;
@@ -1468,30 +1468,31 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
   }
 
   .project-media-carousel__indicator {
-    border: 1px solid #adadad;
-    border-radius: 999px;
+    aspect-ratio: var(--project-media-thumbnail-ratio, 16 / 9);
+    border: 0;
+    border-radius: 0;
     box-sizing: border-box;
     display: block;
+    filter: grayscale(1);
     flex: 0 0 auto;
-    height: 10px;
+    height: 40px;
+    opacity: 0.3;
     overflow: hidden;
     position: relative;
-    transition: width 300ms ease;
-    width: 10px;
+    transition: filter 180ms ease, opacity 180ms ease;
+    width: auto;
   }
 
-  .project-media-carousel__indicator::after {
-    background: #adadad;
-    border-radius: inherit;
-    content: "";
-    inset: 0;
-    position: absolute;
-    transform: translateX(var(--project-media-indicator-fill, -100%));
-    will-change: transform;
+  .project-media-carousel__indicator.is-active {
+    filter: none;
+    opacity: 1;
   }
 
-  .project-media-carousel__indicator.is-active.is-progressing {
-    width: 20px;
+  .project-media-carousel__indicator > :is(img, video) {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
   }
 
   .project-media-carousel .static-project-grid {
@@ -1846,11 +1847,6 @@ body.show-project-info-modal > .become-a-client {
 }
 
 @media (min-width: 701px) {
-  /* Wider active bullet. */
-  .project-media-carousel__indicator.is-active.is-progressing {
-    width: 34px;
-  }
-
   /* No ✕ on the flip: the Info button is relabelled "Back" and closes it.
      The overlay modal keeps its close button. */
   .project-media-carousel__back .project-info-modal__close {

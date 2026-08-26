@@ -2180,7 +2180,10 @@ body.show-project-info-flip:not(.show-project-contact-flip) .project-toolbar .ba
   padding: 0;
   pointer-events: auto;
   width: calc(1.3em + 11px);
-  transition: background-color 350ms ease, border-color 350ms ease, color 350ms ease;
+  /* No timing on the colours: the label beside it switches on the frame the
+     pointer arrives, and the funnel easing into black behind an instant swap
+     read as two separate answers to the same hover. */
+  transition: none;
 }
 
 .project-filter__icon .filter-lines {

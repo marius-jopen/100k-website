@@ -1,6 +1,10 @@
-{/* Three centred bars, each shorter than the one above it — the filter mark
-    reduced to what it means. Square viewBox so the glyph sits in the middle of
-    a round pill rather than filling it edge to edge. */}
+{/* Two centred bars of the same length, cut square at both ends — the filter
+    mark reduced to what it means. Square viewBox so the glyph sits in the
+    middle of a round pill rather than filling it edge to edge.
+
+    `stroke-linecap` is `butt` rather than the `round` this had: the ends stop
+    flat, exactly on the coordinate the path names, so both bars measure the
+    same 16 and neither gains a half-stroke cap at either end. */}
 <svg
   class="filter-lines"
   xmlns="http://www.w3.org/2000/svg"
@@ -8,11 +12,10 @@
   viewBox="0 0 24 24"
   stroke-width="2"
   stroke="currentColor"
-  stroke-linecap="round"
+  stroke-linecap="butt"
   aria-hidden="true"
   focusable="false"
 >
-  <path d="M4 7h16"></path>
-  <path d="M7 12h10"></path>
-  <path d="M10 17h4"></path>
+  <path d="M4 9h16"></path>
+  <path d="M4 15h16"></path>
 </svg>

@@ -1251,6 +1251,9 @@ const contactFields = [
   const serviceCards = serviceGallery
     ? Array.from(serviceGallery.querySelectorAll(".gallery-item-view"))
     : [];
+  // Read here rather than once at the top: this is the only thing in the file
+  // that asks, and it threw as an undeclared name — taking the reveal with it.
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (serviceGallery && serviceCards.length && !prefersReducedMotion) {
     serviceGallery.classList.add("is-service-reveal-ready");

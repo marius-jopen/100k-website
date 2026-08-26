@@ -1475,7 +1475,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     filter: brightness(0.35);
     flex: 0 0 auto;
     height: 40px;
-    opacity: 0.4;
+    opacity: 1;
     overflow: hidden;
     position: relative;
     width: 60px;

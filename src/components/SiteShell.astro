@@ -244,18 +244,19 @@ const contactFields = [
         </div>
 
         <div class="plist-wrap-2">
-          {/* The heading is the control: it reads as the list's title, slides
+          {/* The heading is the control: it reads as the list's title, fades
               to the invitation on hover, and opens the category menu on click. */}
           {/* `_bigtext` on the wrapper, not just the heading: it is what grows
               to 25px past 1500px wide, and the menu has to grow with the
               project list it stands in for. */}
           <div class="_bigtext project-filter" data-active-tag={activeTag ?? ""}>
             <h2 class="_bigtext selected-projects-headline project-filter__heading">
-              {/* The heading only becomes a pill under the pointer, which says
-                  nothing on a touch screen — so the funnel stands in front of
-                  it, drawn as a pill from the start, and opens the same menu.
-                  It leads whatever the heading currently reads: "Selected
-                  Projects" or the category the list is filtered to. */}
+              {/* The heading stays plain text, so nothing about it says it can
+                  be opened — the funnel in front of it is what does, drawn as a
+                  pill and carrying the whole affordance on a touch screen,
+                  where there is no hover to fade the label. It leads whatever
+                  the heading currently reads: "Selected Projects" or the
+                  category the list is filtered to. */}
               <button
                 class="project-filter__icon"
                 type="button"

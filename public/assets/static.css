@@ -1710,6 +1710,16 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
   }
 }
 
+/* The hero is white in the legacy theme, and the WebGL canvas that fills it
+   paints nothing until it has compiled and loaded its first slide. That left
+   the whole area behind the project list and the preview frame flat white for
+   the first moment of every visit, with the white pills sitting on it invisibly.
+   A light grey holds the space instead, close enough to the wash that lands on
+   top of it that the handover does not read as a change. */
+.plist-wrap {
+  background: #f0f0f0;
+}
+
 /* Soften the morphing background into an abstract wash. The canvas is scaled
    slightly past its box because `filter: blur()` samples transparency beyond
    the edges, which would otherwise fade the border of the viewport; the

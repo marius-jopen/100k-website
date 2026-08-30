@@ -1,0 +1,101 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import { ORGANIZATION } from "../lib/seo";
+---
+
+<LegalLayout
+  title="Privacy Policy"
+  heading="Privacy Policy"
+  description="How 100k Studio GmbH handles personal data on 100k.studio."
+  path="/privacy/"
+>
+  <div class="legal-page__draft">
+    <p><strong>Draft — needs legal review.</strong> This is placeholder wording written to describe what the site appears to do. It has not been checked by a lawyer, and the third-party services listed below need confirming against what is actually running in production before this is published.</p>
+  </div>
+
+  <h2>Who is responsible</h2>
+  <p>
+    {ORGANIZATION.legalName}<br />
+    {ORGANIZATION.address.street}, {ORGANIZATION.address.postalCode} {ORGANIZATION.address.city}, Germany<br />
+    <a href={`mailto:${ORGANIZATION.email}`}>{ORGANIZATION.email}</a>
+  </p>
+  <p>
+    We are the controller for the personal data processed through this website, within the meaning of
+    the General Data Protection Regulation (GDPR).
+  </p>
+
+  <h2>The short version</h2>
+  <p>
+    This site is a portfolio. It sets no advertising cookies, runs no cross-site tracking, and does not
+    build a profile of you. The only personal data we receive is what you send us yourself through the
+    contact form or by email.
+  </p>
+
+  <h2>Server logs</h2>
+  <p>
+    Our hosting provider records standard access data each time a page is requested: the requesting IP
+    address, the time of the request, the page requested, the referring page, and the browser and
+    operating system reported. This is technically necessary to deliver the site and to keep it secure.
+  </p>
+  <p>
+    Legal basis: Art. 6(1)(f) GDPR — our legitimate interest in operating a stable and secure website.
+    Retention: [confirm the retention period with your hosting provider].
+  </p>
+
+  <h2>Contact form and email</h2>
+  <p>
+    If you use the contact form we process the name, email address and message you enter, in order to
+    answer you. The submission is handled by our form provider, and the message reaches us by email.
+  </p>
+  <p>
+    Legal basis: Art. 6(1)(b) GDPR where your enquiry concerns a possible contract, otherwise
+    Art. 6(1)(f) GDPR — our legitimate interest in responding to enquiries. We keep enquiries for as long
+    as needed to deal with them and to meet any statutory retention obligations.
+  </p>
+
+  <h2>Processors and third-party services</h2>
+  <p>
+    [Confirm this list before publishing.] The following providers process data on our behalf or receive
+    data as a necessary part of delivering this site:
+  </p>
+  <ul>
+    <li><strong>Hosting and delivery</strong> — serves the pages and records the access logs described above.</li>
+    <li><strong>Media delivery (CDN and video streaming)</strong> — images and video are requested from a content delivery network, which receives your IP address as a technical requirement of delivering the file.</li>
+    <li><strong>Contact form provider</strong> — receives the contents of a submitted form in order to forward it to us.</li>
+    <li><strong>Fonts</strong> — served from this domain, so no request is made to a third-party font provider.</li>
+  </ul>
+  <p>
+    Where a provider processes data outside the EU or EEA, the transfer is covered by the appropriate
+    safeguards under Art. 44 ff. GDPR. [Confirm which providers this applies to and on what basis.]
+  </p>
+
+  <h2>Cookies and local storage</h2>
+  <p>
+    This site sets no cookies for analytics, advertising or tracking. [Confirm whether anything on the
+    site stores data in the browser; if it does, describe it here and consider whether consent is
+    required under § 25 TDDDG.]
+  </p>
+
+  <h2>Your rights</h2>
+  <p>Under the GDPR you have the right to:</p>
+  <ul>
+    <li>access the personal data we hold about you (Art. 15)</li>
+    <li>have inaccurate data corrected (Art. 16)</li>
+    <li>have your data erased (Art. 17)</li>
+    <li>restrict how we process it (Art. 18)</li>
+    <li>receive it in a portable format (Art. 20)</li>
+    <li>object to processing based on legitimate interests (Art. 21)</li>
+    <li>withdraw consent at any time, without affecting processing carried out before withdrawal</li>
+  </ul>
+  <p>
+    To exercise any of these, write to <a href={`mailto:${ORGANIZATION.email}`}>{ORGANIZATION.email}</a>.
+    You also have the right to complain to a supervisory authority — for us that is the Berlin
+    Commissioner for Data Protection and Freedom of Information.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    We update this policy when the site or the services behind it change. This version is a draft and has
+    not yet been reviewed.
+  </p>
+</LegalLayout>

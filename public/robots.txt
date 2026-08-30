@@ -1,0 +1,28 @@
+# 100k Studio — https://100k.studio
+
+User-agent: *
+Allow: /
+Disallow: /keystatic/
+Disallow: /api/
+
+# Answer engines are allowed on purpose: the case studies are the point.
+# Remove an agent's block to keep the studio's work out of its answers.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://100k.studio/sitemap-index.xml

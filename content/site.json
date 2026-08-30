@@ -165,5 +165,9 @@
   "contact": {
     "endpoint": "https://api.staticforms.dev/submit"
   },
-  "mobileLogo": null
+  "mobileLogo": null,
+  "seo": {
+    "description": "100k Studio is a Berlin web development studio building custom and headless CMS platforms, online shops and design-led websites for cultural institutions, brands and product teams.",
+    "shareImage": null
+  }
 }

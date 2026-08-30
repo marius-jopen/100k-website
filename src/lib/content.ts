@@ -133,6 +133,10 @@ export const siteContent: SiteContent = {
     legal: paragraphsToHtml(siteEntry.footer.legal),
   },
   contact: { ...siteEntry.contact },
+  seo: {
+    description: siteEntry.seo?.description?.trim() || "",
+    shareImage: imageAsset(siteEntry.seo?.shareImage ?? null),
+  },
 };
 
 /* --------------------------------------------------------------- projects */
@@ -201,7 +205,7 @@ function escapeHtml(value: string): string {
  * footer (`set:html`) and the project read-more (which walks `<p>` children)
  * expect. Empty input stays an empty string.
  */
-function paragraphsToHtml(text: string | null | undefined): string {
+export function paragraphsToHtml(text: string | null | undefined): string {
   if (!text) return "";
   return text
     .trim()

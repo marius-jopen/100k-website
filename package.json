@@ -18,6 +18,7 @@
   "dependencies": {
     "@astrojs/node": "^9.4.4",
     "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.7.3",
     "@keystatic/astro": "^5.0.6",
     "@keystatic/core": "^0.5.49",
     "astro": "^5.16.2",

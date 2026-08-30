@@ -1,6 +1,6 @@
 ---
-import { projects, siteContent } from "../lib/content";
-import type { Asset } from "../lib/schema";
+import { paragraphsToHtml, projects, renderProjectGrid, siteContent } from "../lib/content";
+import type { Asset, Project } from "../lib/schema";
 import {
   ALL_PROJECTS_LABEL,
   PROJECT_FILTER_PROMPT,
@@ -16,11 +16,27 @@ import XMark from "./XMark.astro";
 interface Props {
   /** Category the list starts filtered to; `/tag/<value>/` sets it. */
   activeTag?: string | null;
+  /**
+   * The project this page is for, rendered into `#post` at build time.
+   *
+   * The legacy app builds the same markup from `passedData` on load and its
+   * Marionette region replaces whatever it finds, so this changes nothing for a
+   * reader with JavaScript. It is here for everyone else: without it the page
+   * ships an empty `#post` and every project URL is a copy of the homepage.
+   */
+  project?: Project | null;
 }
 
 // The shell is also what a project page renders behind its own content, and
 // that one is never filtered.
 const activeTag = findProjectTag(Astro.props.activeTag)?.value ?? null;
+const project = Astro.props.project ?? null;
+// The next one in the list, wrapping at the end — the same one the legacy app
+// links to, so the server-rendered page and the live one agree.
+const projectIndex = project ? projects.findIndex((entry) => entry.id === project.id) : -1;
+const nextProject = projectIndex >= 0
+  ? projects[(projectIndex + 1) % projects.length]
+  : null;
 const filterHeadline = projectTagHeadline(activeTag);
 // The list highlights whatever is level with the top of the screen, which
 // before any scrolling is its first row — the first one the filter left.
@@ -157,7 +173,13 @@ const contactFields = [
     </button>
   </div>
   <div id="frontpage">
-    <div class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Development</div>
+    {/* The studio line is the page heading on the list pages. On a project page
+        the project's own title is, so this drops back to a plain div rather
+        than competing with it. `._bigtext` fixes size, weight and margin, so
+        the element it renders as makes no visual difference. */}
+    {project
+      ? <div class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Development</div>
+      : <h1 class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Development</h1>}
     {siteContent.mobileLogo && <img class="mobile-logo" src={siteContent.mobileLogo.src} sizes="80px" alt={siteContent.mobileLogo.alt} />}
     <canvas id="canvas3" class="logo" style="z-index:5;"></canvas>
 
@@ -398,11 +420,66 @@ const contactFields = [
         </div>
         <div class="_Default" set:html={siteContent.footer.emailPrompt}></div>
       </div>
-      <div class="_legal contact-us" set:html={siteContent.footer.legal}></div>
+      <div class="_legal contact-us">
+        <div set:html={siteContent.footer.legal}></div>
+        {/* German law wants the Impressum reachable from every page, and a
+            privacy policy has to be findable too — this is the one block that
+            appears site-wide. Styled by `._legal`, so it matches the address
+            above it rather than introducing anything new. */}
+        <p class="legal-links">
+          <a href="/impressum/">Impressum</a>
+          <a href="/privacy/">Privacy Policy</a>
+        </p>
+      </div>
     </footer>
   </div>
 
-  <div id="post"></div>
+  {/* Mirrors the legacy Marionette template class for class, so the CSS that
+      styles the live page styles this one too, and a reader without JavaScript
+      gets the project rather than an empty box. `showView` empties the region
+      before it renders, so there is never a duplicate on screen. */}
+  <div id="post">
+    {project && (
+      <>
+        <div class="url-button-wrap">
+          <div class="left-descr">
+            <h1 class="_bigtext4">{project.displayTitle}</h1>
+          </div>
+          <div class="right-descr">
+            {project.description && (
+              <div class="_bigtext description" set:html={paragraphsToHtml(project.description)}></div>
+            )}
+            {project.credits.length > 0 && (
+              <div class="_bigtext credits">
+                {project.credits.map((credit) => (
+                  <div class="credit">
+                    <div>{credit.label}</div>
+                    <div>{credit.value}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {project.externalUrl && (
+              <a class="url-button _bigtext" href={project.externalUrl} target="_blank" rel="noopener">Visit Website</a>
+            )}
+          </div>
+        </div>
+        <div class="grid" set:html={renderProjectGrid(project)}></div>
+        {nextProject && (
+          <a class="next-project" href={`/${nextProject.slug}/`} data-ix={(projectIndex + 1) % projects.length}>
+            {nextProject.featuredImage && <img src={nextProject.featuredImage.src} alt="" />}
+            <div class="next-project-text-wrap">
+              <div class="_bigtext next-title">{nextProject.displayTitle}, {nextProject.shortDescription}</div>
+              <span class="_Default next-project-text">
+                <span>→ Next Project</span>
+                <span></span>
+              </span>
+            </div>
+          </a>
+        )}
+      </>
+    )}
+  </div>
   <div id="post-shadow"></div>
 </div>
 

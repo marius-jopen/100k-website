@@ -238,6 +238,29 @@ export default config({
           itemLabel: (props) => props.value?.filename ?? "Background",
         }),
         mobileLogo: imageField("Mobile logo"),
+        // What a link to the site looks like when it is pasted into Slack,
+        // LinkedIn, X or WhatsApp. Projects fall back to their own featured
+        // image; this covers the homepage, the category pages and everything
+        // without one of its own.
+        seo: fields.object(
+          {
+            description: fields.text({
+              label: "Homepage search description",
+              description:
+                "The sentence Google prints under the result. Aim for 150-160 characters, written for a stranger deciding whether to click.",
+              multiline: true,
+              defaultValue: "",
+            }),
+            shareImage: imageField(
+              "Default share image",
+              "Shown when a link to the site is posted. 1200x630 pixels works everywhere.",
+            ),
+          },
+          {
+            label: "Search and sharing",
+            description: "How the site presents itself to search engines and link previews.",
+          },
+        ),
         footer: fields.object(
           {
             headline: fields.text({ label: "Headline", multiline: true, defaultValue: "" }),

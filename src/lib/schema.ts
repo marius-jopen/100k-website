@@ -92,4 +92,10 @@ export interface SiteContent {
   contact: {
     endpoint: string;
   };
+  seo: {
+    /** Homepage meta description; falls back to the site name when unset. */
+    description: string;
+    /** Default Open Graph image for pages without one of their own. */
+    shareImage: Asset | null;
+  };
 }

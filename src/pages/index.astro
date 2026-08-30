@@ -2,9 +2,19 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteShell from "../components/SiteShell.astro";
 import { siteContent } from "../lib/content";
+import { absoluteUrl, jsonLd, organizationSchema } from "../lib/seo";
+
+const description = siteContent.seo.description || siteContent.name;
+const shareImage = siteContent.seo.shareImage?.src ?? null;
+
+// The homepage carries the entity every other page's structured data points
+// back to by `@id`, so it is declared once, here.
+const schema = jsonLd(organizationSchema({
+  description,
+  image: shareImage ? absoluteUrl(shareImage) : null,
+}));
 ---
 
-<BaseLayout title={siteContent.name} bodyType="frontpage">
+<BaseLayout title={siteContent.name} description={description} bodyType="frontpage" path="/" schema={schema}>
   <SiteShell />
 </BaseLayout>
-

@@ -859,6 +859,20 @@ footer > .contact-us {
   opacity: var(--footer-content-opacity, 0.1);
 }
 
+/* Impressum and privacy, under the address they belong with. Inherits the
+   footer's white text and `._legal` sizing; only the gap is new. */
+footer .contact-us .legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+  margin: 20px 0 0;
+}
+
+footer .contact-us .legal-links a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ============================================================
    The next project is the project page's footer
    ============================================================ */

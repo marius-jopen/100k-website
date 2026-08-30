@@ -3,20 +3,41 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteShell from "../components/SiteShell.astro";
 import { projects, siteContent } from "../lib/content";
 import type { Project } from "../lib/schema";
+import { absoluteUrl, jsonLd, projectSchema } from "../lib/seo";
+import { projectTagHeadline } from "../lib/tags";
 
 export function getStaticPaths() {
   return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
 }
 
 const { project } = Astro.props as { project: Project };
+const path = `/${project.slug}/`;
+const description = project.description || project.shortDescription;
+
+// The share image is the project's own, so a link to a project previews that
+// project rather than the studio's default card.
+const shareImage = project.featuredImage?.src ?? null;
+
+const schema = jsonLd(projectSchema({
+  name: project.displayTitle,
+  headline: `${project.displayTitle} — ${project.shortDescription}`,
+  description,
+  url: absoluteUrl(path),
+  image: shareImage ? absoluteUrl(shareImage) : null,
+  sameAs: project.externalUrl || undefined,
+  keywords: [project.shortDescription, projectTagHeadline(project.tag), "web development", "web design"]
+    .filter(Boolean),
+}));
 ---
 
 <BaseLayout
   title={`${project.displayTitle} — ${siteContent.name}`}
-  description={project.description || project.shortDescription}
+  description={description}
   bodyType="post"
   bodyId={project.id}
+  path={path}
+  shareImage={shareImage}
+  schema={schema}
 >
-  <SiteShell />
+  <SiteShell project={project} />
 </BaseLayout>
-

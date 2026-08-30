@@ -1,15 +1,46 @@
 ---
-import { passedData } from "../lib/content";
+import { passedData, siteContent } from "../lib/content";
 import { IMAGE_CDN_URL, STREAM_HOST } from "../lib/media";
+import { absoluteUrl } from "../lib/seo";
 
 interface Props {
   title: string;
   description?: string;
   bodyType: "frontpage" | "post";
   bodyId?: string;
+  /** Site-relative path of this page, e.g. `/e-flux/`. Drives the canonical. */
+  path: string;
+  /** Site-relative share image; falls back to the one set in the CMS. */
+  shareImage?: string | null;
+  /** Structured data for this page, already serialized by `jsonLd`. */
+  schema?: string | string[];
+  /** Kept out of search results — the legal pages have nothing to rank for. */
+  noindex?: boolean;
+  /**
+   * Renders the page without the legacy application.
+   *
+   * `app.js` reads `passedData.projects` at module scope and drives the whole
+   * `#app` shell, so a plain content page has nothing for it to do and would
+   * only pay 152 KB for the privilege of throwing.
+   */
+  standalone?: boolean;
 }
 
-const { title, description = "100k Studio – Web Development and Design", bodyType, bodyId = "" } = Astro.props;
+const {
+  title,
+  description = siteContent.seo.description || siteContent.name,
+  bodyType,
+  bodyId = "",
+  path,
+  shareImage = null,
+  schema,
+  noindex = false,
+  standalone = false,
+} = Astro.props;
+
+const canonical = absoluteUrl(path);
+const ogImage = shareImage ?? siteContent.seo.shareImage?.src ?? null;
+const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 const serializedData = JSON.stringify(passedData).replaceAll("<", "\\u003c");
 const ENABLE_INTRO = false;
 ---
@@ -22,6 +53,26 @@ const ENABLE_INTRO = false;
     <meta name="description" content={description} />
     <meta name="generator" content="100k Studio Static CMS" />
     <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    {/* What a link to this page looks like when it is pasted anywhere. */}
+    <meta property="og:type" content={bodyType === "post" ? "article" : "website"} />
+    <meta property="og:site_name" content="100k Studio" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_GB" />
+    {ogImage && <meta property="og:image" content={absoluteUrl(ogImage)} />}
+    {ogImage && <meta property="og:image:alt" content={title} />}
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={absoluteUrl(ogImage)} />}
+
+    {schemas.map((entry) => (
+      <script type="application/ld+json" is:inline set:html={entry}></script>
+    ))}
     <link rel="stylesheet" href="/assets/legacy/theme.css" />
     <link rel="stylesheet" href="/assets/legacy/laygrid.css" />
     <link rel="stylesheet" href="/assets/static.css" />
@@ -62,18 +113,22 @@ const ENABLE_INTRO = false;
       </>
     )}
     <slot />
-    <script is:inline set:html={`window.passedData=${serializedData};var passedData=window.passedData;`}></script>
-    <script is:inline src="/assets/legacy/jquery.min.js"></script>
-    <script is:inline src="/assets/legacy/polyfill_flexbox.js"></script>
-    <script is:inline>
-      if (window.innerWidth >= 700) {
-        Object.defineProperty(window, "useWebGlBackgroundsOnDesktop", {
-          configurable: true,
-          get: () => true,
-          set: () => {},
-        });
-      }
-    </script>
-    <script is:inline src="/assets/legacy/app.js"></script>
+    {!standalone && (
+      <>
+        <script is:inline set:html={`window.passedData=${serializedData};var passedData=window.passedData;`}></script>
+        <script is:inline src="/assets/legacy/jquery.min.js"></script>
+        <script is:inline src="/assets/legacy/polyfill_flexbox.js"></script>
+        <script is:inline>
+          if (window.innerWidth >= 700) {
+            Object.defineProperty(window, "useWebGlBackgroundsOnDesktop", {
+              configurable: true,
+              get: () => true,
+              set: () => {},
+            });
+          }
+        </script>
+        <script is:inline src="/assets/legacy/app.js"></script>
+      </>
+    )}
   </body>
 </html>

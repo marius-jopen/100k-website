@@ -26,11 +26,6 @@
     "is-project-entering",
     "is-project-switching",
     "is-project-switch-expanding",
-    "is-closing",
-    "is-preview-ready",
-    "is-project-leaving",
-    "is-collapsing",
-    "is-fading",
   ];
   const scrollKeys = new Set(["ArrowDown", "ArrowUp", "End", "Home", "PageDown", "PageUp", " "]);
 

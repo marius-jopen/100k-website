@@ -196,25 +196,22 @@
   /* ---------------------------------------------- the category preview */
 
   /*
-   * Hovering a category shows one of its projects in the spotlight, so the
-   * menu says what it holds rather than only naming it.
+   * Hovering a category shows its first project in the spotlight, so the menu
+   * says what it holds rather than only naming it.
    *
-   * The project is drawn once per page and kept: hovering the same category
-   * again brings back the one already on screen instead of streaming another
-   * video. Which one it is does not matter, only that it stops changing.
+   * The first one the list carries, not an arbitrary one: hovering a category
+   * always brings back the same project, on this visit and the next, so the
+   * menu reads as a fixed set of covers rather than a shuffle.
    */
   const previewByTag = new Map();
 
   const previewIndexFor = (tag) => {
     if (previewByTag.has(tag)) return previewByTag.get(tag);
 
-    const candidates = rows
+    const index = rows
       .filter((row) => !tag || row.dataset.tag === tag)
       .map((row) => Number(row.querySelector(".project-list-item")?.dataset.ix))
-      .filter((index) => Number.isInteger(index));
-    const index = candidates.length
-      ? candidates[Math.floor(Math.random() * candidates.length)]
-      : -1;
+      .find((candidate) => Number.isInteger(candidate)) ?? -1;
 
     previewByTag.set(tag, index);
     return index;

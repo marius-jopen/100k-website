@@ -1148,6 +1148,11 @@ footer .contact-us .legal-links a {
   }
 
   .project-spotlight-frame {
+    /* The frame is transparent until a clip has buffered, and the panel behind
+       it is white — so a screenshot full of white UI arrived on a white box
+       with nothing between them. This is what shows through the gap, and what
+       edges any media that does not cover the frame completely. */
+    background-color: #f0f0f0;
     border-radius: 0;
     box-shadow: 0 10px 21px rgba(0, 0, 0, 0.2);
     cursor: pointer;

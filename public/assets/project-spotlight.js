@@ -107,13 +107,35 @@
   // step of warning — not enough at speed.
   const framePrefetchRadius = 2;
   const frameMediaByIndex = new Map();
+  const videoPosterByIndex = new Map();
   let pendingFrameIndex = -1;
   let frameQualityTimer = 0;
 
   const isFrameMediaReady = (media) =>
     media instanceof HTMLVideoElement
       ? media.readyState >= 2 /* HAVE_CURRENT_DATA */
+        || media.dataset.spotlightPosterReady === "true"
       : media.complete && media.naturalWidth > 0;
+
+  const ensureVideoPoster = (index, priority = "low") => {
+    const cached = videoPosterByIndex.get(index);
+    if (cached) {
+      if (priority === "high") cached.fetchPriority = "high";
+      return cached;
+    }
+
+    const sourceVideo = slides[index]?.querySelector("[data-spotlight-video][data-poster]");
+    const source = sourceVideo?.dataset.poster;
+    if (!source) return null;
+
+    const poster = new Image();
+    poster.alt = "";
+    poster.decoding = "async";
+    poster.fetchPriority = priority;
+    poster.src = source;
+    videoPosterByIndex.set(index, poster);
+    return poster;
+  };
 
   /*
    * The frame is sized from whatever it is showing, so a portrait clip gets a
@@ -124,17 +146,21 @@
    * the rounding difference between two renditions of the same source.
    */
   const frameMediaRatio = (media) => {
-    const width = media instanceof HTMLVideoElement ? media.videoWidth : media.naturalWidth;
-    const height = media instanceof HTMLVideoElement ? media.videoHeight : media.naturalHeight;
+    const width = media instanceof HTMLVideoElement
+      ? media.videoWidth || Number(media.dataset.spotlightWidth)
+      : media.naturalWidth;
+    const height = media instanceof HTMLVideoElement
+      ? media.videoHeight || Number(media.dataset.spotlightHeight)
+      : media.naturalHeight;
 
     return width > 0 && height > 0 ? width / height : 0;
   };
 
   const createFrameMedia = (index) => {
-    const sourceMedia = slides[index]?.querySelector("img, video");
+    const sourceMedia = slides[index]?.querySelector("img, [data-spotlight-video]");
     if (!sourceMedia) return null;
 
-    if (sourceMedia instanceof HTMLVideoElement) {
+    if (sourceMedia.matches("[data-spotlight-video]")) {
       const video = document.createElement("video");
       video.muted = true;
       video.loop = true;
@@ -142,10 +168,24 @@
       video.preload = "auto";
       video.setAttribute("muted", "");
       video.setAttribute("playsinline", "");
-      // Take the Bunny sources, not the slide's resolved `src`. Deliberately no
+      if (sourceMedia.dataset.width) video.dataset.spotlightWidth = sourceMedia.dataset.width;
+      if (sourceMedia.dataset.height) video.dataset.spotlightHeight = sourceMedia.dataset.height;
+
+      const poster = ensureVideoPoster(index, "high");
+      if (poster) {
+        video.poster = poster.src;
+        const markPosterReady = () => {
+          video.dataset.spotlightPosterReady = "true";
+          video.dispatchEvent(new Event("spotlightposterload"));
+        };
+
+        if (poster.complete && poster.naturalWidth > 0) markPosterReady();
+        else poster.addEventListener("load", markPosterReady, { once: true });
+      }
+
+      // Take the Bunny sources from the metadata element. Deliberately no
       // `data-hls-manual` here: bunny-hls is a deferred module, so on first run
-      // it may not have defined `attachBunnyHlsTo` yet, and its own initial
-      // sweep needs to be allowed to pick these up.
+      // its own initial sweep may need to pick this real player up.
       if (sourceMedia.dataset.hls) video.dataset.hls = sourceMedia.dataset.hls;
       if (sourceMedia.dataset.mp4) video.dataset.mp4 = sourceMedia.dataset.mp4;
       return video;
@@ -346,11 +386,13 @@
     };
     const stopWaiting = () => {
       media.removeEventListener("loadeddata", reveal);
+      media.removeEventListener("spotlightposterload", reveal);
       media.removeEventListener("load", reveal);
       media.removeEventListener("error", abandon);
     };
 
     media.addEventListener("loadeddata", reveal);
+    media.addEventListener("spotlightposterload", reveal);
     media.addEventListener("load", reveal);
     media.addEventListener("error", abandon);
   };
@@ -480,6 +522,12 @@
   }, { passive: true });
   window.addEventListener("resize", refreshSpotlightLayout);
   window.addEventListener("load", refreshSpotlightLayout, { once: true });
+  // Posters are small stills, so warming all of them after the page load gives
+  // every video an instant scroll-state preview without opening dozens of HLS
+  // players. The clips themselves remain limited to the nearby media cache.
+  window.addEventListener("load", () => {
+    slides.forEach((_, index) => ensureVideoPoster(index));
+  }, { once: true });
   frame?.addEventListener("click", () => slides[currentFrameIndex]?.click());
   document.fonts?.ready.then(refreshSpotlightLayout);
 

@@ -215,15 +215,23 @@ const contactFields = [
             })();
           </script>
           <canvas id="canvas" class="balls"></canvas>
-          {/* The slides themselves are never visible on desktop — the spotlight
-              frame renders the media — so their videos carry `data-hls-manual`
-              and project-spotlight.js streams only the few it actually needs. */}
+          {/* The slides themselves are never visible on desktop — they only
+              carry URLs and dimensions. Videos therefore use a metadata span
+              instead of an idle player; project-spotlight.js creates actual
+              video elements only for the small nearby-media cache. */}
           <div class="background-images project-spotlight">
             {projects.map((project, index) => (
               <a href={`/${project.slug}/`} data-ix={index}>
                 <span class="project-spotlight-media">
                   {project.desktopBackground?.isVideo
-                    ? <video playsinline loop muted data-hls={project.desktopBackground.hls} data-mp4={project.desktopBackground.mp4} data-hls-defer="desktop" data-hls-manual></video>
+                    ? <span
+                        data-spotlight-video
+                        data-hls={project.desktopBackground.hls}
+                        data-mp4={project.desktopBackground.mp4}
+                        data-poster={project.desktopBackground.poster}
+                        data-width={project.desktopBackground.width}
+                        data-height={project.desktopBackground.height}
+                      ></span>
                     : project.desktopBackground && <img class={orientationClass(project.desktopBackground)} data-src={project.desktopBackground.src} data-sizes="900px" alt="" />}
                 </span>
               </a>

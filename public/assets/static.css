@@ -1654,7 +1654,6 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
    ============================================================ */
 @media (min-width: 701px) {
   .background-images.project-spotlight {
-    --project-spotlight-frame-gutter: 20px;
     --project-spotlight-frame-radius: 30px;
     /* Keep the preview visually separate from the project list. The former
        77vw band filled almost the whole viewport on large screens. */
@@ -1684,9 +1683,9 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     );
     --project-spotlight-frame-half-width: calc(var(--project-spotlight-frame-width) / 2);
     --project-spotlight-frame-half-height: calc(var(--project-spotlight-frame-height) / 2);
-    --project-spotlight-frame-center: calc(
-      100vw - var(--project-spotlight-frame-gutter) - var(--project-spotlight-frame-band) / 2
-    );
+    /* Centre the frame in the visual area beside the project list instead of
+       anchoring its whole band to the right edge. */
+    --project-spotlight-frame-center: 60vw;
     --project-spotlight-frame-left: calc(
       var(--project-spotlight-frame-center) - var(--project-spotlight-frame-half-width)
     );

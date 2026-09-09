@@ -1,5 +1,6 @@
 import { createReader } from "@keystatic/core/reader";
 import keystaticConfig from "../../keystatic.config";
+import bunnyVideoLibrary from "../../scripts/bunny-videos.json";
 import { hlsUrl, imageUrl, isVideoPath, mp4Url, posterUrl } from "./media";
 import type {
   Asset,
@@ -24,10 +25,17 @@ const reader = createReader(process.cwd(), keystaticConfig);
  * the id is pulled out of it.
  */
 const BUNNY_GUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+const bunnyVideoDimensions = new Map(
+  bunnyVideoLibrary.videos.map((video) => [
+    video.guid.toLowerCase(),
+    { height: video.height, width: video.width },
+  ]),
+);
 
 function videoAsset(value: string | null | undefined): Asset | null {
   const videoId = value?.match(BUNNY_GUID)?.[0];
   if (!videoId) return null;
+  const dimensions = bunnyVideoDimensions.get(videoId.toLowerCase());
 
   return {
     key: videoId,
@@ -35,8 +43,8 @@ function videoAsset(value: string | null | undefined): Asset | null {
     src: hlsUrl(videoId),
     filename: videoId,
     mimeType: "video/mp4",
-    width: null,
-    height: null,
+    width: dimensions?.width ?? null,
+    height: dimensions?.height ?? null,
     alt: "",
     legacyId: null,
     videoId,

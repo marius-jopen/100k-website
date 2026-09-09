@@ -32,11 +32,15 @@
         }
 
         const ratio = getMediaAspectRatio(media);
+        const attributeWidth = Number(media.getAttribute("width"));
+        const attributeHeight = Number(media.getAttribute("height"));
         const hasIntrinsicDimensions = media instanceof HTMLVideoElement
           ? media.videoWidth > 0 && media.videoHeight > 0
           : media.complete && media.naturalWidth > 0 && media.naturalHeight > 0;
+        const hasKnownDimensions = (attributeWidth > 0 && attributeHeight > 0)
+          || hasIntrinsicDimensions;
 
-        if (!hasIntrinsicDimensions && media.dataset.carouselRatioPending !== "true") {
+        if (!hasKnownDimensions && media.dataset.carouselRatioPending !== "true") {
           media.dataset.carouselRatioPending = "true";
           media.addEventListener(
             media instanceof HTMLVideoElement ? "loadedmetadata" : "load",

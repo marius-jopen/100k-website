@@ -363,7 +363,11 @@
     expandTransition.then(() => document.body.classList.add("is-project-toolbar-ready"));
 
     await Promise.all([expandTransition, projectTransition]);
-    await preparedPostMediaReady;
+
+    // The project DOM is already prepared behind the transition layer. Finish
+    // the UI handoff with the animation instead of keeping the temporary
+    // preview visible for up to two seconds while its first medium loads.
+    // Media readiness continues independently and must not block layout.
 
     showPreparedProject();
     await waitForNextPaint();

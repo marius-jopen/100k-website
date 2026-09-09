@@ -32,6 +32,7 @@
   let spotlightFrame = 0;
   let currentFrameIndex = -1;
   let hoveredProjectIndex = -1;
+  let pointerMovedSinceScroll = true;
 
   /*
    * A category filter hides rows without touching the slides — a slide is
@@ -317,15 +318,20 @@
     evictFrameMediaBeyondRadius(index, { keepVisible: true });
     framePrefetchIndices(index).forEach(ensureFrameMedia);
 
-    if (index === currentFrameIndex || index === pendingFrameIndex) return;
+    if (index === currentFrameIndex) return;
 
     const media = ensureFrameMedia(index);
     if (!media) return;
 
+    // Check readiness before the pending-index shortcut. A cached image can
+    // finish decoding between its load event and the next scroll frame; the
+    // old order kept returning early forever in that case.
     if (isFrameMediaReady(media)) {
       showFrameMedia(index);
       return;
     }
+
+    if (index === pendingFrameIndex) return;
 
     // Still buffering. Never paint an empty box: keep whatever is already on
     // screen, and if nothing is, borrow the closest clip that has buffered.
@@ -359,13 +365,10 @@
   };
 
   const updateProjectButtonOpacities = (scrollPosition) => {
+    if (!projectSpotlightOptions.fadeProjectButtons) return;
+
     projectButtons.forEach((button, index) => {
       if (!button) return;
-
-      if (!projectSpotlightOptions.fadeProjectButtons) {
-        button.style.setProperty("--project-list-opacity", "1");
-        return;
-      }
 
       const rank = activeRankByIndex.get(index);
       if (rank === undefined) return;
@@ -378,6 +381,19 @@
 
       button.style.setProperty("--project-list-opacity", opacity.toFixed(3));
     });
+  };
+
+  const syncProjectButtonHighlight = (index) => {
+    const nextButton = projectButtons[index];
+    if (!nextButton) return;
+
+    const highlightedButton = document.querySelector(
+      ".projects-list .project-list-item.hover",
+    );
+    if (highlightedButton === nextButton) return;
+
+    highlightedButton?.classList.remove("hover");
+    nextButton.classList.add("hover");
   };
 
   const updateSpotlightSlideScales = () => {
@@ -393,6 +409,19 @@
       // takes over, so shut the desktop players down rather than leave them
       // streaming behind a `display: none`.
       releaseAllFrameMedia();
+      return;
+    }
+
+    const activeProjectIndex = hoveredProjectIndex >= 0
+      ? hoveredProjectIndex
+      : activeIndices[Math.floor(scrollPosition + 0.0001)];
+    syncProjectButtonHighlight(activeProjectIndex);
+
+    // Ghost cards are disabled in this design. Avoid measuring and writing
+    // transforms for every invisible project on every scroll frame; only the
+    // single visible preview needs to be synchronized.
+    if (!projectSpotlightOptions.showGhostImages) {
+      syncSpotlightFrame(activeProjectIndex);
       return;
     }
 
@@ -459,11 +488,7 @@
 
     // Hovering a project in the list takes precedence over the scroll position,
     // so an incoming scroll frame does not yank the preview back.
-    syncSpotlightFrame(
-      hoveredProjectIndex >= 0
-        ? hoveredProjectIndex
-        : activeIndices[Math.floor(scrollPosition + 0.0001)],
-    );
+    syncSpotlightFrame(activeProjectIndex);
   };
 
   const scheduleSpotlightUpdate = () => {
@@ -538,7 +563,12 @@
 
     button.addEventListener("mouseenter", () => {
       if (window.innerWidth <= 700) return;
+      // Scrolling can move a new pill underneath a stationary pointer without
+      // producing a reliable mouseleave. Only a real pointer move may take
+      // control away from the scroll position again.
+      if (!pointerMovedSinceScroll) return;
       hoveredProjectIndex = index;
+      syncProjectButtonHighlight(index);
       syncSpotlightFrame(index);
     });
 
@@ -549,7 +579,14 @@
     });
   });
 
-  window.addEventListener("scroll", scheduleSpotlightUpdate, { passive: true });
+  window.addEventListener("pointermove", () => {
+    pointerMovedSinceScroll = true;
+  }, { passive: true });
+  window.addEventListener("scroll", () => {
+    pointerMovedSinceScroll = false;
+    hoveredProjectIndex = -1;
+    scheduleSpotlightUpdate();
+  }, { passive: true });
   window.addEventListener("resize", refreshSpotlightLayout);
   window.addEventListener("load", refreshSpotlightLayout, { once: true });
   frame?.addEventListener("click", () => slides[currentFrameIndex]?.click());

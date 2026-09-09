@@ -1075,11 +1075,9 @@ footer .contact-us .legal-links a {
     display: block;
   }
 
-  /* The ghost stack keeps the fixed 16:9 box the frame used to have. It is
-     never painted — `showGhostImages: false` forces every slide to
-     `opacity: 0` — and exists only to feed the stacking math in
-     project-spotlight.js, which measures one slide and assumes the rest match.
-     The frame below sizes itself per project, so it can no longer share these. */
+  /* The ghost stack keeps the old fixed 16:9 geometry available if it is ever
+     enabled again. It is not painted or measured in the current single-frame
+     design. */
   .background-images.project-spotlight {
     --project-spotlight-slide-ratio: 2560 / 1446;
     --project-spotlight-slide-width: 77vw;
@@ -1652,34 +1650,33 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
 }
 
 /* ============================================================
-   Project spotlight frame: rounded, centred in a 77vw band at the right
+   Project spotlight frame: rounded, contained in the right side of the stage
    ============================================================ */
 @media (min-width: 701px) {
   .background-images.project-spotlight {
     --project-spotlight-frame-gutter: 20px;
     --project-spotlight-frame-radius: 30px;
-    /* The column the frame lives in — what the box itself used to span back
-       when width led. A 16:9 project still fills it edge to edge; anything
-       taller is centred inside it rather than pinned to the right gutter,
-       which had left the band lopsided with all the slack on one side. */
-    --project-spotlight-frame-band: 77vw;
+    /* Keep the preview visually separate from the project list. The former
+       77vw band filled almost the whole viewport on large screens. */
+    --project-spotlight-frame-band: min(68vw, 1120px);
     /* Replaced per project by project-spotlight.js, which reads the media's
        own `videoWidth`/`naturalWidth` at the moment it swaps it in. This 16:9
        is what the frame falls back to until the first clip has painted. */
     --project-spotlight-media-ratio: 1.7704;
     /* Height leads and width follows the media, so a portrait clip gets a
-       portrait box instead of being cropped into a landscape one. Three
+       portrait box instead of being cropped into a landscape one. Four
        ceilings, whichever binds first:
          - the band at 16:9, i.e. exactly the height the box had when width
-           led. Deliberately no `vh` term in this chain — resizing the window
-           vertically must never resize the video.
-         - 900px, so it stops growing on a large display.
+           led.
+         - 68vh, so the media never dominates a short browser window.
+         - 640px, so it stops growing on a large display.
          - the band divided by the media's own ratio, which only bites for
            something wider than 16:9. Without it such a project would compute
            a width past the band and hang over the gutter. */
     --project-spotlight-frame-height: min(
       calc(var(--project-spotlight-frame-band) * 1446 / 2560),
-      900px,
+      68vh,
+      640px,
       calc(var(--project-spotlight-frame-band) / var(--project-spotlight-media-ratio))
     );
     --project-spotlight-frame-width: calc(

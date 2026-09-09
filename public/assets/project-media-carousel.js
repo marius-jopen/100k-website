@@ -183,19 +183,42 @@
     ) return;
 
     const stickyRect = stickyStage.getBoundingClientRect();
-    const mediaRect = activeFigure.getBoundingClientRect();
+    const figureRect = activeFigure.getBoundingClientRect();
+    const caption = activeFigure.querySelector("figcaption");
+    const captionRect = caption?.getBoundingClientRect();
     const indicatorHeight = indicatorList.offsetHeight;
-    const freeAreaTop = Math.min(
-      Math.max(mediaRect.bottom, stickyRect.top),
+    const previousOffset = Number.parseFloat(
+      carousel.style.getPropertyValue("--project-media-caption-offset"),
+    ) || 0;
+    const hasCaption = Boolean(captionRect && caption?.textContent?.trim());
+    const unshiftedContentBottom = (hasCaption ? captionRect.bottom : figureRect.bottom)
+      + previousOffset;
+    const minimumCaptionGap = hasCaption ? 20 : 0;
+    const maximumIndicatorTop = stickyRect.bottom - indicatorHeight - 8;
+    const captionOffset = hasCaption
+      ? Math.max(unshiftedContentBottom + minimumCaptionGap - maximumIndicatorTop, 0)
+      : 0;
+
+    if (captionOffset > 0) {
+      carousel.style.setProperty("--project-media-caption-offset", `${captionOffset}px`);
+    } else {
+      carousel.style.removeProperty("--project-media-caption-offset");
+    }
+
+    const contentBottom = Math.min(
+      Math.max(unshiftedContentBottom - captionOffset, stickyRect.top),
       stickyRect.bottom,
     );
-    const freeAreaCenter = freeAreaTop + ((stickyRect.bottom - freeAreaTop) / 2);
-    const minTop = (indicatorHeight / 2) + 8;
-    const maxTop = stickyRect.height - (indicatorHeight / 2) - 8;
-    const relativeTop = Math.min(
-      Math.max(freeAreaCenter - stickyRect.top, minTop),
-      maxTop,
+    const centeredIndicatorTop = contentBottom
+      + ((stickyRect.bottom - contentBottom - indicatorHeight) / 2);
+    const requestedIndicatorTop = hasCaption
+      ? Math.max(centeredIndicatorTop, contentBottom + minimumCaptionGap)
+      : centeredIndicatorTop;
+    const indicatorTop = Math.min(
+      Math.max(requestedIndicatorTop, stickyRect.top + 8),
+      maximumIndicatorTop,
     );
+    const relativeTop = indicatorTop - stickyRect.top + (indicatorHeight / 2);
 
     indicatorList.style.top = `${relativeTop}px`;
   };

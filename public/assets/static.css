@@ -1450,6 +1450,7 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     opacity: 0;
     pointer-events: none;
     position: absolute;
+    top: calc(50% - var(--project-media-caption-offset, 0px));
     transform: translate3d(-50%, -50%, 0) !important;
     width: max-content;
   }

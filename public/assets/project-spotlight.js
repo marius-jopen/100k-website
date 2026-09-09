@@ -103,9 +103,11 @@
   // step of warning — not enough at speed.
   const framePrefetchRadius = 2;
   const frameMediaByIndex = new Map();
+  const imagePreloadsByIndex = new Map();
   const videoPosterByIndex = new Map();
   let pendingFrameIndex = -1;
   let frameQualityTimer = 0;
+  let remainingMediaWarmupStarted = false;
 
   const isFrameMediaReady = (media) =>
     media instanceof HTMLVideoElement
@@ -131,6 +133,78 @@
     poster.src = source;
     videoPosterByIndex.set(index, poster);
     return poster;
+  };
+
+  const ensureProjectImage = (index, priority = "low") => {
+    const cached = imagePreloadsByIndex.get(index);
+    if (cached) {
+      if (priority === "high") cached.fetchPriority = "high";
+      return cached;
+    }
+
+    const sourceImage = slides[index]?.querySelector("img");
+    if (!sourceImage) return null;
+
+    const image = new Image();
+    image.alt = "";
+    image.decoding = "async";
+    image.fetchPriority = priority;
+    image.sizes = sourceImage.dataset.sizes || "900px";
+
+    const sourceSet = sourceImage.getAttribute("srcset") || sourceImage.dataset.srcset;
+    if (sourceSet) image.srcset = sourceSet;
+
+    const source =
+      sourceImage.currentSrc || sourceImage.dataset.src || sourceImage.getAttribute("src");
+    if (!source) return null;
+
+    image.src = source;
+    imagePreloadsByIndex.set(index, image);
+    return image;
+  };
+
+  /*
+   * Once the first project is visible, quietly warm every remaining still and
+   * video poster. Two entries per idle callback keep the initial render and
+   * active HLS player in front of the background work. Full videos deliberately
+   * stay out of this queue; the nearby-player cache below remains their only
+   * preload path.
+   */
+  const warmRemainingMedia = (firstVisibleIndex) => {
+    if (remainingMediaWarmupStarted) return;
+    remainingMediaWarmupStarted = true;
+
+    const queue = slides
+      .map((_slide, index) => index)
+      .filter((index) => index !== firstVisibleIndex);
+
+    const scheduleBatch = () => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(runBatch, { timeout: 1000 });
+      } else {
+        window.setTimeout(() => runBatch(null), 50);
+      }
+    };
+
+    const runBatch = (deadline) => {
+      let processed = 0;
+
+      while (
+        queue.length
+        && processed < 2
+        && (!deadline || deadline.didTimeout || deadline.timeRemaining() > 4)
+      ) {
+        const index = queue.shift();
+        ensureProjectImage(index);
+        ensureVideoPoster(index);
+        processed += 1;
+      }
+
+      if (!queue.length) return;
+      scheduleBatch();
+    };
+
+    scheduleBatch();
   };
 
   /*
@@ -187,16 +261,7 @@
       return video;
     }
 
-    const image = document.createElement("img");
-    image.alt = "";
-    image.decoding = "async";
-    image.sizes = `${Math.ceil(frame.getBoundingClientRect().width)}px`;
-    const sourceSet = sourceMedia.getAttribute("srcset") || sourceMedia.dataset.srcset;
-    if (sourceSet) image.srcset = sourceSet;
-    const source =
-      sourceMedia.currentSrc || sourceMedia.dataset.src || sourceMedia.getAttribute("src");
-    if (source) image.src = source;
-    return image;
+    return ensureProjectImage(index, "high");
   };
 
   const ensureFrameMedia = (index) => {
@@ -225,6 +290,7 @@
       media.pause();
       window.detachBunnyHls?.(media);
     }
+    media.classList.remove("is-spotlight-visible");
     media.remove();
   };
 
@@ -322,6 +388,7 @@
     frame.dataset.spotlightIndex = String(index);
     currentFrameIndex = index;
     pendingFrameIndex = -1;
+    warmRemainingMedia(index);
 
     // The outgoing project was held back from eviction while it was the only
     // thing on screen; now that something else is painted it can go.
@@ -517,12 +584,6 @@
   }, { passive: true });
   window.addEventListener("resize", refreshSpotlightLayout);
   window.addEventListener("load", refreshSpotlightLayout, { once: true });
-  // Posters are small stills, so warming all of them after the page load gives
-  // every video an instant scroll-state preview without opening dozens of HLS
-  // players. The clips themselves remain limited to the nearby media cache.
-  window.addEventListener("load", () => {
-    slides.forEach((_, index) => ensureVideoPoster(index));
-  }, { once: true });
   frame?.addEventListener("click", () => slides[currentFrameIndex]?.click());
   document.fonts?.ready.then(refreshSpotlightLayout);
 

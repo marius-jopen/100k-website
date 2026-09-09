@@ -10,6 +10,7 @@ import {
   projectTagUrl,
 } from "../lib/tags";
 import ArrowRight from "./ArrowRight.astro";
+import StoryMedia from "./StoryMedia.astro";
 import FilterLines from "./FilterLines.astro";
 import XMark from "./XMark.astro";
 
@@ -128,6 +129,12 @@ const serviceWebglTimings = [
   { autoplayDelay: 500, autoplaySpeed: 1800 },
   { autoplayDelay: 2600, autoplaySpeed: 2700 },
 ];
+// The two service cards — morph plus the pill list over it — are parked. The
+// morph itself lives on in the story blocks below, so this is off rather than
+// hidden in CSS: `service-webgl-slideshow.js` loads a slideshow's frames the
+// moment the markup is there, `display: none` and all, and that is thirty-odd
+// screenshots nobody would see. Flip it back to `true` to have them again.
+const SHOW_SERVICE_CARDS = false;
 
 /* The field definitions keep the form markup and its submitted names together. */
 // Baked into the page at build time; see `.env.example`.
@@ -178,8 +185,8 @@ const contactFields = [
         than competing with it. `._bigtext` fixes size, weight and margin, so
         the element it renders as makes no visual difference. */}
     {project
-      ? <div class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Development</div>
-      : <h1 class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Development</h1>}
+      ? <div class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Design &amp; Development</div>
+      : <h1 class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Design &amp; Development</h1>}
     {siteContent.mobileLogo && <img class="mobile-logo" src={siteContent.mobileLogo.src} sizes="80px" alt={siteContent.mobileLogo.alt} />}
     <canvas id="canvas3" class="logo" style="z-index:5;"></canvas>
 
@@ -359,6 +366,7 @@ const contactFields = [
       <div class="_bigtext2 our-services">
         <h2 class="_bigtext2 left-padding">Our Services</h2>
         <div class="our-services-region"><div><div class="left-padding _bigtext4 our-services-text">{siteContent.servicesIntro}</div></div></div>
+        {SHOW_SERVICE_CARDS && (
         <div class="our-services-gallery-region">
           <div class="gallery-view left-padding">
             {siteContent.services.map((service, serviceIndex) => (
@@ -409,7 +417,73 @@ const contactFields = [
             ))}
           </div>
         </div>
+        )}
       </div>
+
+      {/* Storytelling under the service pills, where the page used to run
+          straight from the last card into the footer. The whole stretch is one
+          hairline grid: a rule across the top of every block and a vertical
+          rule at the column split, both running the full width of the window —
+          which is why the gutter sits on the columns here rather than on the
+          section. Copy is written into the template rather than coming through
+          Keystatic — the fields can follow once the wording has settled. */}
+      <section class="story">
+        <div class="story-split story-specialisms">
+          <div class="story-split__label">
+            <h2 class="_bigtext2 story-split__heading">We specialize in<br />three things</h2>
+            <StoryMedia
+              slides={serviceWebglScreenshots[0] || []}
+              autoplayDelay={serviceWebglTimings[0].autoplayDelay}
+              autoplaySpeed={serviceWebglTimings[0].autoplaySpeed}
+            />
+          </div>
+          <div class="story-split__body">
+            <ul class="story-items">
+              <li>
+                <h3 class="_bigtext2 story-items__title">Design-Led Websites</h3>
+                <p class="_bigtext story-items__sub">Art Direction, Interaction Design, Scrollytelling</p>
+              </li>
+              <li>
+                <h3 class="_bigtext2 story-items__title">Custom Platforms</h3>
+                <p class="_bigtext story-items__sub">Headless CMS, Web Apps, Integrations</p>
+              </li>
+              <li>
+                <h3 class="_bigtext2 story-items__title">Commerce</h3>
+                <p class="_bigtext story-items__sub">Shopify, Custom Checkouts, Subscriptions</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="story-statement">
+          <p class="_bigtext4 story-statement__text">We work with cultural institutions, independent brands, and product teams inside larger organisations, shaping design and engineering into websites that still hold up years after launch.</p>
+        </div>
+
+        <div class="story-split story-capabilities">
+          <div class="story-split__label">
+            <h2 class="_bigtext2 story-split__heading">We deliver so<br />much more</h2>
+            <StoryMedia
+              slides={serviceWebglScreenshots[1] || []}
+              autoplayDelay={serviceWebglTimings[1].autoplayDelay}
+              autoplaySpeed={serviceWebglTimings[1].autoplaySpeed}
+            />
+          </div>
+          <div class="story-split__body">
+            <ul class="story-capabilities__list">
+              <li class="_bigtext2">Art Direction</li>
+              <li class="_bigtext2">Design Systems</li>
+              <li class="_bigtext2">Prototyping</li>
+              <li class="_bigtext2">Accessibility</li>
+              <li class="_bigtext2">Performance</li>
+              <li class="_bigtext2">Content Migration</li>
+              <li class="_bigtext2">Analytics &amp; Tracking</li>
+              <li class="_bigtext2">Hosting &amp; Maintenance</li>
+              <li class="_bigtext2">Technical Consulting</li>
+              <li class="_bigtext2">Workshops</li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </div>
 
     <footer class="left-padding padding-right">

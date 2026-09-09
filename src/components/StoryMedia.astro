@@ -1,0 +1,33 @@
+---
+import type { Asset } from "../lib/schema";
+
+interface Props {
+  /** Frames the morph cycles through. Fewer than two and it never animates. */
+  slides: Asset[];
+  autoplayDelay: number;
+  autoplaySpeed: number;
+}
+
+const { slides, autoplayDelay, autoplaySpeed } = Astro.props;
+---
+
+{/* The same morph the parked service cards used — `service-webgl-slideshow.js`
+    picks these up by class at load, so the markup is all this needs. No pills
+    over it here, which is why it also does without their darkening filter. */}
+{slides.length > 0 && (
+  <div
+    class="story-media lay-webgl-slideshow service-webgl-slideshow"
+    data-transition="ColourDistance"
+    data-autoplaydelay={autoplayDelay}
+    data-autoplayspeed={autoplaySpeed}
+    data-transitionspeed="3000"
+    aria-hidden="true"
+  >
+    <canvas class="service-webgl-canvas"></canvas>
+    <div class="lay-webgl-slides service-webgl-slides">
+      {slides.map((asset) => (
+        <div class="lay-webgl-slide"><img src={asset.src} alt="" /></div>
+      ))}
+    </div>
+  </div>
+)}

@@ -784,6 +784,15 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
   position: fixed;
 }
 
+/* The fixed header action must stay solid over every background. The legacy
+   style used translucent black plus backdrop blur, which made its appearance
+   depend on whatever happened to scroll underneath it. */
+body > .become-a-client {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background-color: #000;
+}
+
 :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__content--text-slide {
   position: static;
 }

@@ -1075,61 +1075,18 @@ footer .contact-us .legal-links a {
     display: block;
   }
 
-  /* The ghost stack keeps the old fixed 16:9 geometry available if it is ever
-     enabled again. It is not painted or measured in the current single-frame
-     design. */
-  .background-images.project-spotlight {
-    --project-spotlight-slide-ratio: 2560 / 1446;
-    --project-spotlight-slide-width: 77vw;
-  }
-
   .projects-list .short-description {
     display: none !important;
   }
 
+  /* Source links only carry each project's URL and media metadata. The visible
+     frame below owns rendering; keeping dozens of invisible transformed layers
+     here consumed GPU memory and compositing work for no visual result. */
   .background-images.project-spotlight > a,
   .background-images.project-spotlight > a.active {
-    aspect-ratio: var(--project-spotlight-slide-ratio);
-    border-radius: 0;
-    display: block;
-    height: auto;
-    left: 50%;
-    opacity: var(--project-spotlight-opacity, 0) !important;
-    overflow: visible;
-    pointer-events: none;
-    position: absolute;
-    top: 50%;
-    transform: translate3d(calc(-50% + var(--project-spotlight-translate-x, 0px)), -50%, 0) scale(var(--project-spotlight-scale, 1));
-    transform-origin: center center;
-    width: var(--project-spotlight-slide-width);
-    will-change: transform, opacity, filter;
+    display: none;
   }
 
-  .background-images.project-spotlight > a.has-spotlight-shadow {
-    filter: drop-shadow(0 10px 21px rgba(0, 0, 0, 0.2));
-  }
-
-  .background-images.project-spotlight > a.active {
-    pointer-events: auto;
-  }
-
-  .background-images.project-spotlight > a.is-spotlight-frame-source,
-  .background-images.project-spotlight > a.is-spotlight-frame-source.active {
-    opacity: 0 !important;
-    pointer-events: none;
-  }
-
-  .background-images.project-spotlight > a > .project-spotlight-media {
-    clip-path: var(--project-spotlight-clip, inset(0));
-    display: block;
-    height: 100%;
-    overflow: hidden;
-    width: 100%;
-    will-change: clip-path;
-  }
-
-  .background-images.project-spotlight > a > .project-spotlight-media > img,
-  .background-images.project-spotlight > a > .project-spotlight-media > video,
   .background-images.project-spotlight > .project-spotlight-frame > img,
   .background-images.project-spotlight > .project-spotlight-frame > video {
     border-radius: inherit;

@@ -1,12 +1,5 @@
-/*
- * Spotlight Scroll calculations adapted from the existing Lay Theme Carousel
- * preset in /Users/arminunruh/Documents/git/lay-react.
- */
+/* Keeps the project list, its highlighted pill and the cached media preview in sync. */
 (function () {
-  const projectSpotlightOptions = {
-    fadeProjectButtons: false,
-    showGhostImages: false,
-  };
   const spotlight = document.querySelector(".background-images.project-spotlight");
   const projectRows = Array.from(document.querySelectorAll(".projects-list > div"));
 
@@ -22,12 +15,6 @@
   const projectListSection = spotlight.closest(".plist-wrap")?.querySelector(".plist-wrap-2");
   const stickyStage = spotlight.closest(".sticky");
   const projectActivationOffset = 350;
-  const spotlightStepDecay = 0.82;
-  const spotlightOpacityStep = 0.5;
-  const spotlightStep = 50;
-  const spotlightScale = 0.82;
-  const projectButtonOpacityStep = 0.18;
-  const projectButtonMinimumOpacity = 0.12;
   let projectRowTops = [];
   let spotlightFrame = 0;
   let currentFrameIndex = -1;
@@ -39,7 +26,7 @@
    * addressed by its position in the full project list everywhere else on the
    * page — so the two are kept apart here: `activeIndices` is the rows still on
    * screen, in order, and everything that reads as a position in the list
-   * (`getScrollPosition`, the stack, the row measurements) works in that space
+   * (the active row, prefetching and row measurements) works in that space
    * and is translated back through it before touching a slide.
    */
   let activeIndices = [];
@@ -53,11 +40,6 @@
   };
 
   refreshActiveProjects();
-
-  const getSpotlightStackOffset = (distance, step) => {
-    if (distance <= 0) return 0;
-    return step * (1 - Math.pow(spotlightStepDecay, distance)) / (1 - spotlightStepDecay);
-  };
 
   const measureProjectRows = () => {
     projectRowTops = activeIndices.map(
@@ -82,7 +64,11 @@
     projectListSection.style.setProperty("padding-bottom", `${releasePadding}px`, "important");
   };
 
-  const getScrollPosition = () => {
+  // Find the last project that crossed the activation line. The old carousel
+  // needed a fractional position for scaling dozens of ghost cards; the
+  // single-frame design only needs one discrete row, so a binary search avoids
+  // walking the whole list on every scroll frame.
+  const getActiveRank = () => {
     if (!projectRowTops.length) return 0;
 
     const activationLine = window.scrollY + projectActivationOffset;
@@ -90,16 +76,16 @@
     if (activationLine <= projectRowTops[0]) return 0;
     if (activationLine >= projectRowTops[projectRowTops.length - 1]) return projectRowTops.length - 1;
 
-    for (let index = 1; index < projectRowTops.length; index += 1) {
-      if (activationLine <= projectRowTops[index]) {
-        const previousTop = projectRowTops[index - 1];
-        const distance = projectRowTops[index] - previousTop;
-        const progress = distance > 0 ? (activationLine - previousTop) / distance : 0;
-        return index - 1 + Math.min(Math.max(progress, 0), 1);
-      }
+    let low = 0;
+    let high = projectRowTops.length - 1;
+
+    while (low < high) {
+      const middle = Math.ceil((low + high) / 2);
+      if (projectRowTops[middle] <= activationLine) low = middle;
+      else high = middle - 1;
     }
 
-    return projectRowTops.length - 1;
+    return low;
   };
 
   /*
@@ -234,16 +220,18 @@
     return true;
   };
 
-  // The two steps either side, counted along the list as it stands — with a
-  // category filter on, the project that follows is rarely the next slide.
+  // Target first, then the two steps either side along the visible list. This
+  // lets the requested clip claim the network before its warm neighbours.
   const framePrefetchIndices = (index) => {
     const rank = activeRankByIndex.get(index);
     if (rank === undefined) return [index];
 
-    const indices = [];
-    for (let offset = -framePrefetchRadius; offset <= framePrefetchRadius; offset += 1) {
-      const neighbour = activeIndices[rank + offset];
-      if (neighbour !== undefined) indices.push(neighbour);
+    const indices = [index];
+    for (let distance = 1; distance <= framePrefetchRadius; distance += 1) {
+      const next = activeIndices[rank + distance];
+      const previous = activeIndices[rank - distance];
+      if (next !== undefined) indices.push(next);
+      if (previous !== undefined) indices.push(previous);
     }
 
     return indices;
@@ -295,10 +283,6 @@
       }, 2000);
     }
 
-    slides.forEach((slide, slideIndex) => {
-      slide.classList.toggle("is-spotlight-frame-source", slideIndex === index);
-    });
-
     frame.dataset.spotlightIndex = String(index);
     if (caption) caption.textContent = projectDescriptions[index] || "";
     currentFrameIndex = index;
@@ -311,14 +295,23 @@
 
   const syncSpotlightFrame = (index) => {
     if (!frame || index < 0 || index >= slides.length) return;
+    // Most scroll frames remain within the same project row. Do no cache,
+    // media or DOM work until the discrete project selection actually changes.
+    if (index === currentFrameIndex) return;
+
+    const cachedMedia = frameMediaByIndex.get(index);
+    if (index === pendingFrameIndex && cachedMedia) {
+      // Keep the missed-load-event safeguard without reprising the full cache
+      // sweep on every scroll frame while this target is buffering.
+      if (isFrameMediaReady(cachedMedia)) showFrameMedia(index);
+      return;
+    }
 
     // Drop players that scrolled out of reach before opening new ones, so at
     // most a handful of clips ever compete for bandwidth. The visible one is
     // spared even on a long jump — it is the fallback that keeps the box full.
     evictFrameMediaBeyondRadius(index, { keepVisible: true });
     framePrefetchIndices(index).forEach(ensureFrameMedia);
-
-    if (index === currentFrameIndex) return;
 
     const media = ensureFrameMedia(index);
     if (!media) return;
@@ -330,8 +323,6 @@
       showFrameMedia(index);
       return;
     }
-
-    if (index === pendingFrameIndex) return;
 
     // Still buffering. Never paint an empty box: keep whatever is already on
     // screen, and if nothing is, borrow the closest clip that has buffered.
@@ -364,25 +355,6 @@
     media.addEventListener("error", abandon);
   };
 
-  const updateProjectButtonOpacities = (scrollPosition) => {
-    if (!projectSpotlightOptions.fadeProjectButtons) return;
-
-    projectButtons.forEach((button, index) => {
-      if (!button) return;
-
-      const rank = activeRankByIndex.get(index);
-      if (rank === undefined) return;
-
-      const distance = Math.abs(rank - scrollPosition);
-      const opacity = Math.max(
-        projectButtonMinimumOpacity,
-        1 - distance * projectButtonOpacityStep,
-      );
-
-      button.style.setProperty("--project-list-opacity", opacity.toFixed(3));
-    });
-  };
-
   const syncProjectButtonHighlight = (index) => {
     const nextButton = projectButtons[index];
     if (!nextButton) return;
@@ -396,15 +368,10 @@
     nextButton.classList.add("hover");
   };
 
-  const updateSpotlightSlideScales = () => {
+  const updateSpotlight = () => {
     spotlightFrame = 0;
-    const scrollPosition = getScrollPosition();
-    updateProjectButtonOpacities(scrollPosition);
 
     if (window.innerWidth <= 700 || !activeIndices.length) {
-      slides.forEach((slide) => {
-        slide.classList.remove("is-spotlight-frame-source", "has-spotlight-shadow");
-      });
       // The frame is hidden below the breakpoint and `.background-images-phone`
       // takes over, so shut the desktop players down rather than leave them
       // streaming behind a `display: none`.
@@ -414,86 +381,14 @@
 
     const activeProjectIndex = hoveredProjectIndex >= 0
       ? hoveredProjectIndex
-      : activeIndices[Math.floor(scrollPosition + 0.0001)];
+      : activeIndices[getActiveRank()];
     syncProjectButtonHighlight(activeProjectIndex);
-
-    // Ghost cards are disabled in this design. Avoid measuring and writing
-    // transforms for every invisible project on every scroll frame; only the
-    // single visible preview needs to be synchronized.
-    if (!projectSpotlightOptions.showGhostImages) {
-      syncSpotlightFrame(activeProjectIndex);
-      return;
-    }
-
-    const spotlightWidth = slides[activeIndices[0]].offsetWidth;
-    const spotlightHalfWidth = spotlightWidth / 2;
-    const spotlightCenter = spotlight.clientWidth / 2;
-
-    slides.forEach((slide, index) => {
-      const rank = activeRankByIndex.get(index);
-
-      // Filtered out of the list, so it has no place in the stack.
-      if (rank === undefined) {
-        slide.style.setProperty("--project-spotlight-scale", 0);
-        slide.style.setProperty("--project-spotlight-opacity", 0);
-        slide.style.pointerEvents = "none";
-        slide.classList.remove("has-spotlight-shadow");
-        return;
-      }
-
-      const distance = rank - scrollPosition;
-      const absoluteDistance = Math.abs(distance);
-      const scale = Math.pow(spotlightScale, absoluteDistance);
-      const opacity = Math.pow(spotlightOpacityStep, absoluteDistance);
-      const visualWidth = slide.offsetWidth * scale;
-      const stackOffset = getSpotlightStackOffset(absoluteDistance, spotlightStep);
-      let desiredCenter = spotlightCenter;
-
-      if (distance > 0) {
-        desiredCenter += spotlightHalfWidth + stackOffset - visualWidth / 2;
-      } else if (distance < 0) {
-        desiredCenter -= spotlightHalfWidth + stackOffset - visualWidth / 2;
-      }
-
-      const visualLeft = desiredCenter - visualWidth / 2;
-      const visualRight = desiredCenter + visualWidth / 2;
-      let clipInset = "inset(0)";
-
-      if (scale > 0 && distance > 0 && visualLeft < spotlightCenter - spotlightHalfWidth) {
-        clipInset = `inset(0 0 0 ${(spotlightCenter - spotlightHalfWidth - visualLeft) / scale}px)`;
-      } else if (scale > 0 && distance < 0 && visualRight > spotlightCenter + spotlightHalfWidth) {
-        clipInset = `inset(0 ${(visualRight - spotlightCenter - spotlightHalfWidth) / scale}px 0 0)`;
-      }
-
-      slide.style.setProperty("--project-spotlight-scale", scale);
-      slide.style.setProperty(
-        "--project-spotlight-opacity",
-        projectSpotlightOptions.showGhostImages ? opacity : 0,
-      );
-      slide.style.setProperty("--project-spotlight-translate-x", `${desiredCenter - spotlightCenter}px`);
-      slide.style.setProperty("--project-spotlight-clip", clipInset);
-      slide.style.pointerEvents = projectSpotlightOptions.showGhostImages ? "" : "none";
-      slide.classList.toggle(
-        "has-spotlight-shadow",
-        projectSpotlightOptions.showGhostImages && absoluteDistance <= 3,
-      );
-    });
-
-    activeIndices
-      .map((index, rank) => ({ index, distance: Math.abs(rank - scrollPosition) }))
-      .sort((a, b) => b.distance - a.distance)
-      .forEach((item, stackIndex) => {
-        slides[item.index].style.zIndex = String(stackIndex + 1);
-      });
-
-    // Hovering a project in the list takes precedence over the scroll position,
-    // so an incoming scroll frame does not yank the preview back.
     syncSpotlightFrame(activeProjectIndex);
   };
 
   const scheduleSpotlightUpdate = () => {
     if (spotlightFrame) return;
-    spotlightFrame = window.requestAnimationFrame(updateSpotlightSlideScales);
+    spotlightFrame = window.requestAnimationFrame(updateSpotlight);
   };
 
   const refreshSpotlightLayout = () => {
@@ -515,7 +410,7 @@
 
     const projectIndex = Math.min(rank, projectRowTops.length - 1);
     window.scrollTo(0, Math.max(0, projectRowTops[projectIndex] - projectActivationOffset));
-    updateSpotlightSlideScales();
+    updateSpotlight();
   };
 
   /*
@@ -593,5 +488,5 @@
   document.fonts?.ready.then(refreshSpotlightLayout);
 
   measureProjectRows();
-  updateSpotlightSlideScales();
+  updateSpotlight();
 })();

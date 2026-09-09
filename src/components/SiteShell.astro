@@ -1226,9 +1226,12 @@ const contactFields = [
     window.addEventListener("resize", () => placeVisitWebsiteButton());
   }
 
-  // Background videos carry data-hls instead of data-src and are attached by
-  // bunny-hls.js, which does its own breakpoint check.
-  const responsiveBackgroundSelector = window.innerWidth > 700 ? ".background-images" : ".background-images-phone";
+  // The desktop spotlight owns its small media cache and loads only the current
+  // project plus nearby entries. Phone backgrounds still use the legacy source
+  // elements directly, so their images are initialized here as before.
+  const responsiveBackgroundSelector = window.innerWidth > 700
+    ? ".background-images:not(.project-spotlight)"
+    : ".background-images-phone";
   document.querySelectorAll(`${responsiveBackgroundSelector} img[data-src]`).forEach((image) => {
     image.setAttribute("src", image.dataset.src);
     if (image.dataset.sizes) image.setAttribute("sizes", image.dataset.sizes);

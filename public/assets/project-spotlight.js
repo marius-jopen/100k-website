@@ -451,8 +451,10 @@
   });
 
   // The legacy app already moves the `.hover` highlight down the list on
-  // mouseenter; this makes the preview follow it. Leaving a row hands control
-  // back to the scroll position.
+  // mouseenter; this makes the preview follow it. The last hovered row keeps
+  // control while the pointer crosses a gap between pills, so neither the
+  // highlight nor the media flickers back to the scroll position. Scrolling
+  // explicitly clears the hover farther below.
   projectButtons.forEach((button, index) => {
     if (!button) return;
 
@@ -465,12 +467,6 @@
       hoveredProjectIndex = index;
       syncProjectButtonHighlight(index);
       syncSpotlightFrame(index);
-    });
-
-    button.addEventListener("mouseleave", () => {
-      if (hoveredProjectIndex !== index) return;
-      hoveredProjectIndex = -1;
-      scheduleSpotlightUpdate();
     });
   });
 

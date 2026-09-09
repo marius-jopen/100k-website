@@ -159,6 +159,14 @@ body.show-post .project-toolbar {
   pointer-events: auto;
 }
 
+/* Briefly reveal the homepage underneath before the project is removed. */
+body.is-project-closing :is(#post, #post-shadow, .project-toolbar) {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 160ms ease-out !important;
+  will-change: opacity;
+}
+
 .project-toolbar :is(.back-button, .info-button) {
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);

@@ -20,6 +20,7 @@
   const rectangleMotionDuration = 400;
   const projectMotionDuration = 460;
   const projectEntryDelay = 100;
+  const projectCloseDuration = 160;
   const transitionClasses = [
     "is-entering",
     "is-expanding",
@@ -195,6 +196,7 @@
       "is-project-entry-transitioning",
       "is-project-to-project-transitioning",
       "is-project-toolbar-ready",
+      "is-project-closing",
     );
     isTransitioning = false;
   };
@@ -380,6 +382,13 @@
     const postShadow = document.querySelector("#post-shadow");
 
     overlay.classList.remove(...transitionClasses);
+    setScrollInputLocked(true);
+
+    const closeTransition = post
+      ? waitForTransition(post, "opacity", projectCloseDuration + 50)
+      : wait(projectCloseDuration);
+    document.body.classList.add("is-project-closing");
+    await closeTransition;
 
     if (!historyAlreadyChanged) {
       isReplayingClick = true;

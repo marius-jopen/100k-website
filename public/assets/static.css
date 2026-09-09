@@ -3126,6 +3126,8 @@ body > .become-a-client-modal .thankyou__note {
 }
 
 .story-split {
+  /* Half the window, the same in every block: the rules line up down the page
+     rather than stepping in and out with the length of each label. */
   --story-split: 50%;
   border-top: 1px solid var(--story-rule);
   display: grid;
@@ -3141,9 +3143,46 @@ body > .become-a-client-modal .thankyou__note {
 }
 
 .story-split__label {
-  margin: 0;
   padding-left: var(--story-gutter);
 }
+
+.story-split__heading {
+  margin: 0;
+}
+
+/* The morph the parked service cards used, at the size a column can carry it.
+   Everything about its playback is the slideshow script's; this only gives it
+   a box to paint in — which it needs, since the canvas inside is absolute and
+   would otherwise collapse to nothing. The ground is the same light grey the
+   hero uses for the same reason: WebGL paints nothing until it has compiled
+   and loaded its first frame. */
+.story-media {
+  aspect-ratio: 16 / 10;
+  background-color: #f0f0f0;
+  border-radius: 30px;
+  /* `overflow` alone does not hold the WebGL canvas inside the corner — the
+     parked cards carried a matching `clip-path` for the same reason. */
+  clip-path: inset(0 round 30px);
+  /* The legacy sheet pins every `.lay-webgl-slideshow` to its container at
+     `position: absolute` and a full 100% in both axes — right for the two it
+     was written for, both of which fill a box that already has a size. This
+     one has to make its own, so it comes back into the flow and lets the
+     aspect ratio set the height. */
+  height: auto;
+  margin-top: clamp(32px, 4vw, 64px);
+  overflow: hidden;
+  position: relative;
+  width: min(100%, 460px);
+}
+
+.story-media canvas.service-webgl-canvas {
+  display: block;
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+}
+
 
 .story-split__body {
   --story-body-inset: var(--story-gutter);
@@ -3198,10 +3237,6 @@ body > .become-a-client-modal .thankyou__note {
   padding: 0 var(--story-gutter);
 }
 
-.story-capabilities {
-  --story-split: 34%;
-}
-
 .story-capabilities__list {
   list-style: none;
   margin: 0;
@@ -3245,12 +3280,4 @@ body > .become-a-client-modal .thankyou__note {
     --story-body-inset: clamp(24px, 3vw, 60px);
     border-left: 1px solid var(--story-rule);
   }
-}
-
-/* The two service cards — the morphing screenshot with the pill list over it —
-   are parked rather than removed: the markup, the WebGL slideshows and the
-   Keystatic fields behind them are all still here, and taking this one rule
-   out brings them back exactly as they were. */
-.our-services-gallery-region {
-  display: none;
 }

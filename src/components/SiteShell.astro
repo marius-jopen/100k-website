@@ -10,6 +10,7 @@ import {
   projectTagUrl,
 } from "../lib/tags";
 import ArrowRight from "./ArrowRight.astro";
+import StoryMedia from "./StoryMedia.astro";
 import FilterLines from "./FilterLines.astro";
 import XMark from "./XMark.astro";
 
@@ -128,6 +129,12 @@ const serviceWebglTimings = [
   { autoplayDelay: 500, autoplaySpeed: 1800 },
   { autoplayDelay: 2600, autoplaySpeed: 2700 },
 ];
+// The two service cards — morph plus the pill list over it — are parked. The
+// morph itself lives on in the story blocks below, so this is off rather than
+// hidden in CSS: `service-webgl-slideshow.js` loads a slideshow's frames the
+// moment the markup is there, `display: none` and all, and that is thirty-odd
+// screenshots nobody would see. Flip it back to `true` to have them again.
+const SHOW_SERVICE_CARDS = false;
 
 /* The field definitions keep the form markup and its submitted names together. */
 // Baked into the page at build time; see `.env.example`.
@@ -352,6 +359,7 @@ const contactFields = [
       <div class="_bigtext2 our-services">
         <h2 class="_bigtext2 left-padding">Our Services</h2>
         <div class="our-services-region"><div><div class="left-padding _bigtext4 our-services-text">{siteContent.servicesIntro}</div></div></div>
+        {SHOW_SERVICE_CARDS && (
         <div class="our-services-gallery-region">
           <div class="gallery-view left-padding">
             {siteContent.services.map((service, serviceIndex) => (
@@ -402,6 +410,7 @@ const contactFields = [
             ))}
           </div>
         </div>
+        )}
       </div>
 
       {/* Storytelling under the service pills, where the page used to run
@@ -413,7 +422,14 @@ const contactFields = [
           Keystatic — the fields can follow once the wording has settled. */}
       <section class="story">
         <div class="story-split story-specialisms">
-          <h2 class="_bigtext2 story-split__label">We specialize in<br />three things</h2>
+          <div class="story-split__label">
+            <h2 class="_bigtext2 story-split__heading">We specialize in<br />three things</h2>
+            <StoryMedia
+              slides={serviceWebglScreenshots[0] || []}
+              autoplayDelay={serviceWebglTimings[0].autoplayDelay}
+              autoplaySpeed={serviceWebglTimings[0].autoplaySpeed}
+            />
+          </div>
           <div class="story-split__body">
             <ul class="story-items">
               <li>
@@ -437,7 +453,14 @@ const contactFields = [
         </div>
 
         <div class="story-split story-capabilities">
-          <h2 class="_bigtext2 story-split__label">We deliver so<br />much more</h2>
+          <div class="story-split__label">
+            <h2 class="_bigtext2 story-split__heading">We deliver so<br />much more</h2>
+            <StoryMedia
+              slides={serviceWebglScreenshots[1] || []}
+              autoplayDelay={serviceWebglTimings[1].autoplayDelay}
+              autoplaySpeed={serviceWebglTimings[1].autoplaySpeed}
+            />
+          </div>
           <div class="story-split__body">
             <ul class="story-capabilities__list">
               <li class="_bigtext2">Art Direction</li>

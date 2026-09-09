@@ -987,9 +987,27 @@ const contactFields = [
   // Inside a project the Contact Us form uses the same card as the info: it is
   // moved onto the flip's back face and the gallery turns over. Everywhere else
   // (home page, mobile) the legacy body-level overlay is left alone.
-  const contactModal = document.querySelector(".become-a-client-modal");
+  const getContactModal = () => document.querySelector(".become-a-client-modal");
+  const getContactToggle = () => document.querySelector("body > .become-a-client");
+
+  // The fixed control remains the same element while the form is open. Only
+  // its label, colours and action change, so a pointer resting on it cannot
+  // inherit a second button's independent hover animation.
+  const syncContactToggle = () => {
+    const contactToggle = getContactToggle();
+    if (!(contactToggle instanceof HTMLElement)) return;
+
+    const isOpen = document.body.classList.contains("show-client-modal");
+    const label = isOpen ? "Close" : "Contact Us";
+    contactToggle.querySelectorAll(".lay-button-effect__text").forEach((text) => {
+      text.textContent = label;
+    });
+    contactToggle.setAttribute("aria-label", isOpen ? "Close contact form" : "Open contact form");
+    contactToggle.setAttribute("aria-expanded", String(isOpen));
+  };
 
   const setContactFlipped = (isOpen) => {
+    const contactModal = getContactModal();
     const backFace = getProjectFlipBack();
     if (!(backFace instanceof HTMLElement) || !(contactModal instanceof HTMLElement)) {
       return false;
@@ -1013,6 +1031,7 @@ const contactFields = [
   };
 
   const restoreContactModal = () => {
+    const contactModal = getContactModal();
     if (!(contactModal instanceof HTMLElement)) return;
     if (contactModal.dataset.homeParent !== "body") return;
     if (contactModal.parentElement === document.body) return;
@@ -1027,6 +1046,23 @@ const contactFields = [
   document.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof Element)) return;
+
+    const contactToggle = getContactToggle();
+    const clickedFixedToggle = target.closest("body > .become-a-client") === contactToggle;
+
+    // Closing: the same fixed button that opened the form. Capture this before
+    // the legacy `.become-a-client` handler can interpret it as another open.
+    if (clickedFixedToggle && document.body.classList.contains("show-client-modal")) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      if (document.body.classList.contains("show-project-contact-flip")) {
+        setContactFlipped(false);
+      } else {
+        document.body.classList.remove("show-client-modal");
+      }
+      return;
+    }
 
     // Opening: only intercept while a project is open and a flip card exists.
     if (
@@ -1056,6 +1092,12 @@ const contactFields = [
     event.stopImmediatePropagation();
     setContactFlipped(false);
   }, true);
+
+  new MutationObserver(syncContactToggle).observe(document.body, {
+    attributeFilter: ["class"],
+    attributes: true,
+  });
+  syncContactToggle();
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || event.repeat || event.defaultPrevented) return;
@@ -1365,7 +1407,14 @@ const contactFields = [
 <script is:inline src="/assets/phone-background-media.js"></script>
 <script is:inline src="/assets/project-page-transition.js"></script>
 
-<div class="become-a-client _bigtext" data-lay-button-effect-text-slide="1">
+<button
+  class="become-a-client _bigtext"
+  type="button"
+  data-lay-button-effect-text-slide="1"
+  aria-label="Open contact form"
+  aria-expanded="false"
+  aria-controls="contact-form"
+>
   <span class="lay-button-effect__content lay-button-effect__content--text-slide">
     <span class="lay-button-effect__text-sizer" aria-hidden="true">Contact Us</span>
     <span class="lay-button-effect__text-clip">
@@ -1373,22 +1422,13 @@ const contactFields = [
       <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">Contact Us</span>
     </span>
   </span>
-</div>
+</button>
 <div class="become-a-client-bg"></div>
-<div class="become-a-client-modal fields-not-filled">
+<div class="become-a-client-modal fields-not-filled" id="contact-form">
   <div class="_bigtext">{contactHeadline}</div>
-  {/* A named button rather than a bare ✕: this fills the screen, and the way
-      out of it should read like the toolbar's Back does. Same pill, same
-      slide-on-hover, top right. */}
-  <button class="close contact-close _bigtext" type="button" data-lay-button-effect-text-slide="1" aria-label="Close contact form">
-    <span class="lay-button-effect__content lay-button-effect__content--text-slide">
-      <span class="lay-button-effect__text-sizer" aria-hidden="true">Close</span>
-      <span class="lay-button-effect__text-clip">
-        <span class="lay-button-effect__text lay-button-effect__text--current">Close</span>
-        <span class="lay-button-effect__text lay-button-effect__text--next" aria-hidden="true">Close</span>
-      </span>
-    </span>
-  </button>
+  {/* Kept only for the legacy and Escape handlers that dispatch a click to
+      `.close`; the fixed Contact Us control is the sole visible button. */}
+  <button class="close contact-close" type="button" aria-label="Close contact form" hidden></button>
   <form action={siteContent.contact.endpoint} method="post">
     {contactFields.map((field) => (
       <>

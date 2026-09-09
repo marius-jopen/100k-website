@@ -789,8 +789,21 @@ body > .become-a-client[data-lay-button-effect-text-slide="1"] {
    depend on whatever happened to scroll underneath it. */
 body > .become-a-client {
   -webkit-backdrop-filter: none;
+  appearance: none;
   backdrop-filter: none;
   background-color: #000;
+  border: 0;
+  color: #fff !important;
+  font-family: inherit;
+}
+
+/* One control, inverted while it closes the black contact form. The invisible
+   legacy `.contact-close` no longer replaces it, so its hover state continues
+   on the same element instead of starting a second animation underneath. */
+body.show-client-modal > .become-a-client {
+  background-color: #fff;
+  color: #000 !important;
+  z-index: 4;
 }
 
 :is(.become-a-client, .back-button, .info-button, .url-button, .gallery-view .descr span.service, .project-filter__toggle, .contact-close)[data-lay-button-effect-text-slide="1"] .lay-button-effect__content--text-slide {
@@ -1894,26 +1907,16 @@ body.show-project-info-modal > .become-a-client {
     width: calc(var(--project-media-flip-width, min(86vw, 1200px)) / 2) !important;
   }
 
-  /* The ✕ is the way out here, so it stays — unlike the info card, which is
-     closed by the Back button or the backdrop. */
-  /* The card is white, so the pill inverts with it — the same dark button the
-     page uses everywhere else. */
-  .project-media-carousel__back .become-a-client-modal .contact-close {
-    background-color: #111;
-    color: #fff;
-    right: 20px;
-    top: 20px;
-  }
-
   /* Hide the body-level backdrop: the flip is the modal now. */
   body.show-project-contact-flip .become-a-client-bg {
     display: none;
   }
 
-  /* Contact Us itself steps aside while its own form is showing. */
+  /* The fixed control stays in place and becomes Close while the card is
+     flipped, just as it does for the full-screen contact form. */
   body.show-project-contact-flip > .become-a-client {
-    opacity: 0;
-    pointer-events: none;
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 

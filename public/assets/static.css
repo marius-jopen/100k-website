@@ -3095,3 +3095,162 @@ body > .become-a-client-modal .thankyou__note {
     transform: translateY(-50%);
   }
 }
+
+/* ============================================================
+   Studio story — the hairline grid under the service pills
+   ============================================================ */
+
+/* The rules run the full width of the window, so the gutter cannot sit on the
+   section the way it does everywhere else on the page — the columns carry it
+   instead, and the rules pass underneath them to both edges.
+
+   Type comes from the page's own scale, `._bigtext2` and `._bigtext4` in the
+   markup — both already the 600 the rest of the site sets its headings in — so
+   nothing below declares a size or a weight of its own. */
+.story {
+  --story-rule: rgba(0, 0, 0, 0.14);
+  --story-rule-dotted: rgba(0, 0, 0, 0.3);
+  --story-quiet: #6f6f6f;
+  --story-gutter: 20px;
+  padding-top: clamp(70px, 8vw, 120px);
+}
+
+/* The column rule is meant to run all the way down to where the white panel
+   ends. `.story` is the panel's last child, so it gives up its own bottom
+   padding and pulls back `.main`'s 20px tail as well — the tail is there to
+   keep content off the curve, and the rule is the one thing that should reach
+   it. The block's own bottom padding stays, so the text keeps its distance. */
+.story {
+  margin-bottom: -20px;
+  padding-bottom: 0;
+}
+
+.story-split {
+  --story-split: 50%;
+  border-top: 1px solid var(--story-rule);
+  display: grid;
+}
+
+/* The block's own vertical rhythm lives on the two columns rather than on the
+   grid, so the column rule runs the full height of the block instead of
+   stopping short of the rule it is supposed to meet. */
+.story-split__label,
+.story-split__body {
+  padding-bottom: clamp(32px, 3vw, 48px);
+  padding-top: clamp(28px, 3vw, 44px);
+}
+
+.story-split__label {
+  margin: 0;
+  padding-left: var(--story-gutter);
+}
+
+.story-split__body {
+  --story-body-inset: var(--story-gutter);
+  padding-left: var(--story-body-inset);
+  padding-right: var(--story-gutter);
+}
+
+/* Pulled back out of the column's own padding so the separators close against
+   the column rule on one side and the window edge on the other; the items take
+   the same inset back as padding, which keeps the text where it was. */
+.story-items {
+  list-style: none;
+  margin: 0 calc(-1 * var(--story-gutter)) 0 calc(-1 * var(--story-body-inset));
+  padding: 0;
+}
+
+.story-items > li {
+  padding-left: var(--story-body-inset);
+  padding-right: var(--story-gutter);
+}
+
+.story-items > li + li {
+  border-top: 1px dotted var(--story-rule-dotted);
+  margin-top: clamp(28px, 3vw, 40px);
+  padding-top: clamp(28px, 3vw, 40px);
+}
+
+.story-items__title {
+  margin: 0 0 clamp(12px, 1.4vw, 20px);
+}
+
+/* `._bigtext` is the one step of the scale that is still 400, which would
+   read as a second voice next to everything else here. It takes the same 600
+   and steps back on colour instead. */
+.story-items__sub {
+  color: var(--story-quiet);
+  font-weight: 600;
+  margin: 0;
+}
+
+.story-statement {
+  border-top: 1px solid var(--story-rule);
+  padding-bottom: clamp(48px, 5vw, 80px);
+  padding-top: clamp(36px, 4vw, 60px);
+}
+
+/* The gutter again: the rule above this block reaches the window edges, the
+   sentence under it lines up with everything else on the page. */
+.story-statement__text {
+  margin: 0;
+  max-width: 1200px;
+  padding: 0 var(--story-gutter);
+}
+
+.story-capabilities {
+  --story-split: 34%;
+}
+
+.story-capabilities__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.story-capabilities__list > li {
+  line-height: 1.45;
+}
+
+/* One column below the breakpoint: the column rule describes a split that is
+   not there any more, and both columns take the gutter on both sides. */
+@media (max-width: 700px) {
+  .story-split__label {
+    padding-bottom: clamp(20px, 4vw, 28px);
+    padding-right: var(--story-gutter);
+  }
+
+  .story-split__body {
+    padding-top: 0;
+  }
+
+  /* `._bigtext` is the one step of the scale that does not come down at this
+     width, which left the sub-line larger than the title over it. 16px is what
+     every other step drops to here. */
+  .story-items__sub {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 701px) {
+  .story-split {
+    grid-template-columns: var(--story-split) 1fr;
+  }
+
+  .story-split__label {
+    padding-right: clamp(24px, 3vw, 60px);
+  }
+
+  .story-split__body {
+    --story-body-inset: clamp(24px, 3vw, 60px);
+    border-left: 1px solid var(--story-rule);
+  }
+}
+
+/* The two service cards — the morphing screenshot with the pill list over it —
+   are parked rather than removed: the markup, the WebGL slideshows and the
+   Keystatic fields behind them are all still here, and taking this one rule
+   out brings them back exactly as they were. */
+.our-services-gallery-region {
+  display: none;
+}

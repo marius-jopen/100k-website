@@ -191,13 +191,21 @@
       carousel.style.getPropertyValue("--project-media-caption-offset"),
     ) || 0;
     const hasCaption = Boolean(captionRect && caption?.textContent?.trim());
-    const unshiftedContentBottom = (hasCaption ? captionRect.bottom : figureRect.bottom)
-      + previousOffset;
     const minimumCaptionGap = hasCaption ? 20 : 0;
     const maximumIndicatorTop = stickyRect.bottom - indicatorHeight - 8;
-    const captionOffset = hasCaption
-      ? Math.max(unshiftedContentBottom + minimumCaptionGap - maximumIndicatorTop, 0)
-      : 0;
+    const unshiftedCaptionBottom = figures.reduce((maximumBottom, figure) => {
+      const figureCaption = figure.querySelector("figcaption");
+      if (!figureCaption?.textContent?.trim()) return maximumBottom;
+
+      return Math.max(
+        maximumBottom,
+        figureCaption.getBoundingClientRect().bottom + previousOffset,
+      );
+    }, 0);
+    const captionOffset = Math.max(
+      unshiftedCaptionBottom + 20 - maximumIndicatorTop,
+      0,
+    );
 
     if (captionOffset > 0) {
       carousel.style.setProperty("--project-media-caption-offset", `${captionOffset}px`);
@@ -205,6 +213,8 @@
       carousel.style.removeProperty("--project-media-caption-offset");
     }
 
+    const unshiftedContentBottom = (hasCaption ? captionRect.bottom : figureRect.bottom)
+      + previousOffset;
     const contentBottom = Math.min(
       Math.max(unshiftedContentBottom - captionOffset, stickyRect.top),
       stickyRect.bottom,

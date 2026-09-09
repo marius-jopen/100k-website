@@ -1484,10 +1484,12 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
 
   .project-media-carousel .static-grid-block figcaption {
     align-self: stretch;
-    flex: 0 0 auto;
     /* Same 12px the home page's spotlight caption sits under its frame. */
-    margin-top: 12px;
+    left: 0;
+    margin-top: 0;
     max-width: min(86vw, 1200px);
+    position: absolute;
+    top: calc(100% + 12px);
     width: 100%;
   }
 }

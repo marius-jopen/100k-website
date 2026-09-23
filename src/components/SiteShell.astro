@@ -244,6 +244,10 @@ const contactFields = [
               </a>
             ))}
             <div class="project-spotlight-frame" aria-hidden="true"></div>
+            {/* Desktop only: the description sits under the spotlight media
+                rather than under the pill. Below the breakpoint there is no
+                spotlight to sit under, so the list carries it instead. */}
+            <div class="_bigtext project-spotlight-caption short-description" aria-hidden="true"></div>
           </div>
         </div>
         {/* Outside `.sticky` on purpose. `.sticky` is a stacking context, and

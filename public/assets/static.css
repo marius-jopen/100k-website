@@ -1109,6 +1109,12 @@ footer .contact-us .legal-links a {
     display: block;
   }
 
+  /* The description belongs under the spotlight media at this width, not under
+     the pill — `.project-spotlight-caption` below is the one that shows it. */
+  .projects-list .short-description {
+    display: none !important;
+  }
+
   /* Source links only carry each project's URL and media metadata. The visible
      frame below owns rendering; keeping dozens of invisible transformed layers
      here consumed GPU memory and compositing work for no visual result. */
@@ -1162,6 +1168,33 @@ footer .contact-us .legal-links a {
     opacity: 1;
   }
 
+  /* Sits 12px under the frame, which is centred on the viewport and sized from
+     the media — so the offset is built from the same custom properties the
+     frame is, and follows it when a portrait clip changes its height. Pinned
+     to the frame's right edge here and re-centred in the 701px block below. */
+  .project-spotlight-caption.short-description {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    color: #000 !important;
+    display: inline-flex;
+    left: calc(50% + var(--project-spotlight-frame-half-width));
+    margin: 0;
+    min-height: 0;
+    padding: 0 !important;
+    position: absolute;
+    top: calc(50% + var(--project-spotlight-frame-half-height) + 12px);
+    transform: translateX(-100%) !important;
+    white-space: nowrap;
+    z-index: 1001;
+  }
+
+  /* Before the first project is active there is nothing to say, and an empty
+     inline-flex box still reserves its line. */
+  .project-spotlight-caption:empty {
+    display: none !important;
+  }
 }
 
 .our-services-region {
@@ -1665,6 +1698,13 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
     transform: translate3d(0, -50%, 0);
   }
 
+  /* The caption shrink-wraps its text, so pin its box to the band's centre —
+     which is the frame's centre too — and pull it back by half its own width. */
+  .project-spotlight-caption.short-description {
+    left: var(--project-spotlight-frame-center);
+    right: auto;
+    transform: translateX(-50%) !important;
+  }
 }
 
 /* The hero is white in the legacy theme, and the WebGL canvas that fills it

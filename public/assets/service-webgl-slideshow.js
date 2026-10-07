@@ -61,7 +61,7 @@
     void main() {
       vec2 fromUv = containUv(vUv, fromSize);
       vec2 toUv = containUv(vUv, toSize);
-      vec4 backgroundColor = vec4(vec3(0.941176), 1.0);
+      vec4 backgroundColor = vec4(0.0);
       vec4 fromImage = texture2D(fromTexture, clamp(fromUv, 0.0, 1.0));
       vec4 toImage = texture2D(toTexture, clamp(toUv, 0.0, 1.0));
 
@@ -141,7 +141,7 @@
     if (!(canvas instanceof HTMLCanvasElement) || !sources.length) return;
 
     const gl = canvas.getContext("webgl", {
-      alpha: false,
+      alpha: true,
       antialias: false,
       powerPreference: "high-performance",
       preserveDrawingBuffer: true,
@@ -149,7 +149,7 @@
 
     if (!gl) {
       canvas.style.backgroundImage = `url("${sources[0]}")`;
-      canvas.style.backgroundColor = "#f0f0f0";
+      canvas.style.backgroundColor = "transparent";
       canvas.style.backgroundPosition = "center";
       canvas.style.backgroundRepeat = "no-repeat";
       canvas.style.backgroundSize = "contain";

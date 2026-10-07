@@ -3138,12 +3138,11 @@ body > .become-a-client-modal .thankyou__note {
 /* The morph the parked service cards used, at the size a column can carry it.
    Everything about its playback is the slideshow script's; this only gives it
    a box to paint in — which it needs, since the canvas inside is absolute and
-   would otherwise collapse to nothing. The ground is the same light grey the
-   hero uses for the same reason: WebGL paints nothing until it has compiled
-   and loaded its first frame. */
+   would otherwise collapse to nothing. The ground stays transparent so images
+   with a different aspect ratio do not gain a visible frame. */
 .story-media {
   aspect-ratio: 16 / 10;
-  background-color: #f0f0f0;
+  background-color: transparent;
   border-radius: 30px;
   /* `overflow` alone does not hold the WebGL canvas inside the corner — the
      parked cards carried a matching `clip-path` for the same reason. */

@@ -772,8 +772,42 @@ body {
     display: none;
   }
 
+  /* One line for the name, one button, nothing wraps. */
+  .demo-header {
+    gap: 12px;
+    padding: 12px var(--gutter);
+  }
+
+  .demo-brand {
+    font-size: 15px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .demo-header .demo-btn {
+    flex: none;
+    font-size: 14px;
     margin-left: auto;
+    padding: 9px 16px 8px;
+  }
+
+  .demo-hero__copy p {
+    font-size: 17px;
+  }
+
+  .demo-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .demo-wizard {
+    padding: 20px;
+  }
+
+  .demo-wizard__step h3 {
+    font-size: 22px;
   }
 
   .demo[data-trade="rohbau"] .demo-hero,

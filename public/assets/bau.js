@@ -274,7 +274,7 @@
   // the trade appears and fades away again. Behind the words, never in front
   // of them, and never for anyone who asked for less motion.
   const hero = $(".bau-hero");
-  if (hero && !reduceMotion && matchMedia("(hover: hover) and (pointer: fine) and (min-width: 701px)").matches) {
+  if (hero && !reduceMotion) {
     const PIECES = ["🏗️", "🚜", "🧱", "👷", "🔨", "🪣", "🚧", "🏠", "⛏️", "🪜", "🧰", "🪚"];
     let settle = 0;
     let lastX = -1e9;
@@ -300,16 +300,24 @@
       lastY = y;
     };
 
-    // A piece appears where the pointer comes to rest, the moment it does —
-    // not along the way, and not twice in the same place.
-    hero.addEventListener("pointermove", (event) => {
-      clearTimeout(settle);
-      settle = setTimeout(() => {
-        if (Math.hypot(event.clientX - lastX, event.clientY - lastY) < 70) return;
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      // With a mouse, a piece appears where the pointer comes to rest, the
+      // moment it does — not along the way, and not twice in the same place.
+      hero.addEventListener("pointermove", (event) => {
+        clearTimeout(settle);
+        settle = setTimeout(() => {
+          if (Math.hypot(event.clientX - lastX, event.clientY - lastY) < 70) return;
+          place(event.clientX, event.clientY);
+        }, 90);
+      });
+      hero.addEventListener("pointerenter", (event) => place(event.clientX, event.clientY));
+    } else {
+      // With a finger, a tap on the empty hero drops one.
+      hero.addEventListener("pointerdown", (event) => {
+        if (event.target.closest("a, button")) return;
         place(event.clientX, event.clientY);
-      }, 90);
-    });
-    hero.addEventListener("pointerenter", (event) => place(event.clientX, event.clientY));
+      });
+    }
   }
 
   /* ----------------------------------------------------------- Features */

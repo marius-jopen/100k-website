@@ -267,11 +267,10 @@ body {
   font-size: clamp(20px, 1.9vw, 28px);
 }
 
-/* The arrow down: a ring at the foot of the hero. It nods on hover and
-   bobs gently on its own, so it reads as "there is more". */
+/* The arrow down: a ring at the foot of the hero. Still until the pointer
+   is on it; then the whole ring eases down a little. */
 .bau-hero__down {
   align-items: center;
-  animation: bau-bob 2.4s ease-in-out infinite;
   border: 1px solid var(--line);
   border-radius: 50%;
   bottom: 28px;
@@ -282,41 +281,19 @@ body {
   left: 50%;
   position: absolute !important;
   transform: translateX(-50%);
-  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  transition: transform 260ms cubic-bezier(0.2, 0, 0.2, 1), border-color 160ms ease;
   width: 48px;
   z-index: 2;
 }
 
 .bau-hero__down svg {
   height: 20px;
-  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
   width: 20px;
 }
 
 .bau-hero__down:hover {
-  background: #000;
   border-color: #000;
-  color: #fff;
-}
-
-.bau-hero__down:hover svg {
-  transform: translateY(4px);
-}
-
-@keyframes bau-bob {
-  0%,
-  100% {
-    transform: translate(-50%, 0);
-  }
-  50% {
-    transform: translate(-50%, 5px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bau-hero__down {
-    animation: none;
-  }
+  transform: translate(-50%, 6px);
 }
 
 /* What the pointer leaves behind. Under the words (z-index 0), untouchable

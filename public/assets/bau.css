@@ -242,9 +242,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 32px;
-  min-height: calc(82svh - 72px);
+  min-height: calc(92svh - 72px);
   justify-content: center;
-  padding: 48px max(var(--gutter), calc((100% - var(--measure)) / 2)) 64px;
+  padding: 48px max(var(--gutter), calc((100% - var(--measure)) / 2)) 96px;
   text-align: center;
 }
 
@@ -265,6 +265,58 @@ body {
 .bau-hero p {
   color: var(--muted);
   font-size: clamp(20px, 1.9vw, 28px);
+}
+
+/* The arrow down: a ring at the foot of the hero. It nods on hover and
+   bobs gently on its own, so it reads as "there is more". */
+.bau-hero__down {
+  align-items: center;
+  animation: bau-bob 2.4s ease-in-out infinite;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  bottom: 28px;
+  color: #000;
+  display: flex;
+  height: 48px;
+  justify-content: center;
+  left: 50%;
+  position: absolute !important;
+  transform: translateX(-50%);
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  width: 48px;
+  z-index: 2;
+}
+
+.bau-hero__down svg {
+  height: 20px;
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  width: 20px;
+}
+
+.bau-hero__down:hover {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.bau-hero__down:hover svg {
+  transform: translateY(4px);
+}
+
+@keyframes bau-bob {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bau-hero__down {
+    animation: none;
+  }
 }
 
 /* What the pointer leaves behind. Under the words (z-index 0), untouchable
@@ -1996,9 +2048,15 @@ body {
      there is visibly more to scroll to. */
   .bau-hero {
     gap: 28px;
-    min-height: calc(82svh - 80px);
-    padding-bottom: 48px;
+    min-height: calc(92svh - 80px);
+    padding-bottom: 88px;
     padding-top: 32px;
+  }
+
+  .bau-hero__down {
+    bottom: 22px;
+    height: 44px;
+    width: 44px;
   }
 
   .bau-drop {

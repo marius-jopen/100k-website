@@ -320,6 +320,15 @@
     }
   }
 
+  /* ------------------------------------------------------------- Arrow */
+
+  $("[data-scroll-down]")?.addEventListener("click", (event) => {
+    const target = $(".bau-logos");
+    if (!target) return;
+    event.preventDefault();
+    window.scrollTo({ top: target.offsetTop - 60, behavior: reduceMotion ? "auto" : "smooth" });
+  });
+
   /* ----------------------------------------------------------- Features */
 
   const panel = $("[data-features-panel]");

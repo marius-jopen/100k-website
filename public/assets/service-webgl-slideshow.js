@@ -25,29 +25,37 @@
     uniform vec2 resolution;
     uniform vec2 fromSize;
     uniform vec2 toSize;
+    uniform float cornerRadius;
     uniform float progress;
     uniform float power;
     varying vec2 vUv;
 
-    vec2 containUv(vec2 uv, vec2 textureSize) {
+    vec2 containedSize(vec2 textureSize) {
       float frameAspect = resolution.x / resolution.y;
       float textureAspect = textureSize.x / textureSize.y;
-      vec2 fittedSize = vec2(1.0);
 
       if (textureAspect > frameAspect) {
-        fittedSize.y = frameAspect / textureAspect;
-      } else {
-        fittedSize.x = textureAspect / frameAspect;
+        return vec2(resolution.x, resolution.x / textureAspect);
       }
 
+      return vec2(resolution.y * textureAspect, resolution.y);
+    }
+
+    vec2 containUv(vec2 uv, vec2 textureSize) {
+      vec2 fittedSize = containedSize(textureSize) / resolution;
       return (uv - 0.5) / fittedSize + 0.5;
     }
 
-    float isInside(vec2 uv) {
-      return step(0.0, uv.x)
-        * step(uv.x, 1.0)
-        * step(0.0, uv.y)
-        * step(uv.y, 1.0);
+    float roundedMask(vec2 uv, vec2 textureSize) {
+      vec2 fittedSize = containedSize(textureSize);
+      float radius = min(cornerRadius, min(fittedSize.x, fittedSize.y) * 0.5);
+      vec2 point = (uv - 0.5) * fittedSize;
+      vec2 distanceToCorner = abs(point) - (fittedSize * 0.5 - radius);
+      float signedDistance = length(max(distanceToCorner, 0.0))
+        + min(max(distanceToCorner.x, distanceToCorner.y), 0.0)
+        - radius;
+
+      return 1.0 - smoothstep(-1.0, 1.0, signedDistance);
     }
 
     void main() {
@@ -60,8 +68,8 @@
       fromImage.rgb *= 0.97;
       toImage.rgb *= 0.97;
 
-      vec4 fromColor = mix(backgroundColor, fromImage, isInside(fromUv));
-      vec4 toColor = mix(backgroundColor, toImage, isInside(toUv));
+      vec4 fromColor = mix(backgroundColor, fromImage, roundedMask(fromUv, fromSize));
+      vec4 toColor = mix(backgroundColor, toImage, roundedMask(toUv, toSize));
       float colorStep = step(distance(fromColor, toColor), progress);
 
       gl_FragColor = mix(
@@ -194,6 +202,7 @@
     gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
     const uniforms = {
+      cornerRadius: gl.getUniformLocation(program, "cornerRadius"),
       fromSize: gl.getUniformLocation(program, "fromSize"),
       fromTexture: gl.getUniformLocation(program, "fromTexture"),
       power: gl.getUniformLocation(program, "power"),
@@ -235,6 +244,8 @@
       }
 
       gl.viewport(0, 0, width, height);
+      const cornerRadius = parseFloat(getComputedStyle(slideshow).borderTopLeftRadius) || 0;
+      gl.uniform1f(uniforms.cornerRadius, cornerRadius * dpr);
       gl.uniform2f(uniforms.resolution, width, height);
     };
 

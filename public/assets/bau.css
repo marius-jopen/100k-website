@@ -587,7 +587,28 @@ body {
 .bau-features__list h3 {
   color: var(--muted);
   font-size: clamp(19px, 1.6vw, 22px);
+  padding-right: 36px;
+  position: relative;
   transition: color 160ms ease;
+}
+
+/* The plus says "this opens", and turns into a cross once it has. */
+.bau-features__list h3::after {
+  color: var(--muted);
+  content: "+";
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1;
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 200ms ease, color 160ms ease;
+}
+
+.bau-features__list button[aria-current="true"] h3::after {
+  color: #000;
+  transform: translateY(-50%) rotate(45deg);
 }
 
 .bau-features__list button:hover h3,
@@ -2002,6 +2023,10 @@ body {
     width: 100%;
   }
 
+  .bau-hero .bau-actions .bau-pill + .bau-pill {
+    margin-top: 16px;
+  }
+
   /* The logos as an even grid, two to a row, six in all. */
   .bau-logos {
     gap: 20px;
@@ -2032,20 +2057,33 @@ body {
     max-width: 110px;
   }
 
-  /* The trade switch as a column, every entry the full width; square-ish
-     corners, because a pill does not stack. */
+  /* The trade switch stays one row: four even segments, tighter type. */
   .bau-show-controls .bau-switch {
-    border-radius: 18px;
-    flex-direction: column;
-    gap: 4px;
-    padding: 4px;
+    display: flex;
+    flex-wrap: nowrap;
     width: 100%;
   }
 
   .bau-show-controls .bau-switch button {
-    border-radius: 14px;
-    padding: 11px 16px 10px;
+    flex: 1;
+    font-size: 14px;
+    padding: 9px 6px 8px;
     text-align: center;
+    white-space: nowrap;
+  }
+
+  /* The price cards read centred on a phone. */
+  .bau-price {
+    align-items: center;
+    text-align: center;
+  }
+
+  .bau-price ul {
+    align-items: center;
+  }
+
+  .bau-price .bau-pill {
+    align-self: center;
   }
 
   /* The steps: number on the left, the rest beside it. */

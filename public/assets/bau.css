@@ -272,6 +272,7 @@ body {
    is on it; then the whole ring eases down a little. */
 .bau-hero__down {
   align-items: center;
+  background: #fff;
   border: 1px solid var(--line);
   border-radius: 50%;
   bottom: 28px;

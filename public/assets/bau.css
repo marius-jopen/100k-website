@@ -258,7 +258,8 @@ body {
   z-index: 0;
 }
 
-.bau-hero .bau-actions {
+.bau-hero .bau-actions,
+.bau-hero .bau-hero__down {
   z-index: 2;
 }
 

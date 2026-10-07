@@ -1991,10 +1991,13 @@ body {
     padding-top: 18px;
   }
 
+  /* Not the whole first screen: the next section shows at the bottom, so
+     there is visibly more to scroll to. */
   .bau-hero {
     gap: 28px;
-    min-height: calc(100svh - 80px);
-    padding-top: 40px;
+    min-height: calc(82svh - 80px);
+    padding-bottom: 48px;
+    padding-top: 32px;
   }
 
   .bau-drop {

@@ -242,9 +242,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 32px;
-  min-height: calc(100svh - 72px);
+  min-height: calc(82svh - 72px);
   justify-content: center;
-  padding: 60px max(var(--gutter), calc((100% - var(--measure)) / 2)) 80px;
+  padding: 48px max(var(--gutter), calc((100% - var(--measure)) / 2)) 64px;
   text-align: center;
 }
 
@@ -627,6 +627,7 @@ body {
   font-size: 15px;
   line-height: 1.45;
   max-width: 32em;
+  padding-right: 36px;
   min-height: 0;
   opacity: 0;
   overflow: hidden;

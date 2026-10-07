@@ -27,26 +27,41 @@
     uniform vec2 toSize;
     uniform float progress;
     uniform float power;
-    uniform float zoom;
     varying vec2 vUv;
 
-    vec2 coverUv(vec2 uv, vec2 textureSize) {
+    vec2 containUv(vec2 uv, vec2 textureSize) {
       float frameAspect = resolution.x / resolution.y;
       float textureAspect = textureSize.x / textureSize.y;
-      vec2 scale = vec2(1.0);
+      vec2 fittedSize = vec2(1.0);
 
       if (textureAspect > frameAspect) {
-        scale.x = frameAspect / textureAspect;
+        fittedSize.y = frameAspect / textureAspect;
       } else {
-        scale.y = textureAspect / frameAspect;
+        fittedSize.x = textureAspect / frameAspect;
       }
 
-      return (uv - 0.5) * (scale / zoom) + 0.5;
+      return (uv - 0.5) / fittedSize + 0.5;
+    }
+
+    float isInside(vec2 uv) {
+      return step(0.0, uv.x)
+        * step(uv.x, 1.0)
+        * step(0.0, uv.y)
+        * step(uv.y, 1.0);
     }
 
     void main() {
-      vec4 fromColor = texture2D(fromTexture, coverUv(vUv, fromSize));
-      vec4 toColor = texture2D(toTexture, coverUv(vUv, toSize));
+      vec2 fromUv = containUv(vUv, fromSize);
+      vec2 toUv = containUv(vUv, toSize);
+      vec4 backgroundColor = vec4(vec3(0.941176), 1.0);
+      vec4 fromImage = texture2D(fromTexture, clamp(fromUv, 0.0, 1.0));
+      vec4 toImage = texture2D(toTexture, clamp(toUv, 0.0, 1.0));
+
+      fromImage.rgb *= 0.97;
+      toImage.rgb *= 0.97;
+
+      vec4 fromColor = mix(backgroundColor, fromImage, isInside(fromUv));
+      vec4 toColor = mix(backgroundColor, toImage, isInside(toUv));
       float colorStep = step(distance(fromColor, toColor), progress);
 
       gl_FragColor = mix(
@@ -126,6 +141,11 @@
 
     if (!gl) {
       canvas.style.backgroundImage = `url("${sources[0]}")`;
+      canvas.style.backgroundColor = "#f0f0f0";
+      canvas.style.backgroundPosition = "center";
+      canvas.style.backgroundRepeat = "no-repeat";
+      canvas.style.backgroundSize = "contain";
+      canvas.style.filter = "brightness(0.97)";
       slideshow.classList.add("lay-webgl-reveal");
       return;
     }
@@ -181,13 +201,11 @@
       resolution: gl.getUniformLocation(program, "resolution"),
       toSize: gl.getUniformLocation(program, "toSize"),
       toTexture: gl.getUniformLocation(program, "toTexture"),
-      zoom: gl.getUniformLocation(program, "zoom"),
     };
 
     gl.uniform1i(uniforms.fromTexture, 0);
     gl.uniform1i(uniforms.toTexture, 1);
     gl.uniform1f(uniforms.power, 5);
-    gl.uniform1f(uniforms.zoom, 1.3);
 
     const transitionDuration = Number(slideshow.dataset.transitionspeed) || 3000;
     const autoplaySpeed = Number(slideshow.dataset.autoplayspeed) || 1800;

@@ -1,0 +1,1921 @@
+/*
+ * The construction landing page (/bau/).
+ *
+ * Loaded without theme.css, laygrid.css and static.css, so nothing here has to
+ * out-shout them. It borrows the studio's vocabulary — Rethink Sans at 400 and
+ * 600, pill buttons, black on white, a lot of air — and adds nothing to it.
+ *
+ * Type does the work. Headlines are large, body copy is scarce, and every
+ * section is one idea with room around it.
+ */
+
+@font-face {
+  font-family: "Rethink Sans";
+  src: url("/assets/fonts/rethink-sans-latin-wght-normal.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400 600;
+}
+
+.bau {
+  --ink: #000;
+  --muted: #6f6f6f;
+  --line: #e7e7e7;
+  --tint: #f4f4f2;
+  --radius: 20px;
+  --shadow: 0 10px 21px rgba(0, 0, 0, 0.14);
+  --gutter: clamp(20px, 4vw, 64px);
+  --measure: 1240px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
+}
+
+body {
+  background: #fff;
+  color: #000;
+  font-family: "Rethink Sans", Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  line-height: 1.3;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bau :is(h1, h2, h3) {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.bau h1 {
+  font-size: clamp(44px, 7.4vw, 128px);
+  line-height: 0.95;
+  white-space: nowrap;
+}
+
+.bau h2 {
+  font-size: clamp(38px, 5.4vw, 84px);
+  line-height: 0.98;
+  margin-bottom: clamp(32px, 4vw, 56px);
+  text-align: center;
+}
+
+.bau h3 {
+  font-size: 22px;
+}
+
+.bau p {
+  margin: 0;
+}
+
+/* Zero specificity, so a component's own colour always wins over it. */
+:where(.bau) a {
+  color: inherit;
+}
+
+:where(.bau) :is(button, input, select, textarea) {
+  color: inherit;
+  font: inherit;
+}
+
+.bau-sub {
+  color: var(--muted);
+  font-size: clamp(20px, 1.7vw, 26px);
+  margin: -24px auto 48px !important;
+  max-width: 28em;
+  text-align: center;
+}
+
+.bau-small {
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 20px !important;
+}
+
+.bau-small--center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 28px !important;
+  max-width: 36em;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------ Pills */
+
+.bau-pill {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 20px;
+  font-weight: 600;
+  gap: 8px;
+  padding: 9px 22px 8px;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  white-space: nowrap;
+}
+
+.bau-pill:hover {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.bau-pill--dark {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.bau-pill--dark:hover {
+  background: #333;
+  border-color: #333;
+}
+
+.bau-pill--light {
+  background: #fff;
+  border-color: #fff;
+  color: #000;
+}
+
+.bau-pill--light:hover {
+  background: #e7e7e7;
+  border-color: #e7e7e7;
+}
+
+.bau-pill .button-arrow {
+  height: 0.8em;
+  width: 0.8em;
+}
+
+.bau-switch {
+  background: var(--tint);
+  border-radius: 100px;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 3px;
+}
+
+.bau-switch button {
+  background: transparent;
+  border: 0;
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 7px 15px 6px;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.bau-switch button[aria-selected="true"] {
+  background: #000;
+  color: #fff;
+}
+
+/* ----------------------------------------------------------------- Header */
+
+.bau-header {
+  align-items: center;
+  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.82);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr auto 1fr;
+  padding: 14px var(--gutter);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.bau-header > .bau-pill {
+  justify-self: end;
+}
+
+.bau-logo {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+.bau-logo span {
+  font-weight: 400;
+}
+
+.bau-pillnav {
+  background: var(--tint);
+  border-radius: 100px;
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+}
+
+.bau-pillnav a {
+  border-radius: 100px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 7px 16px 6px;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.bau-pillnav a:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* ------------------------------------------------------------------- Hero */
+
+.bau-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  min-height: calc(100svh - 72px);
+  justify-content: center;
+  padding: 60px max(var(--gutter), calc((100% - var(--measure)) / 2)) 80px;
+  text-align: center;
+}
+
+.bau-hero {
+  overflow: hidden;
+  position: relative;
+}
+
+.bau-hero > :not(.bau-drop) {
+  position: relative;
+  z-index: 0;
+}
+
+.bau-hero .bau-actions {
+  z-index: 2;
+}
+
+.bau-hero p {
+  color: var(--muted);
+  font-size: clamp(20px, 1.9vw, 28px);
+}
+
+/* What the pointer leaves behind. Under the words (z-index 0), untouchable
+   (no pointer events), gone once it has faded. */
+.bau-drop {
+  animation: bau-fade 2.4s ease-out both;
+  font-size: 96px;
+  left: 0;
+  line-height: 1;
+  transform-origin: center;
+  translate: -50% -50%;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  user-select: none;
+  z-index: 1;
+}
+
+/* A plop: in from a blur with a small overshoot, out soft. */
+@keyframes bau-fade {
+  0% {
+    filter: blur(14px);
+    opacity: 0;
+    transform: scale(0.4) rotate(0);
+  }
+  14% {
+    filter: blur(0);
+    opacity: 1;
+    transform: scale(1.12) rotate(var(--spin, 0));
+  }
+  22% {
+    transform: scale(1) rotate(var(--spin, 0));
+  }
+  60% {
+    filter: blur(0);
+    opacity: 1;
+  }
+  100% {
+    filter: blur(8px);
+    opacity: 0;
+    transform: scale(1.06) rotate(var(--spin, 0));
+  }
+}
+
+/* ------------------------------------------------------------------ Logos */
+
+.bau-logos {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 24px 64px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  padding: 28px var(--gutter);
+}
+
+.bau-logos p {
+  font-weight: 600;
+  max-width: 30em;
+}
+
+.bau-logos ul {
+  display: flex;
+  gap: 40px;
+  justify-content: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Each slot is a fixed box; a logo fades in or out inside it, so a swap never
+   moves its neighbours. The heights come from the same area rule as the wall
+   on the home page, so Meta and Marvel carry the same weight. */
+.bau-logos li {
+  display: grid;
+  height: 44px;
+  place-items: center;
+  width: 110px;
+}
+
+.bau-logos li > span {
+  color: #000;
+  display: flex;
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.bau-logos li > span.is-in {
+  opacity: 0.8;
+  transform: none;
+}
+
+.bau-logos li > span.is-out {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.bau-logos svg {
+  height: var(--h, 28px);
+  max-width: 120px;
+  width: auto;
+}
+
+/* --------------------------------------------------------------- Sections */
+
+.bau-section {
+  margin: 0 auto;
+  max-width: var(--measure);
+  padding: clamp(64px, 7vw, 112px) var(--gutter);
+}
+
+.bau-section--tinted {
+  border-top: 1px solid var(--line);
+}
+
+/* --------------------------------------------------------------- Showcase */
+
+.bau-show-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.bau-show {
+  display: grid;
+}
+
+/* `width: 100%` because the auto margins would otherwise shrink the frame to
+   the iframe's intrinsic 300px. */
+.bau-browser {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  margin: 0 auto;
+  overflow: hidden;
+  transition: width 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  width: 100%;
+}
+
+.bau-browser__bar {
+  align-items: center;
+  background: #f3f3f3;
+  display: flex;
+  gap: 6px;
+  padding: 10px 14px;
+}
+
+.bau-browser__bar > span {
+  background: #d4d4d4;
+  border-radius: 50%;
+  height: 11px;
+  width: 11px;
+}
+
+.bau-browser__url {
+  background: #fff;
+  border-radius: 100px;
+  color: var(--muted);
+  font-size: 13px;
+  margin-left: 12px;
+  overflow: hidden;
+  padding: 3px 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bau-browser__open {
+  border-radius: 8px;
+  color: #999;
+  display: grid;
+  height: 26px;
+  margin-left: auto;
+  place-items: center;
+  width: 30px;
+}
+
+.bau-browser__open:hover {
+  color: #000;
+}
+
+.bau-browser__open svg {
+  height: 17px;
+  width: 17px;
+}
+
+.bau-browser__devices {
+  display: flex;
+  gap: 2px;
+  margin-left: 6px;
+}
+
+.bau-browser__devices button {
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: #999;
+  cursor: pointer;
+  display: grid;
+  height: 26px;
+  place-items: center;
+  width: 30px;
+}
+
+.bau-browser__devices button[aria-selected="true"] {
+  background: #fff;
+  color: #000;
+}
+
+.bau-browser__devices svg {
+  height: 17px;
+  width: 17px;
+}
+
+/* `width: 100%` matters once the script sets a height: with only a height
+   and an aspect-ratio, the width would be worked out from the height. */
+.bau-browser__view {
+  aspect-ratio: 16 / 11;
+  background: #fff;
+  overflow: hidden;
+  position: relative;
+  transition: height 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  width: 100%;
+}
+
+/* The tour's cursor. It sits over the frame and never takes a pointer event
+   of its own; the frame underneath keeps working while it is shown. */
+.bau-cursor {
+  height: 24px;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transition: transform 650ms cubic-bezier(0.65, 0, 0.35, 1), opacity 300ms ease;
+  width: 24px;
+  z-index: 2;
+}
+
+.bau-cursor svg {
+  display: block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+  height: 100%;
+  transition: transform 120ms ease;
+  width: 100%;
+}
+
+.bau-cursor.is-visible {
+  opacity: 1;
+}
+
+.bau-cursor.is-down svg {
+  transform: scale(0.8);
+}
+
+/* Sized and scaled by the script: the iframe is as wide as a desktop and
+   shrunk to the frame, so the preview shows the desktop design. */
+.bau-browser__view iframe {
+  border: 0;
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+/* --------------------------------------------------------------- Features */
+
+.bau-features {
+  align-items: stretch;
+  display: grid;
+  gap: clamp(24px, 4vw, 64px);
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  margin: 0 auto;
+  max-width: 1240px;
+}
+
+.bau-features__list {
+  border-top: 1px solid var(--line);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bau-features__list li {
+  border-bottom: 1px solid var(--line);
+}
+
+/* Title always, sentence only for the one on stage: a grid row that goes
+   from 0fr to 1fr, so it animates open and shut. */
+.bau-features__list button {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: block;
+  padding: 15px 0;
+  text-align: left;
+  width: 100%;
+}
+
+.bau-features__list button:focus {
+  outline: none;
+}
+
+.bau-features__list button:focus-visible h3 {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.bau-features__list h3 {
+  color: var(--muted);
+  font-size: clamp(19px, 1.6vw, 22px);
+  transition: color 160ms ease;
+}
+
+.bau-features__list button:hover h3,
+.bau-features__list button[aria-current="true"] h3 {
+  color: #000;
+}
+
+.bau-features__list p {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 320ms cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.bau-features__list p span {
+  color: #444;
+  font-size: 15px;
+  line-height: 1.45;
+  max-width: 32em;
+  min-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 240ms ease, padding-top 320ms cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.bau-features__list button[aria-current="true"] p {
+  grid-template-rows: 1fr;
+}
+
+.bau-features__list button[aria-current="true"] p span {
+  opacity: 1;
+  padding-top: 6px;
+}
+
+.bau-features__stage {
+  background: var(--tint);
+  border-radius: var(--radius);
+  min-height: 520px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* One scene at a time, a window set wholly inside the stage. */
+.bau-vis {
+  animation: bau-in 320ms ease both;
+  inset: 0;
+  position: absolute;
+}
+
+.bau-vis[hidden] {
+  display: none;
+}
+
+.bau-vis__window {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 20px 40px rgba(0, 0, 0, 0.1);
+  inset: clamp(20px, 3vw, 32px);
+  overflow: hidden;
+  position: absolute;
+}
+
+/* Google ---------------------------------------------------------------- */
+
+.bau-vis__gbar {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  padding: 14px 22px 10px;
+}
+
+.bau-vis__glogo {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.bau-vis__search {
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  font-size: 15px;
+  max-width: 460px;
+  min-height: 40px;
+  padding: 9px 16px;
+}
+
+.bau-vis__search::after {
+  color: var(--muted);
+  content: "⌕";
+  float: right;
+}
+
+.bau-vis__search [data-search]::after {
+  animation: bau-blink 0.9s steps(1) infinite;
+  background: #000;
+  content: "";
+  display: inline-block;
+  height: 1em;
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  width: 2px;
+}
+
+.is-ready .bau-vis__search [data-search]::after {
+  display: none;
+}
+
+.bau-vis__gtabs {
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  display: flex;
+  font-size: 12px;
+  gap: 20px;
+  padding: 0 22px 0 62px;
+}
+
+.bau-vis__gtabs span {
+  border-bottom: 2px solid transparent;
+  padding: 4px 0 8px;
+}
+
+.bau-vis__gtabs span.is-on {
+  border-color: #000;
+  color: #000;
+}
+
+.bau-vis__gbody {
+  opacity: 0;
+  padding: 14px 22px 18px 62px;
+  transform: translateY(8px);
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+
+.is-ready .bau-vis__gbody {
+  opacity: 1;
+  transform: none;
+}
+
+/* The "Enter": the box flashes once before the results come. */
+.is-entered .bau-vis__search {
+  animation: bau-enter 240ms ease;
+}
+
+@keyframes bau-enter {
+  50% {
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.bau-vis__map {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px) 0 0 / 100% 24px,
+    linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px) 0 0 / 24px 100%,
+    #ececea;
+  border-radius: 10px;
+  height: 104px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* The map drifts while the pins drop in; the firm's pin lands last and
+   sends out a ring. All of it waits for the search to be typed. */
+.is-ready .bau-vis__map {
+  animation: bau-drift 12s linear infinite;
+}
+
+@keyframes bau-drift {
+  to {
+    background-position: 0 24px, 24px 0, 0 0;
+  }
+}
+
+.bau-vis__map i {
+  background: #fff;
+  border: 2px solid #999;
+  border-radius: 50% 50% 50% 0;
+  height: 14px;
+  opacity: 0;
+  position: absolute;
+  transform: translate(-50%, -100%) rotate(-45deg) scale(0);
+  transform-origin: bottom left;
+  width: 14px;
+}
+
+.is-ready .bau-vis__map i {
+  animation: bau-pin 400ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.is-ready .bau-vis__map i:nth-child(2) { animation-delay: 200ms; }
+.is-ready .bau-vis__map i:nth-child(3) { animation-delay: 350ms; }
+.is-ready .bau-vis__map i:nth-child(4) { animation-delay: 500ms; }
+
+.bau-vis__map i.is-own {
+  background: #000;
+  border-color: #000;
+  height: 20px;
+  width: 20px;
+}
+
+.is-ready .bau-vis__map i.is-own {
+  animation-delay: 800ms;
+}
+
+.bau-vis__map i.is-own::after {
+  border: 2px solid #000;
+  border-radius: 50%;
+  content: "";
+  inset: -4px;
+  opacity: 0;
+  position: absolute;
+}
+
+.is-ready .bau-vis__map i.is-own::after {
+  animation: bau-ring 1.6s ease-out 1200ms infinite;
+}
+
+@keyframes bau-pin {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%) rotate(-45deg) scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%) rotate(-45deg) scale(1);
+  }
+}
+
+@keyframes bau-ring {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+
+.bau-vis__pack {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.bau-vis__pack > div {
+  align-items: center;
+  border-top: 1px solid var(--line);
+  display: grid;
+  font-size: 12px;
+  gap: 0 12px;
+  grid-template-columns: 1fr auto;
+  padding: 7px 14px;
+}
+
+.bau-vis__pack > div:first-child {
+  border-top: 0;
+}
+
+.is-ready .bau-vis__pack > div.is-own {
+  animation: bau-highlight 600ms ease 1300ms both;
+}
+
+@keyframes bau-highlight {
+  to {
+    background: var(--tint);
+  }
+}
+
+.bau-vis__pack b {
+  font-size: 13px;
+}
+
+.bau-vis__pack span {
+  color: var(--muted);
+}
+
+.bau-vis__pack em {
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  color: #000;
+  font-size: 11px;
+  font-style: normal;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  padding: 4px 10px;
+}
+
+.bau-vis__result {
+  margin-top: 14px;
+}
+
+.bau-vis__result span {
+  color: var(--muted);
+  display: block;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+.bau-vis__result b {
+  color: #1a0dab;
+  display: block;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.bau-vis__sitelinks {
+  color: #1a0dab;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 12px;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+/* ChatGPT --------------------------------------------------------------- */
+
+.bau-vis__window--chat {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+}
+
+.bau-vis__side {
+  background: #f7f7f7;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 12px;
+}
+
+.bau-vis__side i {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  display: block;
+  height: 10px;
+}
+
+.bau-vis__side i:first-child {
+  background: #000;
+  border-radius: 50%;
+  height: 22px;
+  margin-bottom: 8px;
+  width: 22px;
+}
+
+.bau-vis__thread {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
+  padding: 24px 28px 22px;
+}
+
+.bau-vis__q {
+  align-self: flex-end;
+  background: var(--tint);
+  border-radius: 18px 18px 4px 18px;
+  font-size: 15px;
+  max-width: 72%;
+  padding: 10px 15px;
+}
+
+.bau-vis__a {
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 34em;
+  min-height: 7.5em;
+}
+
+.bau-vis__a mark {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  color: inherit;
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+.bau-vis__a.is-typing::after {
+  animation: bau-blink 0.9s steps(1) infinite;
+  background: #000;
+  content: "";
+  display: inline-block;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  width: 8px;
+}
+
+@keyframes bau-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.bau-vis__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.bau-vis__sources.is-visible {
+  opacity: 1;
+}
+
+.bau-vis__sources span {
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 3px 10px;
+}
+
+.bau-vis__sources span.is-own {
+  border-color: #000;
+  color: #000;
+}
+
+.bau-vis__prompt {
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: auto;
+  padding: 11px 16px;
+}
+
+/* Mail ------------------------------------------------------------------ */
+
+.bau-vis__window--mail {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+}
+
+.bau-vis__inbox {
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+}
+
+.bau-vis__inbox > button {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  display: grid;
+  font-size: 12px;
+  gap: 2px 8px;
+  grid-template-columns: 1fr auto;
+  padding: 11px 14px;
+  text-align: left;
+  transition: background-color 160ms ease;
+}
+
+.bau-vis__inbox > button:hover {
+  background: #fafafa;
+}
+
+.bau-vis__inbox > button.is-on {
+  background: var(--tint);
+}
+
+.bau-vis__inbox b {
+  font-size: 13px;
+}
+
+.bau-vis__inbox span {
+  color: var(--muted);
+  grid-column: 1 / -1;
+}
+
+.bau-vis__inbox i {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+}
+
+.bau-vis__inbox > button.is-new b::before {
+  background: #000;
+  border-radius: 50%;
+  content: "";
+  display: inline-block;
+  height: 7px;
+  margin-right: 7px;
+  vertical-align: 1px;
+  width: 7px;
+}
+
+.bau-vis__inbox > button.is-new {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+
+.is-ready .bau-vis__inbox > button.is-new {
+  animation: bau-arrive 500ms cubic-bezier(0.2, 0, 0.2, 1) 300ms both;
+}
+
+@keyframes bau-arrive {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bau-vis__mail {
+  padding: 22px 28px;
+}
+
+.bau-vis__mail[hidden] {
+  display: none;
+}
+
+.bau-vis__mail h4 {
+  font-size: 18px;
+  margin: 0 0 4px;
+}
+
+.bau-vis__from {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  margin-bottom: 18px;
+}
+
+.bau-vis__mail dl {
+  display: grid;
+  font-size: 14px;
+  gap: 9px 18px;
+  grid-template-columns: auto 1fr;
+  margin: 0;
+}
+
+.bau-vis__mail dt {
+  color: var(--muted);
+}
+
+.bau-vis__mail dd {
+  margin: 0;
+}
+
+.bau-vis__mail dd i {
+  background: #ddd;
+  border-radius: 6px;
+  display: inline-block;
+  height: 40px;
+  margin-right: 6px;
+  vertical-align: middle;
+  width: 54px;
+}
+
+.bau-vis__plain {
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 30em;
+}
+
+.bau-vis__note {
+  background: var(--tint);
+  border-radius: 10px;
+  color: #444;
+  font-size: 13px;
+  margin-top: 18px;
+  max-width: 30em;
+  padding: 10px 12px;
+}
+
+/* The first mail's lines arrive one after another. */
+.bau-vis__mail[data-mailpane="site"] > * {
+  opacity: 0;
+}
+
+.is-ready .bau-vis__mail[data-mailpane="site"] > * {
+  animation: bau-reveal 400ms ease both;
+}
+
+.is-ready .bau-vis__mail[data-mailpane="site"] h4 { animation-delay: 900ms; }
+.is-ready .bau-vis__mail[data-mailpane="site"] .bau-vis__from { animation-delay: 1000ms; }
+.is-ready .bau-vis__mail[data-mailpane="site"] dl { animation-delay: 1100ms; }
+
+.bau-vis__mail[data-mailpane="site"] dl > * {
+  opacity: 0;
+}
+
+.is-ready .bau-vis__mail[data-mailpane="site"] dl > * {
+  animation: bau-reveal 300ms ease both;
+}
+
+.is-ready .bau-vis__mail[data-mailpane="site"] dl > :nth-child(-n + 2) { animation-delay: 1200ms; }
+.is-ready .bau-vis__mail[data-mailpane="site"] dl > :nth-child(n + 3):nth-child(-n + 4) { animation-delay: 1350ms; }
+.is-ready .bau-vis__mail[data-mailpane="site"] dl > :nth-child(n + 5):nth-child(-n + 6) { animation-delay: 1500ms; }
+.is-ready .bau-vis__mail[data-mailpane="site"] dl > :nth-child(n + 7):nth-child(-n + 8) { animation-delay: 1650ms; }
+.is-ready .bau-vis__mail[data-mailpane="site"] dl > :nth-child(n + 9):nth-child(-n + 10) { animation-delay: 1800ms; }
+.is-ready .bau-vis__mail[data-mailpane="site"] dl > :nth-child(n + 11) { animation-delay: 1950ms; }
+
+/* Once the visitor has read other mails, the first one is simply there. */
+.is-seen .bau-vis__mail[data-mailpane="site"] > *,
+.is-seen .bau-vis__mail[data-mailpane="site"] dl > * {
+  animation: none;
+  opacity: 1;
+}
+
+/* Careers --------------------------------------------------------------- */
+
+.bau-vis__window--apply {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The firm's own site, so there is no doubt whose job this is. */
+.bau-vis__sitebar {
+  align-items: center;
+  background: #111;
+  color: #fff;
+  display: flex;
+  font-size: 12px;
+  gap: 16px;
+  padding: 12px 22px;
+}
+
+.bau-vis__sitebar b {
+  font-size: 13px;
+  margin-right: auto;
+}
+
+.bau-vis__sitebar span {
+  opacity: 0.6;
+}
+
+.bau-vis__sitebar span.is-on {
+  border-bottom: 1px solid #fff;
+  opacity: 1;
+}
+
+.bau-vis__job {
+  display: grid;
+  flex: 1;
+  gap: 0 28px;
+  grid-template-columns: 1fr 1fr;
+  padding: 22px 26px 24px;
+}
+
+.bau-vis__jobhead {
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 24px;
+}
+
+.bau-vis__jobhead span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.bau-vis__jobhead h4 {
+  font-size: clamp(20px, 1.8vw, 26px);
+  margin: 0;
+}
+
+.bau-vis__jobhead small {
+  color: #444;
+  font-size: 13px;
+}
+
+.bau-vis__jobhead p {
+  color: #555;
+  font-size: 13px;
+  line-height: 1.45;
+  margin-top: 6px;
+}
+
+.bau-vis__jobform {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bau-vis__jobform > b {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.bau-vis__jobform > small {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.bau-vis__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bau-vis__chips span {
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: 13px;
+  padding: 7px 14px 6px;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.bau-vis__chips span.is-on {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.bau-vis__field {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  display: flex;
+  font-size: 14px;
+  justify-content: space-between;
+  margin-top: 8px;
+  min-height: 44px;
+  padding: 5px 5px 5px 13px;
+}
+
+.bau-vis__field [data-apply-phone]:empty::before {
+  color: #bbb;
+  content: "Ihre Telefonnummer";
+}
+
+.bau-vis__field i {
+  background: #000;
+  border-radius: 100px;
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 600;
+  padding: 7px 14px 6px;
+  transition: transform 120ms ease;
+}
+
+.bau-vis__field i.is-down {
+  transform: scale(0.94);
+}
+
+.bau-vis__done {
+  background: var(--tint);
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  padding: 10px 12px;
+  transition: opacity 300ms ease;
+}
+
+.bau-vis__done.is-visible {
+  opacity: 1;
+}
+
+/* Reference ------------------------------------------------------------- */
+
+.bau-vis__window--ref {
+  display: flex;
+  flex-direction: column;
+}
+
+.bau-vis__wipe {
+  cursor: col-resize;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.bau-vis__wipe img {
+  display: block;
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+}
+
+.bau-vis__wipe img.is-before {
+  clip-path: inset(0 calc(100% - var(--split)) 0 0);
+}
+
+.bau-vis__wipe::after {
+  background: #fff;
+  bottom: 0;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+  content: "";
+  left: var(--split);
+  position: absolute;
+  top: 0;
+  width: 2px;
+}
+
+.bau-vis__wipe span {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 10px;
+  position: absolute;
+  top: 14px;
+}
+
+.bau-vis__wipe .is-before-label {
+  left: 14px;
+}
+
+.bau-vis__wipe .is-after-label {
+  right: 14px;
+}
+
+.bau-vis__refmeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 22px 16px;
+}
+
+.bau-vis__refmeta span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* Care ------------------------------------------------------------------ */
+
+.bau-vis__window--care {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  padding: 28px 32px;
+}
+
+.bau-vis__msg {
+  align-self: flex-start;
+  max-width: 70%;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+
+.bau-vis__msg--you {
+  align-self: flex-end;
+}
+
+.bau-vis__msg.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.bau-vis__msg p {
+  background: var(--tint);
+  border-radius: 16px 16px 16px 4px;
+  font-size: 15px;
+  line-height: 1.4;
+  padding: 10px 14px;
+}
+
+.bau-vis__msg--you p {
+  background: #000;
+  border-radius: 16px 16px 4px 16px;
+  color: #fff;
+}
+
+.bau-vis__msg span {
+  color: var(--muted);
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.bau-vis__msg--you span {
+  text-align: right;
+}
+
+/* The site, between the two: the reference turns up in it. */
+.bau-vis__site {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.bau-vis__siteline {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.bau-vis__refs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bau-vis__refcard {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  gap: 12px;
+}
+
+.bau-vis__refcard i {
+  background: #ddd center / cover no-repeat;
+  border-radius: 8px;
+  display: block;
+  flex: none;
+  height: 48px;
+  width: 72px;
+}
+
+.bau-vis__refcard small {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+}
+
+/* The new reference: nothing, then there with a bounce. */
+.bau-vis__refcard.is-new {
+  display: none;
+}
+
+.bau-vis__refcard.is-new.is-visible {
+  animation: bau-pop 480ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  display: flex;
+}
+
+@keyframes bau-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes bau-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes bau-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------- Process */
+
+.bau-steps {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 0;
+}
+
+.bau-steps li {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  transition: opacity 240ms ease;
+}
+
+.bau-steps:hover li:not(:hover) {
+  opacity: 0.3;
+}
+
+.bau-steps span {
+  color: var(--muted);
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.bau-steps h3 {
+  font-size: clamp(22px, 2vw, 28px);
+  margin-bottom: 10px;
+}
+
+.bau-steps p {
+  color: #333;
+  font-size: 17px;
+}
+
+/* ---------------------------------------------------------------- Pricing */
+
+.bau-prices {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.bau-price {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 32px;
+}
+
+.bau-price--featured {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.bau-price h3 {
+  color: var(--muted);
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+.bau-price--featured h3 {
+  color: #999;
+}
+
+.bau-price__amount {
+  font-size: clamp(40px, 3.6vw, 56px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.bau-price ul {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 20px 0 28px;
+  padding: 0;
+}
+
+.bau-price li {
+  font-size: 18px;
+}
+
+.bau-price .bau-pill {
+  align-self: flex-start;
+}
+
+/* -------------------------------------------------------------------- FAQ */
+
+.bau-faq {
+  border-top: 1px solid var(--line);
+  margin: 0 auto;
+  max-width: 820px;
+}
+
+.bau-faq details {
+  border-bottom: 1px solid var(--line);
+}
+
+.bau-faq summary {
+  cursor: pointer;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  list-style: none;
+  padding: 20px 40px 20px 0;
+  position: relative;
+}
+
+.bau-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.bau-faq summary::after {
+  content: "+";
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  position: absolute;
+  right: 4px;
+  top: 18px;
+  transition: transform 200ms ease;
+}
+
+.bau-faq details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.bau-faq details p {
+  color: #333;
+  max-width: 36em;
+  overflow: hidden;
+  padding-bottom: 22px;
+}
+
+/* ---------------------------------------------------------------- Contact */
+
+.bau-contact {
+  background: #000;
+  color: #fff;
+  max-width: none;
+}
+
+.bau-contact__copy {
+  margin: 0 auto 48px;
+  max-width: 30em;
+  text-align: center;
+}
+
+.bau-contact__copy h2 {
+  margin-bottom: 24px;
+}
+
+.bau-contact__copy p {
+  color: #bbb;
+  font-size: clamp(20px, 1.7vw, 24px);
+}
+
+.bau-form {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+  margin: 0 auto;
+  max-width: 720px;
+}
+
+.bau-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.bau-field--wide {
+  grid-column: 1 / -1;
+}
+
+.bau-field > span {
+  color: #999;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bau-field input {
+  background: #141414;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 18px;
+  outline: none;
+  padding: 12px 14px;
+  transition: border-color 160ms ease;
+  width: 100%;
+}
+
+.bau-field input:focus {
+  border-color: #fff;
+}
+
+.bau-form .bau-pill--dark {
+  background: #fff;
+  border-color: #fff;
+  border-radius: 10px;
+  color: #000;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 14px 20px 13px;
+}
+
+.bau-form .bau-pill--dark:hover {
+  background: #e7e7e7;
+  border-color: #e7e7e7;
+}
+
+.bau-form.is-sending button {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.bau-form__status {
+  color: #bbb;
+  min-height: 1.4em;
+}
+
+.bau-form.is-sent {
+  display: block;
+}
+
+.bau-honeypot {
+  height: 1px;
+  left: -9999px;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.bau-footer {
+  background: #000;
+  border-top: 1px solid #222;
+  color: #777;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  gap: 12px 24px;
+  justify-content: space-between;
+  padding: 24px var(--gutter) 32px;
+}
+
+.bau-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.bau-footer a {
+  text-decoration: none;
+}
+
+.bau-footer a:hover {
+  color: #fff;
+}
+
+/* ------------------------------------------------------------ Breakpoints */
+
+@media (max-width: 1000px) {
+  .bau-logos {
+    grid-template-columns: 1fr;
+  }
+
+  .bau-logos ul {
+    flex-wrap: wrap;
+    gap: 16px 32px;
+    justify-content: flex-start;
+  }
+
+
+  .bau-steps,
+  .bau-prices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bau-features {
+    grid-template-columns: 1fr;
+  }
+
+  .bau-features__stage {
+    height: 520px;
+  }
+
+  .bau-vis__window--mail,
+  .bau-vis__job {
+    grid-template-columns: 1fr;
+  }
+
+  .bau-vis__inbox {
+    display: none;
+  }
+
+  .bau-vis__jobhead {
+    border-bottom: 1px solid var(--line);
+    border-right: 0;
+    margin-bottom: 14px;
+    padding: 0 0 14px;
+  }
+
+  .bau-vis__jobhead p {
+    display: none;
+  }
+
+  .bau-vis__inbox {
+    display: none;
+  }
+
+
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 18px;
+  }
+
+  .bau-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .bau-pillnav {
+    display: none;
+  }
+
+  .bau-logo span {
+    display: none;
+  }
+
+  .bau-header .bau-pill {
+    font-size: 16px;
+    padding: 7px 16px 6px;
+  }
+
+  .bau-hero {
+    min-height: 0;
+    padding-top: 80px;
+  }
+
+  .bau h1 {
+    white-space: normal;
+  }
+
+  .bau-steps,
+  .bau-prices,
+  .bau-form {
+    grid-template-columns: 1fr;
+  }
+
+  /* No room for a desktop site on a phone; the phone layout is the one. */
+  .bau-browser__devices {
+    display: none;
+  }
+
+  .bau-faq summary {
+    font-size: 19px;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+}

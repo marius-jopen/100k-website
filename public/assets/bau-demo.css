@@ -1,0 +1,865 @@
+/*
+ * The four demo websites under /bau/demo/.
+ *
+ * One skeleton, four sites. The palette and the shapes come from `data-trade`
+ * on the root; the layout differences — where the photograph sits, whether
+ * services are cards or numbered rows — are keyed off it below. Everything is
+ * sized with clamp() so the page reads the same in the landing page's frame
+ * as in a tab of its own.
+ */
+
+@font-face {
+  font-family: "Rethink Sans";
+  src: url("/assets/fonts/rethink-sans-latin-wght-normal.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400 600;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: "Rethink Sans", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.demo {
+  --bg: #fff;
+  --ink: #111;
+  --muted: #6f6f6f;
+  --line: rgba(0, 0, 0, 0.12);
+  --card: #f4f4f2;
+  --cta: #111;
+  --cta-ink: #fff;
+  --radius: 18px;
+  --gutter: clamp(20px, 4vw, 64px);
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* Abbruch: dark, loud, one message. */
+.demo[data-trade="abbruch"] {
+  --bg: #111;
+  --ink: #fff;
+  --muted: #9a9a9a;
+  --line: rgba(255, 255, 255, 0.14);
+  --card: #1c1c1c;
+  --cta: #fff;
+  --cta-ink: #000;
+  --radius: 12px;
+}
+
+/* Rohbau: warm paper, editorial, numbered. */
+.demo[data-trade="rohbau"] {
+  --bg: #f3f0ea;
+  --ink: #1a1612;
+  --muted: #6e675d;
+  --line: rgba(26, 22, 18, 0.14);
+  --card: #e9e4da;
+  --cta: #1a1612;
+  --cta-ink: #f3f0ea;
+  --radius: 6px;
+}
+
+/* Sanierung: white, soft, green. */
+.demo[data-trade="sanierung"] {
+  --bg: #fff;
+  --ink: #1c1c1c;
+  --muted: #707070;
+  --line: rgba(0, 0, 0, 0.1);
+  --card: #f2f4f0;
+  --cta: #2f5d4a;
+  --cta-ink: #fff;
+  --radius: 24px;
+}
+
+/* Tiefbau: navy, functional. */
+.demo[data-trade="tiefbau"] {
+  --bg: #0f1c2b;
+  --ink: #fff;
+  --muted: #9fb0c3;
+  --line: rgba(255, 255, 255, 0.14);
+  --card: #172a3e;
+  --cta: #fff;
+  --cta-ink: #0f1c2b;
+  --radius: 10px;
+}
+
+.demo :is(h1, h2, h3) {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+}
+
+.demo h1 {
+  font-size: clamp(40px, 6.4vw, 96px);
+  letter-spacing: -0.03em;
+}
+
+.demo h2 {
+  font-size: clamp(32px, 4.2vw, 60px);
+}
+
+.demo h3 {
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.15;
+}
+
+.demo p {
+  margin: 0;
+}
+
+/* Zero specificity, so a button's own colour always wins over it. */
+:where(.demo) a {
+  color: inherit;
+}
+
+:where(.demo) :is(button, input) {
+  color: inherit;
+  font: inherit;
+}
+
+.demo img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------------- Buttons */
+
+.demo-btn {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 17px;
+  font-weight: 600;
+  gap: 8px;
+  padding: 11px 22px 10px;
+  text-decoration: none;
+  transition: transform 160ms ease, opacity 160ms ease;
+  white-space: nowrap;
+}
+
+.demo-btn:hover {
+  transform: translateY(-1px);
+}
+
+.demo-btn--primary {
+  background: var(--cta);
+  border-color: var(--cta);
+  color: var(--cta-ink);
+}
+
+.demo-btn .button-arrow {
+  height: 0.8em;
+  width: 0.8em;
+}
+
+.demo[data-trade="rohbau"] .demo-btn,
+.demo[data-trade="tiefbau"] .demo-btn {
+  border-radius: var(--radius);
+}
+
+/* ----------------------------------------------------------------- Banner */
+
+.demo-banner {
+  align-items: center;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  gap: 8px 24px;
+  justify-content: space-between;
+  padding: 10px var(--gutter);
+}
+
+.demo-banner a {
+  font-weight: 600;
+}
+
+.demo.is-embedded .demo-banner {
+  display: none;
+}
+
+/* ----------------------------------------------------------------- Header */
+
+.demo-header {
+  align-items: center;
+  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 24px;
+  padding: 14px var(--gutter);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.demo-brand {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.demo-nav {
+  display: flex;
+  gap: 22px;
+  margin-left: auto;
+}
+
+.demo-nav a {
+  font-size: 16px;
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.demo-nav a:hover {
+  opacity: 1;
+}
+
+.demo-phone {
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.demo[data-trade="rohbau"] .demo-header {
+  border-bottom-width: 2px;
+}
+
+/* ------------------------------------------------------------------- Hero */
+
+.demo-hero {
+  display: grid;
+  gap: clamp(24px, 4vw, 56px);
+  padding: clamp(32px, 5vw, 72px) var(--gutter);
+}
+
+.demo-hero__media {
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+
+.demo-hero__copy p {
+  color: var(--muted);
+  font-size: clamp(18px, 1.5vw, 22px);
+  margin: 20px 0 28px;
+  max-width: 32em;
+}
+
+.demo-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.demo-facts {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 24px 0 0;
+}
+
+.demo-facts b {
+  display: block;
+  font-size: clamp(26px, 2.6vw, 40px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.demo-facts span {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Abbruch: the photograph is the page; the words sit on it. Photograph and
+   words share one grid cell, so the words are placed against the photograph
+   and not against the facts row under it. */
+.demo[data-trade="abbruch"] .demo-hero {
+  gap: 0;
+  grid-template-areas: "stage" "facts";
+  padding: 0;
+}
+
+.demo[data-trade="abbruch"] .demo-hero__media {
+  aspect-ratio: 16 / 9;
+  border-radius: 0;
+  grid-area: stage;
+  max-height: 86vh;
+}
+
+.demo[data-trade="abbruch"] .demo-hero__media::after {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.85));
+  content: "";
+  inset: 0;
+  position: absolute;
+}
+
+.demo[data-trade="abbruch"] .demo-hero__copy {
+  align-self: end;
+  grid-area: stage;
+  max-width: 44em;
+  padding: 0 var(--gutter) clamp(24px, 5vw, 72px);
+  position: relative;
+  z-index: 1;
+}
+
+.demo[data-trade="abbruch"] .demo-hero__copy p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.demo[data-trade="abbruch"] .demo-facts {
+  border-top: 0;
+  grid-area: facts;
+  padding: clamp(24px, 3vw, 40px) var(--gutter);
+}
+
+/* Rohbau, Sanierung and Tiefbau: words beside the photograph, facts under
+   both. Placed by area rather than by order, because `order` alone would let
+   the full-width facts row slip in between the two. */
+.demo[data-trade="rohbau"] .demo-hero,
+.demo[data-trade="sanierung"] .demo-hero,
+.demo[data-trade="tiefbau"] .demo-hero {
+  align-items: center;
+  grid-template-areas: "media copy" "facts facts";
+  grid-template-columns: 1fr 1fr;
+}
+
+.demo[data-trade="rohbau"] .demo-hero {
+  grid-template-areas: "copy media" "facts facts";
+}
+
+.demo[data-trade="sanierung"] .demo-hero {
+  grid-template-columns: 1.1fr 0.9fr;
+}
+
+.demo[data-trade="rohbau"] .demo-hero__media,
+.demo[data-trade="sanierung"] .demo-hero__media,
+.demo[data-trade="tiefbau"] .demo-hero__media {
+  grid-area: media;
+}
+
+.demo[data-trade="rohbau"] .demo-hero__copy,
+.demo[data-trade="sanierung"] .demo-hero__copy,
+.demo[data-trade="tiefbau"] .demo-hero__copy {
+  grid-area: copy;
+}
+
+.demo[data-trade="rohbau"] .demo-facts,
+.demo[data-trade="sanierung"] .demo-facts,
+.demo[data-trade="tiefbau"] .demo-facts {
+  grid-area: facts;
+}
+
+.demo[data-trade="rohbau"] .demo-hero__media {
+  aspect-ratio: 4 / 5;
+  max-height: 72vh;
+}
+
+.demo[data-trade="tiefbau"] .demo-hero__media {
+  aspect-ratio: 5 / 4;
+}
+
+.demo[data-trade="sanierung"] .demo-hero__media {
+  aspect-ratio: 4 / 3;
+}
+
+/* In the hero the pair fills the frame; as a reference it is the frame. */
+.demo-hero__media > .demo-pair {
+  height: 100%;
+}
+
+/* A pair: two photographs on top of each other, the switch picks one. */
+.demo-pair {
+  overflow: hidden;
+  position: relative;
+}
+
+.demo-pair img {
+  inset: 0;
+  position: absolute;
+  transition: opacity 500ms ease;
+}
+
+.demo-pair img.is-after {
+  opacity: 1;
+}
+
+.demo-pair.show-before img.is-after {
+  opacity: 0;
+}
+
+.demo-pair__switch {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 100px;
+  bottom: 14px;
+  display: inline-flex;
+  gap: 2px;
+  left: 14px;
+  padding: 3px;
+  position: absolute;
+}
+
+.demo-pair__switch button {
+  background: transparent;
+  border: 0;
+  border-radius: 100px;
+  color: #000;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 14px 5px;
+}
+
+.demo-pair__switch button[aria-selected="true"] {
+  background: #000;
+  color: #fff;
+}
+
+/* --------------------------------------------------------------- Sections */
+
+.demo-section {
+  padding: clamp(56px, 7vw, 112px) var(--gutter);
+}
+
+.demo-section__head {
+  display: grid;
+  gap: 16px 48px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  margin-bottom: clamp(28px, 3vw, 48px);
+}
+
+.demo-section__head p {
+  color: var(--muted);
+  max-width: 30em;
+}
+
+/* --------------------------------------------------------------- Services */
+
+.demo-services {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.demo-services li {
+  background: var(--card);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px;
+}
+
+.demo-services__no {
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.demo-services p {
+  color: var(--muted);
+}
+
+/* Rows: a numbered list with hairlines, no boxes. */
+.demo-services--rows {
+  gap: 0;
+  grid-template-columns: 1fr;
+}
+
+.demo-services--rows li {
+  align-items: baseline;
+  background: transparent;
+  border-radius: 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 8px 32px;
+  grid-template-columns: 3em minmax(0, 0.8fr) minmax(0, 1.2fr);
+  padding: 24px 0;
+}
+
+.demo-services--rows li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.demo-services--rows h3 {
+  font-size: clamp(24px, 2.4vw, 36px);
+}
+
+/* ------------------------------------------------------------- References */
+
+.demo-refs {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.demo-ref__media {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.demo-ref p {
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 4px;
+}
+
+/* Rohbau: the first project is big, the rest smaller — a magazine spread. */
+.demo[data-trade="rohbau"] .demo-refs {
+  grid-template-columns: 2fr 1fr 1fr;
+}
+
+.demo[data-trade="rohbau"] .demo-ref:first-child .demo-ref__media {
+  aspect-ratio: 16 / 10;
+}
+
+/* ---------------------------------------------------------------- Request */
+
+.demo-request {
+  background: var(--card);
+}
+
+.demo-wizard {
+  background: var(--bg);
+  border-radius: var(--radius);
+  margin: 0 auto;
+  max-width: 760px;
+  min-height: 300px;
+  padding: clamp(24px, 3vw, 40px);
+  position: relative;
+}
+
+.demo-wizard__dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+
+.demo-wizard__dots span {
+  background: var(--line);
+  border-radius: 100px;
+  height: 5px;
+  transition: background-color 200ms ease, width 200ms ease;
+  width: 18px;
+}
+
+.demo-wizard__dots span.is-done {
+  background: var(--muted);
+}
+
+.demo-wizard__dots span.is-now {
+  background: var(--ink);
+  width: 32px;
+}
+
+.demo-wizard__step {
+  animation: demo-in 240ms ease both;
+}
+
+.demo-wizard__step h3 {
+  font-size: clamp(24px, 2.4vw, 34px);
+  margin-bottom: 22px;
+}
+
+.demo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.demo-chip {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 17px;
+  padding: 10px 18px 9px;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.demo-chip:hover {
+  border-color: var(--ink);
+}
+
+.demo-chip[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+.demo[data-trade="rohbau"] .demo-chip,
+.demo[data-trade="tiefbau"] .demo-chip {
+  border-radius: var(--radius);
+}
+
+.demo-wizard__fields {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 18px;
+}
+
+.demo-wizard input,
+.demo-apply input {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 17px;
+  outline: none;
+  padding: 11px 14px;
+  width: 100%;
+}
+
+.demo-wizard input:focus,
+.demo-apply input:focus {
+  border-color: var(--ink);
+}
+
+.demo-wizard__back {
+  background: transparent;
+  border: 0;
+  bottom: clamp(24px, 3vw, 40px);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0;
+  position: absolute;
+  right: clamp(24px, 3vw, 40px);
+}
+
+.demo-wizard__done dl {
+  display: grid;
+  gap: 6px 16px;
+  grid-template-columns: auto 1fr;
+  margin: 0 0 20px;
+}
+
+.demo-wizard__done dt {
+  color: var(--muted);
+}
+
+.demo-wizard__done dd {
+  margin: 0;
+}
+
+.demo-wizard__note {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+@keyframes demo-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ---------------------------------------------------------------- Careers */
+
+.demo-careers {
+  align-items: center;
+  display: grid;
+  gap: clamp(24px, 4vw, 64px);
+  grid-template-columns: 1fr 1.2fr;
+}
+
+.demo-careers__media {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  max-height: 560px;
+  overflow: hidden;
+}
+
+.demo-careers__copy p {
+  color: var(--muted);
+  margin: 18px 0 28px;
+  max-width: 30em;
+}
+
+.demo-apply {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.demo-apply__row {
+  display: flex;
+  gap: 10px;
+  max-width: 460px;
+}
+
+.demo-apply__done {
+  color: var(--ink) !important;
+  margin: 0 !important;
+}
+
+.demo-apply__done small {
+  color: var(--muted);
+  display: block;
+  margin-top: 4px;
+}
+
+/* ---------------------------------------------------------------- Contact */
+
+.demo-contact {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 32px;
+  grid-template-columns: 1.4fr 1fr 1fr;
+}
+
+.demo-contact h2 {
+  font-size: clamp(26px, 2.6vw, 40px);
+  margin-bottom: 14px;
+}
+
+.demo-contact h3 {
+  color: var(--muted);
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.demo-contact a {
+  text-decoration: none;
+}
+
+.demo-footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  gap: 8px 32px;
+  justify-content: space-between;
+  padding: 20px var(--gutter) 28px;
+}
+
+/* ------------------------------------------------------------ Breakpoints */
+
+@media (max-width: 900px) {
+  .demo-nav,
+  .demo-phone {
+    display: none;
+  }
+
+  .demo-header .demo-btn {
+    margin-left: auto;
+  }
+
+  .demo[data-trade="rohbau"] .demo-hero,
+  .demo[data-trade="tiefbau"] .demo-hero,
+  .demo[data-trade="sanierung"] .demo-hero,
+  .demo-careers,
+  .demo-contact,
+  .demo-section__head {
+    grid-template-columns: 1fr;
+  }
+
+  .demo[data-trade="rohbau"] .demo-hero,
+  .demo[data-trade="sanierung"] .demo-hero,
+  .demo[data-trade="tiefbau"] .demo-hero {
+    grid-template-areas: "media" "copy" "facts";
+  }
+
+  .demo[data-trade="rohbau"] .demo-hero__media,
+  .demo[data-trade="tiefbau"] .demo-hero__media,
+  .demo[data-trade="sanierung"] .demo-hero__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Narrow: the words come out from under the photograph. */
+  .demo[data-trade="abbruch"] .demo-hero__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .demo[data-trade="abbruch"] .demo-hero__media::after {
+    display: none;
+  }
+
+  .demo[data-trade="abbruch"] .demo-hero {
+    grid-template-areas: "stage" "copy" "facts";
+  }
+
+  .demo[data-trade="abbruch"] .demo-hero__copy {
+    grid-area: copy;
+    max-width: none;
+    padding: 28px var(--gutter) 0;
+  }
+
+  .demo[data-trade="abbruch"] .demo-hero__copy p {
+    color: var(--muted);
+  }
+
+  .demo-services,
+  .demo-refs,
+  .demo[data-trade="rohbau"] .demo-refs {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-services--rows li {
+    grid-template-columns: 3em 1fr;
+  }
+
+  .demo-services--rows p {
+    grid-column: 2;
+  }
+
+  .demo-careers__media {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (max-width: 600px) {
+  .demo-facts {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .demo-wizard__fields {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-apply__row {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .demo-wizard__step {
+    animation: none;
+  }
+}

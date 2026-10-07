@@ -43,7 +43,7 @@
 
     vec2 containUv(vec2 uv, vec2 textureSize) {
       vec2 fittedSize = containedSize(textureSize) / resolution;
-      return (uv - 0.5) / fittedSize + 0.5;
+      return uv / fittedSize;
     }
 
     float roundedMask(vec2 uv, vec2 textureSize) {
@@ -150,7 +150,7 @@
     if (!gl) {
       canvas.style.backgroundImage = `url("${sources[0]}")`;
       canvas.style.backgroundColor = "transparent";
-      canvas.style.backgroundPosition = "center";
+      canvas.style.backgroundPosition = "left bottom";
       canvas.style.backgroundRepeat = "no-repeat";
       canvas.style.backgroundSize = "contain";
       canvas.style.filter = "brightness(0.97)";

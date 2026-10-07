@@ -274,7 +274,7 @@
   // the trade appears and fades away again. Behind the words, never in front
   // of them, and never for anyone who asked for less motion.
   const hero = $(".bau-hero");
-  if (hero && !reduceMotion && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+  if (hero && !reduceMotion && matchMedia("(hover: hover) and (pointer: fine) and (min-width: 701px)").matches) {
     const PIECES = ["🏗️", "🚜", "🧱", "👷", "🔨", "🪣", "🚧", "🏠", "⛏️", "🪜", "🧰", "🪚"];
     let settle = 0;
     let lastX = -1e9;

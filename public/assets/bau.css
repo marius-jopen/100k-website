@@ -345,6 +345,10 @@ body {
   width: 110px;
 }
 
+.bau-logos li:nth-child(6) {
+  display: none;
+}
+
 .bau-logos li > span {
   color: #000;
   display: flex;
@@ -1958,9 +1962,12 @@ body {
     white-space: normal;
   }
 
-  /* Two buttons, one width, under each other. */
+  /* Two buttons, one width, under each other, with air between. */
   .bau-hero .bau-actions {
+    align-items: stretch;
     flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 12px;
     margin: 8px auto 0;
     max-width: 360px;
     width: 100%;
@@ -1969,10 +1976,11 @@ body {
   .bau-hero .bau-actions .bau-pill {
     font-size: 18px;
     justify-content: center;
-    padding: 12px 20px 11px;
+    padding: 13px 20px 12px;
+    width: 100%;
   }
 
-  /* The logos as an even grid, three to a row. */
+  /* The logos as an even grid, two to a row, six in all. */
   .bau-logos {
     gap: 20px;
     padding: 24px var(--gutter) 28px;
@@ -1984,40 +1992,52 @@ body {
 
   .bau-logos ul {
     display: grid;
-    gap: 14px 8px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-content: stretch;
   }
 
   .bau-logos li {
-    height: 40px;
+    height: 44px;
     width: auto;
   }
 
+  .bau-logos li:nth-child(6) {
+    display: grid;
+  }
+
   .bau-logos svg {
-    max-width: 88px;
-    transform: scale(0.85);
+    max-width: 110px;
   }
 
-  /* The trade switch in one row, scrolling sideways if it must. */
-  .bau-show-controls {
-    justify-content: flex-start;
-    margin: 0 calc(-1 * var(--gutter)) 20px;
-    overflow-x: auto;
-    padding: 0 var(--gutter);
-    scrollbar-width: none;
-  }
-
-  .bau-show-controls::-webkit-scrollbar {
-    display: none;
-  }
-
+  /* The trade switch as a column, every entry the full width. */
   .bau-show-controls .bau-switch {
-    flex-wrap: nowrap;
+    flex-direction: column;
+    width: 100%;
   }
 
   .bau-show-controls .bau-switch button {
-    white-space: nowrap;
+    padding: 10px 16px 9px;
+    text-align: center;
+  }
+
+  /* The steps: number on the left, the rest beside it. */
+  .bau-steps li {
+    align-items: baseline;
+    display: grid;
+    gap: 4px 16px;
+    grid-template-columns: 1.6em 1fr;
+    text-align: left;
+  }
+
+  .bau-steps span {
+    font-size: 18px;
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
+
+  .bau-steps h3 {
+    margin-bottom: 4px;
   }
 
   .bau-features__stage {

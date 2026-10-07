@@ -116,7 +116,7 @@ const FAQ = [
   },
 ];
 
-/* Five on screen, all twelve in rotation; the script swaps one at a time. The
+/* Six on screen (five on a desktop), all twelve in rotation; the script swaps one at a time. The
    area is smaller than the shell's wall because these sit in one quiet row. */
 const LOGO_SIZING = { area: 1500, min: 16, max: 40 };
 const logos = siteContent.clients
@@ -126,7 +126,7 @@ const logos = siteContent.clients
     svg: client.svg,
     height: clientLogoHeight(client.aspectRatio, client.opticalSize, LOGO_SIZING),
   }));
-const VISIBLE_LOGOS = 5;
+const VISIBLE_LOGOS = 6;
 
 const contactApiKey = import.meta.env.PUBLIC_STATIC_FORM_API_KEY ?? "";
 

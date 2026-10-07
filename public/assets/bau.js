@@ -47,8 +47,9 @@
 
     // The frame shows a desktop at 1440px or a phone at 390px, whichever is
     // chosen, scaled to the room there is.
+    const narrow = () => matchMedia("(max-width: 700px)").matches;
     const fit = () => {
-      const natural = show.dataset.device === "phone" ? 390 : 1440;
+      const natural = show.dataset.device === "phone" || narrow() ? 390 : 1440;
       const scale = view.clientWidth / natural;
       frame.style.width = `${natural}px`;
       frame.style.height = `${view.clientHeight / scale}px`;
@@ -241,7 +242,7 @@
     // device can animate: the frame closes in on the desktop site, then the
     // site reflows to its phone layout once the frame has arrived.
     const layout = (device) => {
-      const phone = device === "phone";
+      const phone = device === "phone" || narrow();
       const width = phone ? Math.min(390, show.clientWidth) : show.clientWidth;
       browser.style.width = `${width}px`;
       view.style.height = `${phone ? (width * 17) / 9 : (width * 11) / 16}px`;
@@ -262,7 +263,7 @@
     window.addEventListener("resize", () => layout(show.dataset.device));
     // A desktop site shrunk to a phone is unreadable, and the switch is
     // hidden at that width, so a phone sees the phone layout.
-    if (matchMedia("(max-width: 700px)").matches) show.dataset.device = "phone";
+    if (narrow()) show.dataset.device = "phone";
     layout(show.dataset.device);
     fit();
   }
@@ -273,7 +274,7 @@
   // the trade appears and fades away again. Behind the words, never in front
   // of them, and never for anyone who asked for less motion.
   const hero = $(".bau-hero");
-  if (hero && !reduceMotion) {
+  if (hero && !reduceMotion && matchMedia("(hover: hover) and (pointer: fine)").matches) {
     const PIECES = ["🏗️", "🚜", "🧱", "👷", "🔨", "🪣", "🚧", "🏠", "⛏️", "🪜", "🧰", "🪚"];
     let settle = 0;
     let lastX = -1e9;
@@ -384,9 +385,20 @@
       $$("[data-search], [data-type], [data-apply-phone]", vis).forEach((el) => (el.textContent = ""));
     };
 
+    // On a narrow screen the stage moves under the entry it belongs to;
+    // otherwise it stays beside the list, where it started.
+    const stage = $(".bau-features__stage", panel);
+    const stageHome = stage.parentElement;
+    const placeStage = () => {
+      if (matchMedia("(max-width: 1000px)").matches) buttons[index].closest("li").appendChild(stage);
+      else if (stage.parentElement !== stageHome) stageHome.appendChild(stage);
+    };
+    addEventListener("resize", placeStage);
+
     const pick = (next) => {
       index = (next + buttons.length) % buttons.length;
       buttons.forEach((button, i) => button.setAttribute("aria-current", String(i === index)));
+      placeStage();
       timers.splice(0).forEach(clearTimeout);
       $$("[data-vis]", panel).forEach((vis) => {
         const show = vis.dataset.vis === buttons[index].dataset.feature;
@@ -446,6 +458,7 @@
     addEventListener("scroll", start, { passive: true });
     later(start, 300);
     buttons.forEach((button, i) => button.setAttribute("aria-current", String(i === 0)));
+    placeStage();
     $$("[data-vis]", panel).forEach((vis) => {
       vis.hidden = vis.dataset.vis !== buttons[0].dataset.feature;
       reset(vis);

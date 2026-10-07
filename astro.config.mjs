@@ -32,7 +32,7 @@ export default defineConfig({
   integrations: (() => {
     // The legal pages carry `noindex`, so listing them in the sitemap would be
     // asking a crawler to fetch what it has been told to ignore.
-    const map = sitemap({ filter: (page) => !/\/(impressum|privacy)\/$/.test(page) });
+    const map = sitemap({ filter: (page) => !/\/(impressum|privacy)\/$/.test(page) && !page.includes("/bau/demo/") });
     return staticExport ? [map] : [react(), keystatic(), map];
   })(),
   ...(staticExport ? {} : { adapter: node({ mode: "standalone" }) }),

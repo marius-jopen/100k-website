@@ -7,7 +7,11 @@
 
   const slides = Array.from(spotlight.querySelectorAll(":scope > a"));
   const projectButtons = projectRows.map((row) => row.querySelector(".project-list-item"));
+  const projectDescriptions = projectRows.map((row) =>
+    row.querySelector(".short-description")?.textContent?.trim() || "",
+  );
   const frame = spotlight.querySelector(".project-spotlight-frame");
+  const caption = spotlight.querySelector(".project-spotlight-caption");
   const projectListSection = spotlight.closest(".plist-wrap")?.querySelector(".plist-wrap-2");
   const stickyStage = spotlight.closest(".sticky");
   const projectActivationOffset = 350;
@@ -386,6 +390,7 @@
     }
 
     frame.dataset.spotlightIndex = String(index);
+    if (caption) caption.textContent = projectDescriptions[index] || "";
     currentFrameIndex = index;
     pendingFrameIndex = -1;
     warmRemainingMedia(index);

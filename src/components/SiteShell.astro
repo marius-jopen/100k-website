@@ -10,6 +10,7 @@ import {
   projectTagUrl,
 } from "../lib/tags";
 import ArrowRight from "./ArrowRight.astro";
+import { clientLogoHeight } from "../lib/client-logos";
 import StoryMedia from "./StoryMedia.astro";
 import FilterLines from "./FilterLines.astro";
 import XMark from "./XMark.astro";
@@ -57,29 +58,6 @@ const orientationClass = (asset: Asset) => {
   if (aspectRatio < 1.5) return "near-square";
   return "landscape";
 };
-/*
- * Logos are given equal weight rather than equal height: a wordmark eight
- * times as wide as it is tall would otherwise tower over a shield, and capping
- * the width instead only moved the problem to the other end. Each one is drawn
- * to cover the same area, which is what the eye actually compares — with a
- * floor under the height, because the widest wordmarks would come out as a
- * thin line if area were all that counted.
- */
-const CLIENT_LOGO_AREA = 3600;
-const CLIENT_LOGO_MIN_HEIGHT = 26;
-const CLIENT_LOGO_MAX_HEIGHT = 60;
-
-const clientLogoHeight = (aspectRatio: number | null, opticalSize: number) => {
-  if (!aspectRatio) return CLIENT_LOGO_MAX_HEIGHT;
-
-  // The nudge is on the size, so it goes into the area squared.
-  const area = CLIENT_LOGO_AREA * (opticalSize / 100) ** 2;
-  const height = Math.sqrt(area / aspectRatio);
-  return Math.round(
-    Math.min(Math.max(height, CLIENT_LOGO_MIN_HEIGHT), CLIENT_LOGO_MAX_HEIGHT),
-  );
-};
-
 const clients = siteContent.clients;
 const projectSpotlightSources = new Set([
   ...siteContent.webglBackgrounds.map((asset) => asset.path),
@@ -244,6 +222,10 @@ const contactFields = [
               </a>
             ))}
             <div class="project-spotlight-frame" aria-hidden="true"></div>
+            {/* Desktop only: the description sits under the spotlight media
+                rather than under the pill. Below the breakpoint there is no
+                spotlight to sit under, so the list carries it instead. */}
+            <div class="_bigtext project-spotlight-caption short-description" aria-hidden="true"></div>
           </div>
         </div>
         {/* Outside `.sticky` on purpose. `.sticky` is a stacking context, and

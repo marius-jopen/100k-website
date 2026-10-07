@@ -1,0 +1,513 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ArrowRight from "../components/ArrowRight.astro";
+import { siteContent } from "../lib/content";
+import { clientLogoHeight } from "../lib/client-logos";
+import { ORGANIZATION, SITE_URL, jsonLd } from "../lib/seo";
+import { BAU_DEMOS } from "../lib/bau-demos";
+
+/*
+ * The landing page for construction companies.
+ *
+ * Deliberately not part of the shell: the portfolio speaks to studios and
+ * brands, and a demolition contractor who lands on Burberry and e-flux decides
+ * in a second that this is not for him. So this page has its own language
+ * (German, "Sie"), its own layout and no legacy bundle — it borrows only the
+ * type, the pills and the restraint.
+ *
+ * The rule for the copy: one idea per screen, said once, centred. The four
+ * demo sites under /bau/demo/ carry the argument; this page frames them the
+ * way a theme shop frames its themes — a live preview and the list of things
+ * worth noticing in it. `/assets/bau.js` drives that frame.
+ */
+
+const path = "/bau/";
+const title = "Websites für Bauunternehmen — 100k Studio";
+const description =
+  "Websites für Abbruch, Rohbau, Sanierung und Tiefbau: gefunden bei Google und ChatGPT, mit Anfragen, die schon alles enthalten. Festpreis, live in sechs Wochen.";
+
+
+/* Proposed prices — what we would quote today, to be settled with Armin
+   before the page is linked from anywhere. */
+const PACKAGES = [
+  {
+    name: "Fundament",
+    price: "4.900 €",
+    items: ["Website, 6 Seiten", "Google-Unternehmensprofil", "Anfrageformular", "Live in 4 Wochen"],
+  },
+  {
+    name: "Rohbau",
+    price: "7.900 €",
+    featured: true,
+    items: ["Alles aus Fundament", "Seite pro Leistung und Ort", "Referenzen, Karriereseite", "Texte schreiben wir"],
+  },
+  {
+    name: "Schlüsselfertig",
+    price: "11.900 €",
+    items: ["Alles aus Rohbau", "Fotoshooting auf der Baustelle", "Anfragen aufs Handy", "3 Monate Betreuung"],
+  },
+];
+
+/* What every site comes with. The visual on the right is drawn for each. */
+const FEATURES = [
+  {
+    id: "google",
+    title: "Gefunden bei Google",
+    text: "Google-Unternehmensprofil, lokale Suchbegriffe, eine eigene Seite für jede Leistung in jedem Ort.",
+  },
+  {
+    id: "ki",
+    title: "Empfohlen von ChatGPT",
+    text: "Strukturierte Daten und klare Antworten auf die Fragen Ihrer Kunden. Das Material, aus dem KI-Assistenten ihre Empfehlungen bauen.",
+  },
+  {
+    id: "anfrage",
+    title: "Anfragen mit Inhalt",
+    text: "Vier Fragen statt „Bitte um Rückruf“. Ihr Büro sieht sofort, ob der Auftrag passt.",
+  },
+  {
+    id: "karriere",
+    title: "Bewerben in 60 Sekunden",
+    text: "Beruf antippen, Nummer eintragen, fertig. Kein Anschreiben, kein Lebenslauf.",
+  },
+  {
+    id: "referenzen",
+    title: "Referenzen, die überzeugen",
+    text: "Projekte mit Ort, Umfang und Vorher/Nachher-Fotos. Neue tragen Sie selbst nach, vom Handy aus.",
+  },
+  {
+    id: "betreuung",
+    title: "Betreut, nicht abgeliefert",
+    text: "Wir hosten die Seite, halten sie aktuell und setzen Änderungen innerhalb von Stunden um. Neue Funktionen bauen wir dazu. Domain, Inhalte und Code bleiben trotzdem Ihre.",
+  },
+];
+
+const STEPS = [
+  { title: "Gespräch", text: "30 Minuten am Telefon. Sie erzählen, was Sie machen und welche Aufträge Sie mehr wollen." },
+  { title: "Material", text: "Sie schicken uns Fotos von Baustellen per WhatsApp. Alle Texte schreiben wir." },
+  { title: "Entwurf", text: "Nach drei Wochen klicken Sie durch Ihre neue Seite im Browser und sagen, was anders soll." },
+  { title: "Live", text: "Nach sechs Wochen ist die Seite online, mit Google-Profil und allem, was dazugehört." },
+];
+
+const FAQ = [
+  {
+    q: "Was kostet das?",
+    a: "Festpreis ab 4.900 € netto. Nach dem Erstgespräch wissen Sie genau, was Sie bekommen. Keine Stundenabrechnung, keine Nachträge.",
+  },
+  {
+    q: "Wie lange dauert es?",
+    a: "Vier bis sechs Wochen. Von Ihnen brauchen wir etwa drei Stunden insgesamt.",
+  },
+  {
+    q: "Was heißt „auffindbar in ChatGPT“?",
+    a: "Immer mehr Leute fragen KI-Assistenten, wen sie beauftragen sollen. Die antworten mit dem, was sie online über Sie finden. Wir sorgen dafür, dass dort klar und maschinenlesbar steht, was Sie machen, wo, und was Kunden über Sie sagen. Garantieren, was ein Assistent antwortet, kann niemand.",
+  },
+  {
+    q: "Müssen wir Texte schreiben?",
+    a: "Nein. Wir führen ein Interview und schreiben alles. Fotos schicken Sie per WhatsApp, oder wir kommen auf die Baustelle.",
+  },
+  {
+    q: "Können wir die Seite selbst ändern?",
+    a: "Ja, in einem einfachen Formular, auch vom Handy. Wer das nicht will, schickt uns die Infos.",
+  },
+  {
+    q: "Gehört die Website uns?",
+    a: "Ja. Domain, Inhalte und Code gehören Ihnen. Sie sind an nichts gebunden.",
+  },
+];
+
+/* Six on screen (five on a desktop), all twelve in rotation; the script swaps one at a time. The
+   area is smaller than the shell's wall because these sit in one quiet row. */
+const LOGO_SIZING = { area: 1500, min: 16, max: 40 };
+const logos = siteContent.clients
+  .filter((client) => client.svg)
+  .map((client) => ({
+    name: client.name,
+    svg: client.svg,
+    height: clientLogoHeight(client.aspectRatio, client.opticalSize, LOGO_SIZING),
+  }));
+const VISIBLE_LOGOS = 6;
+
+const contactApiKey = import.meta.env.PUBLIC_STATIC_FORM_API_KEY ?? "";
+
+const schema = [
+  jsonLd({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Websites für Bauunternehmen",
+    serviceType: "Webdesign und Webentwicklung",
+    description,
+    url: `${SITE_URL}${path}`,
+    areaServed: ["DE", "AT", "CH"],
+    audience: { "@type": "BusinessAudience", name: "Bauunternehmen" },
+    provider: { "@id": `${SITE_URL}/#organization`, name: ORGANIZATION.name },
+    offers: PACKAGES.map((pack) => ({
+      "@type": "Offer",
+      name: pack.name,
+      price: pack.price.replace(/[^\d]/g, ""),
+      priceCurrency: "EUR",
+    })),
+  }),
+  jsonLd({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.a },
+    })),
+  }),
+];
+
+
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  bodyType="frontpage"
+  path={path}
+  schema={schema}
+  standalone
+  legacyStyles={false}
+  lang="de"
+  locale="de_DE"
+  stylesheets={["/assets/bau.css"]}
+>
+  <div class="bau">
+    <header class="bau-header">
+      <a class="bau-logo" href="/">100k Studio<span>Websites für Bauunternehmen</span></a>
+      <nav class="bau-pillnav" aria-label="Seitenbereiche">
+        <a href="#beispiele">Beispiele</a>
+        <a href="#leistungen">Leistungen</a>
+        <a href="#ablauf">Ablauf</a>
+        <a href="#preise">Preise</a>
+        <a href="#faq">Fragen</a>
+      </nav>
+      <a class="bau-pill bau-pill--dark" href="#kontakt">Website-Check</a>
+    </header>
+
+    <main>
+      {/* ---------------------------------------------------------------- Hero */}
+      <section class="bau-hero">
+        <h1>Gefunden werden,<br />wenn jemand baut.</h1>
+        <p>Websites für Bauunternehmen. Festpreis, live in sechs Wochen.</p>
+        <div class="bau-actions">
+          <a class="bau-pill bau-pill--dark" href="#kontakt"><ArrowRight />Kostenloser Website-Check</a>
+          <a class="bau-pill" href="#beispiele">Beispiele ansehen</a>
+        </div>
+        {/* The way down: a circled arrow at the hero's foot that scrolls to
+            the first section. */}
+        <a class="bau-hero__down" href="#beispiele" aria-label="Weiter nach unten" data-scroll-down>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </a>
+      </section>
+
+      {/* --------------------------------------------------------------- Logos */}
+      <section class="bau-logos" aria-label="Bisherige Kunden">
+        <p>Bisher haben wir für Konzerne, Marken und Ministerien gebaut. Dort zählt dasselbe wie auf Ihrer Baustelle: Termine halten, sauber arbeiten, erreichbar sein.</p>
+        <ul data-logos>
+          {logos.slice(0, VISIBLE_LOGOS).map((logo, index) => (
+            <li data-slot={index}>
+              <span class="is-in" data-logo={logo.name} style={`--h:${logo.height}px`} set:html={logo.svg} />
+            </li>
+          ))}
+        </ul>
+        {/* Every logo once, for the script to clone from. */}
+        <template data-logo-pool>
+          {logos.map((logo) => (
+            <span data-logo={logo.name} style={`--h:${logo.height}px`} set:html={logo.svg} />
+          ))}
+        </template>
+      </section>
+
+      {/* ------------------------------------------------------------ Showcase */}
+      {/* The demo sites, framed like themes in a theme shop: a live preview
+          that scrolls, and a cursor of our own that shows what is in it. */}
+      <section class="bau-section" id="beispiele">
+        <h2>So kann Ihre<br />Website aussehen.</h2>
+        <p class="bau-sub">Vier Beispiele, zum Durchscrollen und Ausprobieren. Anfrage und Bewerbung funktionieren.</p>
+        <div class="bau-show-controls">
+          <div class="bau-switch" role="tablist" aria-label="Gewerk">
+            {BAU_DEMOS.map((demo, index) => (
+              <button type="button" role="tab" aria-selected={index === 0 ? "true" : "false"} data-demo={demo.value}>
+                {demo.short}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="bau-show" data-show data-device="desktop">
+          <div class="bau-browser">
+            <div class="bau-browser__bar">
+              <span></span><span></span><span></span>
+              <div class="bau-browser__url" data-bind="domain">www.{BAU_DEMOS[0].domain}</div>
+              {/* Desktop or phone, where a browser would keep its own controls. */}
+              <a class="bau-browser__open" href={`/bau/demo/${BAU_DEMOS[0].value}/`} target="_blank" rel="noopener" aria-label="Seite im neuen Tab öffnen" title="Seite im neuen Tab öffnen" data-open>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+              </a>
+              <div class="bau-browser__devices" role="tablist" aria-label="Gerät">
+                <button type="button" role="tab" aria-selected="true" data-device="desktop" aria-label="Desktop">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 20h8"/></svg>
+                </button>
+                <button type="button" role="tab" aria-selected="false" data-device="phone" aria-label="Handy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M11 17h2"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="bau-browser__view" data-view>
+              {/* The site is rendered at full desktop width and scaled down to
+                  fit, so the frame shows the desktop design and not a tablet's. */}
+              <iframe src={`/bau/demo/${BAU_DEMOS[0].value}/`} title="Demo-Website" loading="lazy" data-frame></iframe>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ Features */}
+      <section class="bau-section bau-section--tinted" id="leistungen">
+        <h2>Was jede Seite<br />mitbringt.</h2>
+        <div class="bau-features" data-features-panel>
+          {/* The entry on stage opens and shows its sentence, the others are a
+              line each. The sentence is a grid row that grows from nothing,
+              which is what makes the opening smooth. */}
+          <ol class="bau-features__list">
+            {FEATURES.map((feature, index) => (
+              <li>
+                <button type="button" data-feature={feature.id} aria-current={index === 0 ? "true" : "false"}>
+                  <h3>{feature.title}</h3>
+                  <p><span>{feature.text}</span></p>
+                </button>
+              </li>
+            ))}
+          </ol>
+
+          <div class="bau-features__stage">
+            {/* Google: the results page, the firm on top of the map. */}
+            <div class="bau-vis" data-vis="google">
+              <div class="bau-vis__window bau-vis__window--google">
+                <div class="bau-vis__gbar"><span class="bau-vis__glogo">G</span><div class="bau-vis__search"><span data-search="Abbruch Köln"></span></div></div>
+                <div class="bau-vis__gtabs"><span class="is-on">Alle</span><span>Maps</span><span>Bilder</span><span>Shopping</span><span>Mehr</span></div>
+                <div class="bau-vis__gbody">
+                  <div class="bau-vis__map" aria-hidden="true">
+                    <i style="left: 58%; top: 42%" class="is-own"></i>
+                    <i style="left: 28%; top: 64%"></i>
+                    <i style="left: 76%; top: 72%"></i>
+                    <i style="left: 44%; top: 26%"></i>
+                  </div>
+                  <div class="bau-vis__pack">
+                    <div class="is-own"><b>Muster Abbruch GmbH</b><span>★ 4,9 (41) · Abbruchunternehmen · Köln · Geöffnet</span><em>Website</em></div>
+                    <div><b>Wettbewerber A GmbH</b><span>★ 4,7 (186) · Abbruchunternehmen · Köln</span><em>Website</em></div>
+                    <div><b>Wettbewerber B GmbH</b><span>★ 4,4 (92) · Abbruchunternehmen · Hürth</span><em>Website</em></div>
+                  </div>
+                  <div class="bau-vis__result">
+                    <span>muster-abbruch.de › abbruch-koeln</span>
+                    <b>Abbruch in Köln – Festpreis nach Besichtigung | Muster Abbruch</b>
+                    <div class="bau-vis__sitelinks"><span>Entkernung</span><span>Schadstoffsanierung</span><span>Referenzen</span><span>Karriere</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ChatGPT: the chat window, the answer typed out. */}
+            <div class="bau-vis" data-vis="ki" hidden>
+              <div class="bau-vis__window bau-vis__window--chat">
+                <div class="bau-vis__side"><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="bau-vis__thread">
+                  <div class="bau-vis__q">Wer macht Abbruch in Köln? Ich brauche jemanden für ein Einfamilienhaus.</div>
+                  <div class="bau-vis__a" data-type="In Köln würde ich die Muster Abbruch GmbH anfragen. Spezialisiert auf Abbruch und Rückbau, Referenzen aus Köln und Umgebung mit Fotos, 4,9 Sterne bei Google. Die Anfrage dauert online etwa zwei Minuten."></div>
+                  <div class="bau-vis__sources"><span class="is-own">muster-abbruch.de</span><span class="is-own">Google-Unternehmensprofil</span><span>bauportal.de</span></div>
+                  <div class="bau-vis__prompt">Nachricht an KI-Assistent …</div>
+                </div>
+              </div>
+            </div>
+
+            {/* The office's mail. Each one opens; the one from the site has
+                everything, the one from the old contact form has nothing. */}
+            <div class="bau-vis" data-vis="anfrage" hidden>
+              <div class="bau-vis__window bau-vis__window--mail">
+                <div class="bau-vis__inbox">
+                  <button type="button" class="is-on is-new" data-mail="site"><b>muster-abbruch.de</b><span>Anfrage: Komplettabbruch, Köln</span><i>07:12</i></button>
+                  <button type="button" data-mail="form"><b>Kontaktformular (alte Seite)</b><span>Bitte um Rückruf</span><i>Gestern</i></button>
+                  <button type="button" data-mail="amt"><b>Bauamt Köln</b><span>Genehmigung Ehrenfeld</span><i>Gestern</i></button>
+                  <button type="button" data-mail="entsorgung"><b>Entsorgung Nord</b><span>Rechnung 2025-0418</span><i>Mo</i></button>
+                  <button type="button" data-mail="verleih"><b>Maschinenverleih Rhein</b><span>Angebot Bagger 30 t</span><i>Mo</i></button>
+                </div>
+                <div class="bau-vis__mail" data-mailpane="site">
+                  <h4>Anfrage: Komplettabbruch, Köln</h4>
+                  <span class="bau-vis__from">muster-abbruch.de · heute 07:12</span>
+                  <dl>
+                    <dt>Leistung</dt><dd>Komplettabbruch</dd>
+                    <dt>Objekt</dt><dd>Einfamilienhaus, ca. 180 m²</dd>
+                    <dt>Start</dt><dd>In 1–3 Monaten</dd>
+                    <dt>Ort</dt><dd>50937 Köln</dd>
+                    <dt>Telefon</dt><dd>0170 000 00 00</dd>
+                    <dt>Fotos</dt><dd><i></i><i></i><i></i></dd>
+                  </dl>
+                </div>
+                <div class="bau-vis__mail" data-mailpane="form" hidden>
+                  <h4>Bitte um Rückruf</h4>
+                  <span class="bau-vis__from">Kontaktformular (alte Seite) · gestern 16:40</span>
+                  <p class="bau-vis__plain">Hallo, bitte um Rückruf wegen Abriss. Danke, Müller</p>
+                  <p class="bau-vis__note">Kein Objekt, kein Ort, keine Nummer. Ihr Büro muss erst hinterhertelefonieren.</p>
+                </div>
+                <div class="bau-vis__mail" data-mailpane="amt" hidden>
+                  <h4>Genehmigung Ehrenfeld</h4>
+                  <span class="bau-vis__from">Bauamt Köln · gestern 11:05</span>
+                  <p class="bau-vis__plain">Sehr geehrte Damen und Herren, anbei die Abbruchgenehmigung für das Objekt Venloer Straße. Mit freundlichen Grüßen</p>
+                </div>
+                <div class="bau-vis__mail" data-mailpane="entsorgung" hidden>
+                  <h4>Rechnung 2025-0418</h4>
+                  <span class="bau-vis__from">Entsorgung Nord · Montag 09:30</span>
+                  <p class="bau-vis__plain">Guten Tag, anbei die Rechnung für die Containergestellung Ehrenfeld, 14 Fuhren Bauschutt. Zahlbar innerhalb von 14 Tagen.</p>
+                </div>
+                <div class="bau-vis__mail" data-mailpane="verleih" hidden>
+                  <h4>Angebot Bagger 30 t</h4>
+                  <span class="bau-vis__from">Maschinenverleih Rhein · Montag 08:12</span>
+                  <p class="bau-vis__plain">Hallo Herr Muster, wie besprochen das Angebot für den 30-Tonner ab Kalenderwoche 42, inklusive Anlieferung.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* The firm's own careers page, with a job and the short form. */}
+            <div class="bau-vis" data-vis="karriere" hidden>
+              <div class="bau-vis__window bau-vis__window--apply">
+                <div class="bau-vis__sitebar"><b>Muster Abbruch GmbH</b><span>Leistungen</span><span>Referenzen</span><span class="is-on">Karriere</span><span>Kontakt</span></div>
+                <div class="bau-vis__job">
+                  <div class="bau-vis__jobhead">
+                    <span>Offene Stelle</span>
+                    <h4>Baggerfahrer/in (m/w/d)</h4>
+                    <small>Köln · Vollzeit · ab sofort · 3.200–3.800 € brutto</small>
+                    <p>Sie fahren unsere Kettenbagger bis 40 t auf Abbruchbaustellen in Köln und Umgebung. Feierabend ist, wenn die Baustelle sauber ist, nicht später.</p>
+                  </div>
+                  <div class="bau-vis__jobform" data-apply-scene>
+                    <b>In 60 Sekunden bewerben</b>
+                    <small>Wie viel Erfahrung haben Sie?</small>
+                    <div class="bau-vis__chips" data-apply-chips><span>Unter 2 Jahre</span><span>2–5 Jahre</span><span>Über 5 Jahre</span></div>
+                    <small>Führerschein?</small>
+                    <div class="bau-vis__chips" data-apply-licence><span>B</span><span>C / CE</span><span>Keinen</span></div>
+                    <div class="bau-vis__field"><span data-apply-phone></span><i data-apply-send>Rückruf</i></div>
+                    <div class="bau-vis__done" data-apply-done>Danke. Wir rufen Sie heute bis 18 Uhr an.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* References: a project page with a before/after the pointer wipes. */}
+            <div class="bau-vis" data-vis="referenzen" hidden>
+              <div class="bau-vis__window bau-vis__window--ref">
+                <div class="bau-vis__wipe" data-wipe style="--split: 50%">
+                  <img src="/images/bau/sanierung-nachher.jpg" alt="" loading="lazy" />
+                  <img src="/images/bau/sanierung-vorher.jpg" alt="" loading="lazy" class="is-before" />
+                  <span class="is-before-label">Vorher</span><span class="is-after-label">Nachher</span>
+                </div>
+                <div class="bau-vis__refmeta"><b>Gründerzeitwohnung, 140 m²</b><span>Düsseldorf-Flingern · Kernsanierung · 4 Monate · Mit der Maus über das Bild fahren</span></div>
+              </div>
+            </div>
+
+            {/* Care: the requests of a month, and how fast each one was done. */}
+            <div class="bau-vis" data-vis="betreuung" hidden>
+              <div class="bau-vis__window bau-vis__window--care">
+                {/* One request, one change, one reply. */}
+                <div class="bau-vis__msg bau-vis__msg--you"><p>Könnt ihr die Lagerhalle in Hürth als Referenz einbauen? Fotos anbei.</p><span>Dienstag, 09:14</span></div>
+                <div class="bau-vis__site">
+                  <div class="bau-vis__siteline">muster-abbruch.de › Referenzen</div>
+                  <div class="bau-vis__refs">
+                    <div class="bau-vis__refcard is-new" data-care="reference"><i style="background-image: url(/images/bau/abbruch-2.jpg)"></i><span>Lagerhalle, 2.400 m²<small>Hürth</small></span></div>
+                    <div class="bau-vis__refcard"><i style="background-image: url(/images/bau/abbruch-1.jpg)"></i><span>Mehrfamilienhaus, 4 Geschosse<small>Köln-Ehrenfeld</small></span></div>
+                    <div class="bau-vis__refcard"><i style="background-image: url(/images/bau/abbruch-3.jpg)"></i><span>Bürogebäude, Entkernung<small>Leverkusen</small></span></div>
+                  </div>
+                </div>
+                <div class="bau-vis__msg"><p>Ist drin.</p><span>Dienstag, 10:52 · 100k Studio</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- Process */}
+      <section class="bau-section" id="ablauf">
+        <h2>So entsteht<br />Ihre Website.</h2>
+        <p class="bau-sub">Sechs Wochen vom ersten Telefonat bis zur fertigen Seite. Von Ihnen brauchen wir dafür insgesamt etwa drei Stunden.</p>
+        <ol class="bau-steps">
+          {STEPS.map((step, index) => (
+            <li>
+              <span>{index + 1}</span>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ------------------------------------------------------------- Pricing */}
+      <section class="bau-section bau-section--tinted" id="preise">
+        <h2>Festpreis.<br />Wie bei Ihnen.</h2>
+        <div class="bau-prices">
+          {PACKAGES.map((pack) => (
+            <article class:list={["bau-price", { "bau-price--featured": pack.featured }]}>
+              <h3>{pack.name}</h3>
+              <div class="bau-price__amount">{pack.price}</div>
+              <ul>
+                {pack.items.map((item) => <li>{item}</li>)}
+              </ul>
+              <a class:list={["bau-pill", { "bau-pill--dark": !pack.featured, "bau-pill--light": pack.featured }]} href="#kontakt" data-package={pack.name}>
+                <ArrowRight />Anfragen
+              </a>
+            </article>
+          ))}
+        </div>
+        <p class="bau-small bau-small--center">Netto, einmalig. Danach betreuen wir die Seite weiter, ab 190 € im Monat, monatlich kündbar.</p>
+      </section>
+
+      {/* ----------------------------------------------------------------- FAQ */}
+      <section class="bau-section" id="faq">
+        <h2>Fragen</h2>
+        <div class="bau-faq">
+          {FAQ.map((item) => (
+            <details>
+              <summary>{item.q}</summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- Contact */}
+      <section class="bau-section bau-contact" id="kontakt">
+        <div class="bau-contact__copy">
+          <h2>Kostenloser<br />Website-Check.</h2>
+          <p>Wir schauen uns Ihre Seite an und sagen Ihnen in 15 Minuten am Telefon, was fehlt. Unverbindlich.</p>
+        </div>
+
+        <form class="bau-form" action={siteContent.contact.endpoint} method="post" data-contact>
+          <label class="bau-field"><span>Name</span><input name="name" type="text" autocomplete="name" required /></label>
+          <label class="bau-field"><span>Firma</span><input name="company" type="text" autocomplete="organization" required /></label>
+          <label class="bau-field"><span>Telefon</span><input name="phone" type="tel" autocomplete="tel" required /></label>
+          <label class="bau-field"><span>E-Mail</span><input name="email" type="email" autocomplete="email" required /></label>
+          <label class="bau-field bau-field--wide"><span>Aktuelle Website (optional)</span><input name="website" type="text" inputmode="url" placeholder="www.ihre-firma.de" /></label>
+          <input type="hidden" name="package" value="" />
+          <input type="hidden" name="apiKey" value={contactApiKey} />
+          <input type="hidden" name="subject" value="" />
+          {/* Static Forms drops anything with the honeypot filled in. */}
+          <input class="bau-honeypot" type="text" name="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <button class="bau-pill bau-pill--dark bau-field--wide" type="submit"><ArrowRight />Website-Check anfordern</button>
+          <p class="bau-form__status bau-field--wide" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="bau-footer">
+      <span>{ORGANIZATION.legalName} · {ORGANIZATION.address.street} · {ORGANIZATION.address.postalCode} {ORGANIZATION.address.city}</span>
+      <nav>
+        <a href={`mailto:${ORGANIZATION.email}`}>{ORGANIZATION.email}</a>
+        <a href="/">Portfolio</a>
+        <a href="/impressum/">Impressum</a>
+        <a href="/privacy/">Datenschutz</a>
+      </nav>
+    </footer>
+  </div>
+
+  <script is:inline src="/assets/bau.js"></script>
+</BaseLayout>

@@ -245,7 +245,7 @@
 
       gl.viewport(0, 0, width, height);
       const cornerRadius = parseFloat(getComputedStyle(slideshow).borderTopLeftRadius) || 0;
-      gl.uniform1f(uniforms.cornerRadius, cornerRadius * dpr);
+      gl.uniform1f(uniforms.cornerRadius, cornerRadius * 0.5 * dpr);
       gl.uniform2f(uniforms.resolution, width, height);
     };
 

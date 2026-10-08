@@ -6,9 +6,11 @@ interface Props {
   slides: Asset[];
   autoplayDelay: number;
   autoplaySpeed: number;
+  /** "cover" fills the box edge to edge; the default fits each image inside. */
+  fit?: "contain" | "cover";
 }
 
-const { slides, autoplayDelay, autoplaySpeed } = Astro.props;
+const { slides, autoplayDelay, autoplaySpeed, fit = "contain" } = Astro.props;
 ---
 
 {/* The same morph the parked service cards used — `service-webgl-slideshow.js`
@@ -21,6 +23,7 @@ const { slides, autoplayDelay, autoplaySpeed } = Astro.props;
     data-autoplaydelay={autoplayDelay}
     data-autoplayspeed={autoplaySpeed}
     data-transitionspeed="3000"
+    data-fit={fit}
     aria-hidden="true"
   >
     <canvas class="service-webgl-canvas"></canvas>

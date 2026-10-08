@@ -26,27 +26,36 @@
     uniform vec2 fromSize;
     uniform vec2 toSize;
     uniform float cornerRadius;
+    uniform float cover;
     uniform float progress;
     uniform float power;
     varying vec2 vUv;
 
+    // Cover mode flips the comparison: the image is scaled to fill the frame
+    // and the overhang is cropped, instead of fitting inside it.
     vec2 containedSize(vec2 textureSize) {
       float frameAspect = resolution.x / resolution.y;
       float textureAspect = textureSize.x / textureSize.y;
 
-      if (textureAspect > frameAspect) {
+      if ((textureAspect > frameAspect) != (cover > 0.5)) {
         return vec2(resolution.x, resolution.x / textureAspect);
       }
 
       return vec2(resolution.y * textureAspect, resolution.y);
     }
 
+    // Contained images sit against the bottom left of the frame; a covering
+    // one is centred, so it crops evenly from both sides.
     vec2 containUv(vec2 uv, vec2 textureSize) {
       vec2 fittedSize = containedSize(textureSize) / resolution;
+      if (cover > 0.5) return (uv - 0.5) / fittedSize + 0.5;
       return uv / fittedSize;
     }
 
     float roundedMask(vec2 uv, vec2 textureSize) {
+      // A covering image runs past every edge of the frame, so it has no
+      // corner of its own to round.
+      if (cover > 0.5) return 1.0;
       vec2 fittedSize = containedSize(textureSize);
       float radius = min(cornerRadius, min(fittedSize.x, fittedSize.y) * 0.5);
       vec2 point = (uv - 0.5) * fittedSize;
@@ -147,12 +156,16 @@
       preserveDrawingBuffer: true,
     });
 
+    // `data-fit="cover"` fills the frame edge to edge instead of fitting the
+    // image inside it — for a slideshow that is the background of a box.
+    const cover = slideshow.dataset.fit === "cover";
+
     if (!gl) {
       canvas.style.backgroundImage = `url("${sources[0]}")`;
       canvas.style.backgroundColor = "transparent";
-      canvas.style.backgroundPosition = "left bottom";
+      canvas.style.backgroundPosition = cover ? "center" : "left bottom";
       canvas.style.backgroundRepeat = "no-repeat";
-      canvas.style.backgroundSize = "contain";
+      canvas.style.backgroundSize = cover ? "cover" : "contain";
       canvas.style.filter = "brightness(0.97)";
       slideshow.classList.add("lay-webgl-reveal");
       return;
@@ -203,6 +216,7 @@
 
     const uniforms = {
       cornerRadius: gl.getUniformLocation(program, "cornerRadius"),
+      cover: gl.getUniformLocation(program, "cover"),
       fromSize: gl.getUniformLocation(program, "fromSize"),
       fromTexture: gl.getUniformLocation(program, "fromTexture"),
       power: gl.getUniformLocation(program, "power"),
@@ -215,6 +229,7 @@
     gl.uniform1i(uniforms.fromTexture, 0);
     gl.uniform1i(uniforms.toTexture, 1);
     gl.uniform1f(uniforms.power, 5);
+    gl.uniform1f(uniforms.cover, cover ? 1 : 0);
 
     const transitionDuration = Number(slideshow.dataset.transitionspeed) || 3000;
     const autoplaySpeed = Number(slideshow.dataset.autoplayspeed) || 1800;

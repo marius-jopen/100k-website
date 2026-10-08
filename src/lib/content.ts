@@ -212,13 +212,17 @@ function escapeHtml(value: string): string {
  * editor shows no markup. This turns that text into the `<p>`/`<br>` HTML the
  * footer (`set:html`) and the project read-more (which walks `<p>` children)
  * expect. Empty input stays an empty string.
+ *
+ * A line break keeps a space in front of its `<br>`: invisible while the break
+ * shows, and what keeps the words apart where CSS hides the break so the line
+ * can wrap on its own — the footer headline on phones.
  */
 export function paragraphsToHtml(text: string | null | undefined): string {
   if (!text) return "";
   return text
     .trim()
     .split(/\n\s*\n/)
-    .map((block) => `<p>${escapeHtml(block.trim()).replaceAll("\n", "<br />")}</p>`)
+    .map((block) => `<p>${escapeHtml(block.trim()).replace(/[ \t]*\n[ \t]*/g, " <br />")}</p>`)
     .join("");
 }
 

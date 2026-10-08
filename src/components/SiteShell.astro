@@ -412,26 +412,27 @@ const contactFields = [
       <section class="story">
         <div class="story-split story-specialisms">
           <div class="story-split__label">
-            <h2 class="_bigtext2 story-split__heading">We specialize in<br />three things</h2>
             <StoryMedia
               slides={serviceWebglScreenshots[0] || []}
               autoplayDelay={serviceWebglTimings[0].autoplayDelay}
               autoplaySpeed={serviceWebglTimings[0].autoplaySpeed}
+              fit="cover"
             />
           </div>
           <div class="story-split__body">
+            <h2 class="_bigtext2 story-split__title">We specialize in three things</h2>
             <ul class="story-items">
               <li>
                 <h3 class="_bigtext2 story-items__title">Design-Led Websites</h3>
-                <p class="_bigtext story-items__sub">Art Direction, Interaction Design, Scrollytelling</p>
+                <p class="_bigtext2 story-items__sub">Art Direction, Interaction Design, Scrollytelling</p>
               </li>
               <li>
                 <h3 class="_bigtext2 story-items__title">Custom Platforms</h3>
-                <p class="_bigtext story-items__sub">Headless CMS, Web Apps, Integrations</p>
+                <p class="_bigtext2 story-items__sub">Headless CMS, Web Apps, Integrations</p>
               </li>
               <li>
                 <h3 class="_bigtext2 story-items__title">Commerce</h3>
-                <p class="_bigtext story-items__sub">Shopify, Custom Checkouts, Subscriptions</p>
+                <p class="_bigtext2 story-items__sub">Shopify, Custom Checkouts, Subscriptions</p>
               </li>
             </ul>
           </div>
@@ -443,14 +444,15 @@ const contactFields = [
 
         <div class="story-split story-capabilities">
           <div class="story-split__label">
-            <h2 class="_bigtext2 story-split__heading">We deliver so<br />much more</h2>
             <StoryMedia
               slides={serviceWebglScreenshots[1] || []}
               autoplayDelay={serviceWebglTimings[1].autoplayDelay}
               autoplaySpeed={serviceWebglTimings[1].autoplaySpeed}
+              fit="cover"
             />
           </div>
           <div class="story-split__body">
+            <h2 class="_bigtext2 story-split__title">We deliver so much more</h2>
             <ul class="story-capabilities__list">
               <li class="_bigtext2">Art Direction</li>
               <li class="_bigtext2">Design Systems</li>

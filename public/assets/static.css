@@ -3136,6 +3136,9 @@ body > .become-a-client-modal .thankyou__note {
 .story {
   --story-rule: rgba(0, 0, 0, 0.14);
   --story-gutter: 20px;
+  /* Between the specialisms, and under each block's heading: the heading is
+     spaced as one more item in the list it opens. */
+  --story-item-gap: calc(2 * var(--story-gutter));
   /* The gap between a large sentence and the rule under it — the services
      intro above this section and the statement inside it — is one value, so
      both sentences sit the same distance over their rule. */
@@ -3180,9 +3183,9 @@ body > .become-a-client-modal .thankyou__note {
 
 /* Each block opens its text column with its heading, at the size of the
    list it heads — the column keeps one voice — and set apart from it by
-   space alone: three gutters, against the two between items. */
+   space alone, the same space as between the specialisms. */
 .story-split__title {
-  margin: 0 0 calc(3 * var(--story-gutter));
+  margin: 0 0 var(--story-item-gap);
 }
 
 /* The 20px gutter is meant to be the distance you see, not the distance to an
@@ -3228,8 +3231,7 @@ body > .become-a-client-modal .thankyou__note {
   padding-right: var(--story-gutter);
 }
 
-/* No separators between the specialisms: the space between them does it,
-   the same two gutters a separator used to take with its gap either side. */
+/* No separators between the specialisms: the space between them does it. */
 .story-items {
   list-style: none;
   margin: 0;
@@ -3237,7 +3239,7 @@ body > .become-a-client-modal .thankyou__note {
 }
 
 .story-items > li + li {
-  margin-top: calc(2 * var(--story-gutter));
+  margin-top: var(--story-item-gap);
 }
 
 /* Title and sub-line are one size, the label's, and run on at its line
@@ -3276,10 +3278,6 @@ body > .become-a-client-modal .thankyou__note {
   .story-split__label {
     aspect-ratio: 16 / 10;
   }
-
-  .story-split__title {
-    margin-bottom: calc(2 * var(--story-gutter));
-  }
 }
 
 @media (min-width: 701px) {
@@ -3313,6 +3311,7 @@ body > .become-a-client-modal .thankyou__note {
   }
 
   .story {
+    --story-item-gap: 35px;
     --story-sentence-gap: var(--story-block-pad);
   }
 
@@ -3339,9 +3338,12 @@ body > .become-a-client-modal .thankyou__note {
     margin-bottom: var(--story-block-pad);
   }
 
-  /* Trimmed, the label and the sentence under it lost their leading and
-     closed up to 14px; the gutter between them instead. */
-  .our-services > h2 {
+  /* Trimmed, the labels and the text under them lost their leading and
+     closed up to 14px; the gutter between them instead — under "Our
+     Services" and under each story block's heading alike, rather than the
+     gap between specialisms the desktop uses there. */
+  .our-services > h2,
+  .story-split__title {
     margin-bottom: 20px;
   }
 
@@ -3414,14 +3416,4 @@ body > .become-a-client-modal .thankyou__note {
     white-space: normal;
   }
 
-  /* Tighter rhythm in the specialisms at this size. */
-  .story-split__title {
-    margin-bottom: 30px;
-  }
-
-  /* At the one 28px size a 20px gap between specialisms read as little more
-     than a line break; the block rhythm, 35px, separates them. */
-  .story-items > li + li {
-    margin-top: 35px;
-  }
 }

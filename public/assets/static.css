@@ -3417,3 +3417,12 @@ body > .become-a-client-modal .thankyou__note {
   }
 
 }
+
+/* The studio line's "& Development" breaks onto its own line on phones only,
+   where "Web Design & Development" ran into the Contact Us pill beside it. The
+   space before the break keeps the words apart where it is hidden. */
+@media (min-width: 701px) {
+  .introtext__phone-break {
+    display: none;
+  }
+}

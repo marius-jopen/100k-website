@@ -161,10 +161,12 @@ const contactFields = [
     {/* The studio line is the page heading on the list pages. On a project page
         the project's own title is, so this drops back to a plain div rather
         than competing with it. `._bigtext` fixes size, weight and margin, so
-        the element it renders as makes no visual difference. */}
+        the element it renders as makes no visual difference. On phones
+        "& Development" takes a line of its own, clear of the Contact Us pill
+        beside it; the break is hidden on the desktop (`static.css`). */}
     {project
-      ? <div class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Design &amp; Development</div>
-      : <h1 class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Design &amp; Development</h1>}
+      ? <div class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Design <br class="introtext__phone-break" />&amp;&nbsp;Development</div>
+      : <h1 class="_bigtext introtext text">100k Studio GmbH<br />Web&nbsp;Design <br class="introtext__phone-break" />&amp;&nbsp;Development</h1>}
     {siteContent.mobileLogo && <img class="mobile-logo" src={siteContent.mobileLogo.src} sizes="80px" alt={siteContent.mobileLogo.alt} />}
     <canvas id="canvas3" class="logo" style="z-index:5;"></canvas>
 

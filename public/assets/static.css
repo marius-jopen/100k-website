@@ -1348,9 +1348,18 @@ body.show-project-info-modal:not(.show-project-info-flip) #post {
   max-height: calc(100dvh - 48px);
   min-height: 0 !important;
   overflow: auto;
-  padding: clamp(38px, 6vh, 72px) clamp(28px, 5vw, 72px) !important;
+  /* The side padding is named so the credits' rules can reach past it to the
+     card's edges (below). */
+  --info-card-pad-x: clamp(28px, 5vw, 72px);
+  padding: clamp(38px, 6vh, 72px) var(--info-card-pad-x) !important;
   position: relative;
   width: 100%;
+}
+
+/* The card's text in the home page's weight: everything there is set at 600,
+   and the description and credits were the one regular voice left. */
+.project-info-modal .url-button-wrap :is(.description, .description p, .credit > div) {
+  font-weight: 600;
 }
 
 .project-info-modal__close {
@@ -1895,6 +1904,7 @@ body.show-project-info-modal > .become-a-client {
   }
 
   .project-media-carousel__back .project-info-modal .url-button-wrap {
+    --info-card-pad-x: 20px;
     gap: 20px;
     padding: 20px !important;
   }
@@ -1941,6 +1951,24 @@ body.show-project-info-modal > .become-a-client {
   padding-right: 0;
   text-align: right;
   white-space: nowrap;
+}
+
+@media (min-width: 701px) {
+  /* The credits' rules run to the card's edges, past its side padding, while
+     their text keeps the padding's inset. */
+  .project-info-modal .url-button-wrap .credits {
+    margin-left: calc(-1 * var(--info-card-pad-x));
+    margin-right: calc(-1 * var(--info-card-pad-x));
+    width: calc(100% + 2 * var(--info-card-pad-x));
+  }
+
+  .project-info-modal .url-button-wrap .credit > div:first-child {
+    padding-left: var(--info-card-pad-x);
+  }
+
+  .project-info-modal .url-button-wrap .credit > div:last-child {
+    padding-right: var(--info-card-pad-x);
+  }
 }
 
 /* The service pills reuse the buttons' text-slide hover. They need a

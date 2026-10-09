@@ -2992,15 +2992,20 @@ body > .become-a-client-modal .thankyou__note {
     display: none;
   }
 
+  /* In the flow, but still raised to the grid's layer: Next Project is pinned
+     under the page at `z-index: 1`, and an unpositioned block paints below
+     that. On a short window — an iPhone with Safari's bars showing — the
+     pinned block reached up past the grid's top edge and showed through as a
+     black band across the foot of the info. */
   .project-info-modal {
     background-color: #fff;
     display: block;
     opacity: 1;
     pointer-events: auto;
-    position: static;
+    position: relative;
     transform: none;
     visibility: visible;
-    z-index: auto;
+    z-index: 2;
   }
 
   .project-info-modal__panel {

@@ -3030,7 +3030,86 @@ body > .become-a-client-modal .thankyou__note {
     box-shadow: none;
     max-height: none;
     overflow: visible;
-    padding: 100px 20px 30px !important;
+    padding: 100px 20px 20px !important;
+  }
+
+  /* The home page's phone type: title and description at the one size the
+     info sections there use (28px/1.1, weight 600), rather than a 40px title
+     over 20px regular text. */
+  .project-info-modal .url-button-wrap :is(
+    .left-descr ._bigtext4,
+    .description,
+    .description p
+  ) {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  /* The credits are no longer a two-column table but read the way the home
+     page's story blocks do: each role a small label (16px, like "Our
+     Services"), the name under it at the text size, 20px between the two and
+     35px on to the next role — the same spacing as there. Trimmed to cap
+     height and baseline, as there, so those distances are the visible ones. */
+  .project-info-modal .url-button-wrap :is(.credits, .credit, .credit > div) {
+    display: block;
+  }
+
+  .project-info-modal .url-button-wrap .credit > div {
+    font-weight: 600;
+    text-align: left;
+    text-box: trim-both cap alphabetic;
+  }
+
+  .project-info-modal .url-button-wrap .credit > div:first-child {
+    font-size: 16px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .project-info-modal .url-button-wrap .credit > div:last-child {
+    font-size: 28px;
+    line-height: 1.1;
+    text-align: left;
+  }
+
+  .project-info-modal .url-button-wrap .credit + .credit {
+    margin-top: 35px;
+  }
+
+  /* One distance between the parts of the info and on to the media: the
+     40px between title and description, also between description and
+     credits, and — the info's 20px bottom padding plus the grid's 20px top —
+     between the credits and the first image. */
+  .project-info-modal .url-button-wrap .description {
+    margin-bottom: 40px;
+  }
+
+  /* No table rules, and a long name wraps instead of running off. */
+  .project-info-modal .url-button-wrap .credit > div,
+  .project-info-modal .url-button-wrap .credit:last-child > div {
+    border: 0;
+    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  .project-info-modal .url-button-wrap .credit > div:last-child {
+    white-space: normal;
+  }
+
+  /* While a project is open, the home page under it is hidden. `#post` is
+     exactly one screen tall, and when Safari's bars move on an iPhone the
+     visible area runs past its top for a moment — the project list underneath
+     showed through as a strip over Back. Visibility only, so the legacy code
+     still measures the list in place, and only once the page has settled:
+     the opening and closing transitions both need the home page showing.
+     The page's own ground goes white with it, for the same moments. */
+  body.show-post:not(.is-project-page-transitioning, .is-project-closing) #frontpage {
+    visibility: hidden;
+  }
+
+  body.show-post:not(.is-project-page-transitioning, .is-project-closing) {
+    background-color: #fff;
   }
 
   /* Moved to the end of the grid by SiteShell, into the tail the media already
@@ -3038,17 +3117,39 @@ body > .become-a-client-modal .thankyou__note {
      the last row would otherwise have kept to itself. */
   .url-button--below-media {
     display: block;
-    margin: 30px auto 10px;
+    margin: 20px auto 0;
     width: -moz-fit-content;
     width: fit-content;
   }
 
-  /* Closer together: 5vw was set for a desktop column and leaves the phone
-     scrolling through gaps rather than through the work. Set on the row, not
-     on `--row-gap` — that one is written inline by `renderProjectGrid`, and an
-     inline custom property outranks a stylesheet. */
+  /* One distance around and between the media: the 20px the grid keeps off
+     the left edge, also between items and under the last one. The rows used
+     3vw plus a figure's default 16px either side, which came to 44px between
+     items and twice the side gutter under the last. Set on the row and the
+     frame, not on `--row-gap`/`--frame-*` — those are written inline by
+     `renderProjectGrid`, and an inline custom property outranks a stylesheet. */
+  #post .static-project-grid {
+    padding: 20px;
+  }
+
   #post .static-grid-row {
-    margin-bottom: 3vw;
+    margin-bottom: 20px;
+  }
+
+  #post .static-grid-row:last-of-type {
+    margin-bottom: 0;
+  }
+
+  #post .static-grid-block {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+  /* A lighter shadow at this size: with 20px between items the full desktop
+     shadow ran into the next one. */
+  #post .static-grid-block img,
+  #post .static-grid-block video {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
   }
 
   /* The same sheet the home page is: white, with the corner turned before the
